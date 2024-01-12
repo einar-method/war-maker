@@ -379,22 +379,25 @@ function displayPoints(ref) {
                     createdAt: firebase.database.ServerValue.TIMESTAMP
                 });
     
+                // Update the HTML to display the lobby link
+                const lobbyLabel = document.getElementById("lobby-label");
+                lobbyLabel.innerText = `Lobby Link: ${window.location.origin}/join/${lobbyId}`;
                 console.log(`Lobby created with ID: ${lobbyId}`);
     
                 // Listen for changes in the lobby data
                 lobbyRef.on('value', (snapshot) => {
                     const lobbyData = snapshot.val();
     
-                    // Check if both users are not present
-                    if (lobbyData && lobbyData.user1 && lobbyData.user2) {
-                        const user1Connected = snapshot.child(`players/${lobbyData.user1}`).exists();
-                        const user2Connected = snapshot.child(`players/${lobbyData.user2}`).exists();
+                    // Check if the lobby exists
+                    if (lobbyData) {
+                        const user1ConnectedRef = firebase.database().ref(`players/${lobbyData.user1}`);
+                        const user2ConnectedRef = firebase.database().ref(`players/${lobbyData.user2}`);
     
-                        if (!user1Connected && !user2Connected) {
-                            // Both users are not present, delete the lobby
-                            lobbyRef.remove();
-                            console.log('Lobby deleted');
-                        }
+                        // Set up onDisconnect for user1
+                        user1ConnectedRef.onDisconnect().remove();
+    
+                        // Set up onDisconnect for user2
+                        user2ConnectedRef.onDisconnect().remove();
                     }
                 });
             } else {
@@ -402,9 +405,81 @@ function displayPoints(ref) {
             }
         });
     }
+    
 
-  
-  
+    // function createAndListenToLobby() {
+    //     // Generate a random string for the lobby ID
+    //     const lobbyId = getHash();
+    
+    //     // Get the current user's ID
+    //     const userId = firebase.auth().currentUser.uid;
+    
+    //     // Reference to the lobby in the Realtime Database
+    //     const lobbyRef = firebase.database().ref(`lobbies/${lobbyId}`);
+    
+    //     // Set up onDisconnect for the lobby
+    //     lobbyRef.onDisconnect().remove();
+    
+    //     // Check if the lobby already exists (to avoid collisions)
+    //     lobbyRef.once('value', (snapshot) => {
+    //         if (!snapshot.exists()) {
+    //             // The lobby does not exist, create it
+    //             lobbyRef.set({
+    //                 user1: userId,
+    //                 user2: null,
+    //                 createdAt: firebase.database.ServerValue.TIMESTAMP
+    //             });
+    
+    //             // Update the HTML to display the lobby link
+    //             const lobbyLabel = document.getElementById("lobby-label");
+    //             //lobbyLabel.innerText = `Lobby Link: ${window.location.origin}/join/${lobbyId}`;
+    //             lobbyLabel.innerText = `Lobby Code: ${lobbyId}`;
+    //             console.log(`Lobby created with ID: ${lobbyId}`);
+    
+    //             // Listen for changes in the lobby data
+    //             lobbyRef.on('value', (snapshot) => {
+    //                 const lobbyData = snapshot.val();
+    
+    //                 // Check if both users are not present
+    //                 if (!lobbyData.user1 && !lobbyData.user2) {
+    //                     // Lobby should only be deleted when both users are not present
+    //                     lobbyRef.remove();
+    //                     console.log('Lobby deleted');
+    //                 }
+    //             });
+    //         } else {
+    //             console.error(`Error: Lobby ID ${lobbyId} already exists. Try again.`);
+    //         }
+    //     });
+    // };
+
+    document.getElementById("join-lobby").addEventListener("click", function() {
+        console.log("Entered lobby ID:", document.getElementById('lobbyIdInput').value);
+        joinLobby(document.getElementById('lobbyIdInput').value);
+    });
+    function joinLobby(lobbyId) {
+
+        //onclick="joinLobby(document.getElementById('lobbyIdInput').value)"
+        const userId = firebase.auth().currentUser.uid;
+        const lobbyRef = firebase.database().ref(`lobbies/${lobbyId}`);
+    
+        // Check if the lobby exists
+        lobbyRef.once('value', (snapshot) => {
+            if (snapshot.exists()) {
+                // Check if user2 is not already set
+                if (!snapshot.child('user2').exists()) {
+                    // Set user2 to the current user ID
+                    lobbyRef.child('user2').set(userId);
+                    console.log(`User ${userId} joined lobby ${lobbyId}`);
+                } else {
+                    console.error(`Error: Lobby ${lobbyId} is already full.`);
+                }
+            } else {
+                console.error(`Error: Lobby ${lobbyId} does not exist.`);
+            }
+        });
+    }
+    
   
 
     const database = firebase.database();
