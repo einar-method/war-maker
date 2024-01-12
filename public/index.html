@@ -1,371 +1,279 @@
 <!DOCTYPE html>
-<html>
-  <head>
+<html lang="en">
+<head>
     <meta name="view-transition" content="same-orgin" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <link rel="stylesheet" href="hub-style.css">
     <title>WAR|MAKER</title>
-
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/10.7.1/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/10.7.1/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/10.7.1/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/10.7.1/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/10.7.1/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/10.7.1/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/10.7.1/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/10.7.1/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/10.7.1/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/10.7.1/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-<!-- 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style> -->
-  </head>
-  <body>
+</head>
+<body>
     <nav>
-      <a href="#hub"><ion-icon name="planet"></ion-icon></a>
-      <a href="#roster"><ion-icon name="add-circle"></ion-icon></a>
-      <a href="#battle"><ion-icon name="shield-half"></ion-icon></a>
-      <a href="#third"><ion-icon name="musical-notes"></ion-icon></a>
-      <a href="#fifth"><ion-icon name="information-circle"></ion-icon></a>
-  </nav>
-     
-  <div class= 'container'> 
-  <section id="hub" class="page">
-      <div class="page__welcome-header">
-          <h1>WAR|MAKER</h1>
-          <h2>Alpha v0.1: Unit Cards</h2>
-      </div>        
-  </section>
-  
-  <section id="roster" class="page grid">
-      <div class="page__unit-header">
-          <h1>Unit|Roster</h1>
-          <div id="points-display-box" class="points-display">
-              <!-- onclick="editPoints()" // used above before fb -->
-              <p>Points: <span id="points-display"></span></p>
-          </div>
-      </div>
-      
-      <div class="card-container" id="cardContainer"></div>
-  
-  </section>
-  
-  <section id= "battle" class="page">
-      <div class="page__battle-header">
-          <h1>Campaign|Builder</h1>
-          <div class="player-info">
-              <div>
-              <label for="player-name">Callsign</label>
-              <input id="player-name" maxlength="10" type="text" />
-              </div>
-              <div>
-              <button id="player-color">Change Color</button>
-              </div>
-          </div>
-      </div>
-      <div>
-          <button id="make-lobby">Lobby</button>
-          <p id="lobby-label"></p>
-      </div>
-      
-      <!-- <p>Under construction. Thank you for your patience.</p> -->
-      <div class="game-container">
-      </div>
-  </section>
-
-  <section id= 'third' class="page">
-      <h1>Cadence|Caller</h1>
-      <!-- <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/26UCTe0HBj1dtTDbibBg3T?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> -->
-  </section>
-
-  <section id= 'fifth' class="page">
-  <h1>Info|Holder</h1>
-  <p>Everything you might need to know will be here. EVERYTHING!</p>
-  </section>
-  </div>
-
-
-  <dialog class="dialog__prompt" id="dialog__prompt-main">
-      <p id="dialog__message-main"></p>
-      <div id="button-container">
-          <button onclick="resolveDialog(true)">Yes</button>
-          <button onclick="resolveDialog(false)">No!</button>
-      </div>
-  </dialog>
-
-  <dialog class="dialog__prompt" id="dialog__prompt-points">
-      <input type="number" name="point-modifier" id="point-modifier" title="Edit points here" max="100">
-      <div class="dialog__butons-container" id="button-container">
-          <button onclick="resolveDialog(true)">Submit</button>
-          <button onclick="resolveDialog(false)">Cancel</button>
-      </div>
-  </dialog>
+        <a href="#hub"><ion-icon name="planet"></ion-icon></a>
+        <a href="#roster"><ion-icon name="add-circle"></ion-icon></a>
+        <a href="#battle"><ion-icon name="shield-half"></ion-icon></a>
+        <a href="#third"><ion-icon name="musical-notes"></ion-icon></a>
+        <a href="#fifth"><ion-icon name="information-circle"></ion-icon></a>
+    </nav>
+       
+    <div class= 'container'> 
+    <section id="hub" class="page">
+        <div class="page__welcome-header">
+            <h1>WAR|MAKER</h1>
+            <h2>Alpha v0.1: Unit Cards</h2>
+        </div>        
+    </section>
     
-
-
-  <div class="edit-overlay" id="editOverlay">
-      <div class="edit-container" id="edit-container">
-          <form id="editForm" autocomplete="off">
-              
-              <fieldset class="type__container">
-                  <div class="solid__container">
-                      <legend class="solid__title-bar">Unit Type</legend>
-                      <div class="expandable__content-wrapper solid__content">
-                          <ul class="short-list" id="currentTypeDisplay"></ul>
-                          <p id="showTypeDescription">Left click to see unit type desrciption.<br>Shift + Left click to change unit type.</p>
-                      </div>
-                  </div>
-              </fieldset>
-
-              <fieldset class="ability__container">
-                  <div class="solid__container">
-                      <legend class="solid__title-bar">Current Abilities</legend>
-                      <div class="expandable__content-wrapper solid__content">
-                          <ul class="short-list" id="currentAbilityDisplay"></ul>
-                          <!-- <h2>Ability</h2> -->
-                          <p id="showAbilityDescription">Left click an ability for desrciption.<br>Shift + Left click to add an ability.<br>Right click to remove an ability.</p>
-                      </div>
-                  </div>
-                  <hr class="hr__inner">
-                  <div class="expandable">
-                      <legend class="expandable__title-bar">
-                          <span class="expandable__title">All Abilities</span>
-                          <ion-icon class="expandable__icon" name="chevron-collapse"></ion-icon>
-                      </legend>
-                      <div class="expandable__content-wrapper">
-                          <div class="expandable__content">
-                              <ul id="fullAbilityList"></ul>
-                          </div>
-                      </div>
-                  </div>
-              </fieldset> 
-              <!-- end ability container -->
-
-              <fieldset class="image__container">
-                  <div class="expandable">
-                      <legend class="expandable__title-bar">
-                          <span class="expandable__title">Image</span>
-                          <ion-icon class="expandable__icon" name="chevron-collapse"></ion-icon>
-                      </legend>
-                      <div class="expandable__content-wrapper">
-                          <div id="image__area" class="expandable__content">
-                              <div class="expandable__content-btn-holder">
-                                  <label class="loader" for="uploadImage">Upload Image</label>
-                                  <input type="file" id="uploadImage" name="uploadImage" accept="image/*">
-                                  <p id="fileLabel"></p>
-                                  <button id="removeImage" class="loader">Delete Image</button>
-                              </div>
-                              <img id="unit-image-display" src="" alt="Unit Image">
-                          </div>
-                      </div>
-                  </div>
-              </fieldset>
-
-              <fieldset class="stats__container">
-                  <div class="solid__container">
-                      <legend class="solid__title-bar">Stats</legend>
-          
-                      <div class="expandable__content-wrapper solid__content">
-                          <fieldset>
-                              <legend>Attack Zone</legend>
-                              <label for="range">0 Melee | 1-5 Ranged</label>
-                              <input type="number" id="range" name="range" min="0" max="5" step="1" value="0">
-                          </fieldset>
-                          <fieldset>
-                              <legend>Unit Dice</legend>
-                              <input type="number" id="unitDice" name="unitDice" min="0" max="6" step="1" value="6">
-                          </fieldset>
-                          <fieldset>
-                              <legend>Condition</legend>
-                              <input type="radio" id="notDead" name="healthStatus" value="alive">
-                              <label for="notDead">Alive</label><br>
-                              <input type="radio" id="isDead" name="healthStatus" value="dead">
-                              <label for="isDead">Dead</label>
-                          </fieldset>
-                          <fieldset>
-                              <legend>Activation</legend>
-                              <input type="radio" id="notTurn" name="turnStatus" value="inactive">
-                              <label for="notTurn">Inactive</label><br>
-                              <input type="radio" id="yesTurn" name="turnStatus" value="active">
-                              <label for="yesTurn">Active</label>
-                          </fieldset>
-                          <fieldset>
-                              <legend>Cover</legend>
-                              <input type="radio" id="hasCover" name="coverStatus" value="cover">
-                              <label for="hasCover">Has Cover</label><br>
-                              <input type="radio" id="noCover" name="coverStatus" value="noCover">
-                              <label for="noCover">No Cover</label>
-                          </fieldset>
-                          <fieldset>
-                              <legend>Movement</legend>
-                              <input type="radio" id="normalSpeed" name="speedStatus" value="noSlow">
-                              <label for="normalSpeed">Normal</label><br>
-                              <input type="radio" id="slowSpeed" name="speedStatus" value="yesSlow">
-                              <label for="slowSpeed">Slowed</label>
-                          </fieldset>
-                          <fieldset>
-                              <legend>Reserve Count</legend>
-                              <input type="number" id="editReserves" name="reserveCount" min="0" max="6" step="1" value="0">
-                          </fieldset>
-                          <fieldset>
-                              <legend>Free Rerolls</legend>
-                              <input type="number" id="freeRerolls" name="freeRerolls" min="0" max="10" step="1" value="0">
-                          </fieldset>
-                          <fieldset>
-                              <legend>Max Abilities</legend>
-                              <input type="number" id="maxAbilities" name="maxAbilities" min="1" max="5" step="1" value="1">
-                          </fieldset>
-                      </div>
-                  </div>
-              </fieldset>
-
-              <fieldset class="name__container">
-                  <div class="solid__container">
-                      <div class="solid__title-bar">
-                          <label for="editTitle">Name:</label>
-                      </div>
-                      <div class="expandable__content-wrapper solid__content">
-                          <input type="text" id="editTitle" name="editTitle">
-                      </div>
-                  </div>
-              </fieldset>
-
-              <div class="btn__container">
-                  <div class="solid__container">
-                      <div class="solid__title-bar">
-                          <button type="button" id="save-edit">Finalize</button>
-                      </div>
-                      <div class="expandable__content-wrapper solid__content">
-                      </div>
-                  </div>
-              </div>
-
-              <dialog class="dialog__prompt" id="dialog__prompt">
-                  <p id="dialog-message"></p>
-                  <div id="button-container">
-                      <button onclick="resolveDialog(true)">Yes</button>
-                      <button onclick="resolveDialog(false)">Cancel</button>
-                  </div>
-              </dialog>
-              <dialog class="description-dialog" >
-                  <p></p>
-              </dialog>
-          </form>
-      </div>
-  </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <script src="/KeyPressListener.js"></script>
+    <section id="roster" class="page grid">
+        <div class="page__unit-header">
+            <h1>Unit|Roster</h1>
+            <div id="points-display-box" class="points-display">
+                <!-- onclick="editPoints()" // used above before fb -->
+                <p>Points: <span id="points-display"></span></p>
+            </div>
+        </div>
+        
+        <div class="card-container" id="cardContainer"></div>
     
-  <script src="app.js"></script>
-  <!-- <script src="https://open.spotify.com/embed/iframe-api/v1" async></script> -->
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    </section>
+    
+    <section id= "battle" class="page">
+        <div class="page__battle-header">
+            <h1>Campaign|Builder</h1>
+            <div class="player-info">
+                <div>
+                <label for="player-name">Callsign</label>
+                <input id="player-name" maxlength="10" type="text" />
+                </div>
+                <div>
+                <button id="player-color">Change Color</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button id="make-lobby">Lobby</button>
+            <p id="lobby-label"></p>
+        </div>
+        
+        <!-- <p>Under construction. Thank you for your patience.</p> -->
+        <div class="game-container">
+        </div>
+    </section>
 
+    <section id= 'third' class="page">
+        <h1>Cadence|Caller</h1>
+        <!-- <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/26UCTe0HBj1dtTDbibBg3T?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> -->
+    </section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+    <section id= 'fifth' class="page">
+    <h1>Info|Holder</h1>
+    <p>Everything you might need to know will be here. EVERYTHING!</p>
+    </section>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p> -->
 
+
+    <dialog class="dialog__prompt" id="dialog__prompt-main">
+        <p id="dialog__message-main"></p>
+        <div id="button-container">
+            <button onclick="resolveDialog(true)">Yes</button>
+            <button onclick="resolveDialog(false)">No!</button>
+        </div>
+    </dialog>
+
+    <dialog class="dialog__prompt" id="dialog__prompt-points">
+        <input type="number" name="point-modifier" id="point-modifier" title="Edit points here" max="100">
+        <div class="dialog__butons-container" id="button-container">
+            <button onclick="resolveDialog(true)">Submit</button>
+            <button onclick="resolveDialog(false)">Cancel</button>
+        </div>
+    </dialog>
+      
+
+
+    <div class="edit-overlay" id="editOverlay">
+        <div class="edit-container" id="edit-container">
+            <form id="editForm" autocomplete="off">
+                
+                <fieldset class="type__container">
+                    <div class="solid__container">
+                        <legend class="solid__title-bar">Unit Type</legend>
+                        <div class="expandable__content-wrapper solid__content">
+                            <ul class="short-list" id="currentTypeDisplay"></ul>
+                            <p id="showTypeDescription">Left click to see unit type desrciption.<br>Shift + Left click to change unit type.</p>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="ability__container">
+                    <div class="solid__container">
+                        <legend class="solid__title-bar">Current Abilities</legend>
+                        <div class="expandable__content-wrapper solid__content">
+                            <ul class="short-list" id="currentAbilityDisplay"></ul>
+                            <!-- <h2>Ability</h2> -->
+                            <p id="showAbilityDescription">Left click an ability for desrciption.<br>Shift + Left click to add an ability.<br>Right click to remove an ability.</p>
+                        </div>
+                    </div>
+                    <hr class="hr__inner">
+                    <div class="expandable">
+                        <legend class="expandable__title-bar">
+                            <span class="expandable__title">All Abilities</span>
+                            <ion-icon class="expandable__icon" name="chevron-collapse"></ion-icon>
+                        </legend>
+                        <div class="expandable__content-wrapper">
+                            <div class="expandable__content">
+                                <ul id="fullAbilityList"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset> 
+                <!-- end ability container -->
+
+                <fieldset class="image__container">
+                    <div class="expandable">
+                        <legend class="expandable__title-bar">
+                            <span class="expandable__title">Image</span>
+                            <ion-icon class="expandable__icon" name="chevron-collapse"></ion-icon>
+                        </legend>
+                        <div class="expandable__content-wrapper">
+                            <div id="image__area" class="expandable__content">
+                                <div class="expandable__content-btn-holder">
+                                    <label class="loader" for="uploadImage">Upload Image</label>
+                                    <input type="file" id="uploadImage" name="uploadImage" accept="image/*">
+                                    <p id="fileLabel"></p>
+                                    <button id="removeImage" class="loader">Delete Image</button>
+                                </div>
+                                <img id="unit-image-display" src="" alt="Unit Image">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="stats__container">
+                    <div class="solid__container">
+                        <legend class="solid__title-bar">Stats</legend>
+            
+                        <div class="expandable__content-wrapper solid__content">
+                            <fieldset>
+                                <legend>Attack Zone</legend>
+                                <label for="range">0 Melee | 1-5 Ranged</label>
+                                <input type="number" id="range" name="range" min="0" max="5" step="1" value="0">
+                            </fieldset>
+                            <fieldset>
+                                <legend>Unit Dice</legend>
+                                <input type="number" id="unitDice" name="unitDice" min="0" max="6" step="1" value="6">
+                            </fieldset>
+                            <fieldset>
+                                <legend>Condition</legend>
+                                <input type="radio" id="notDead" name="healthStatus" value="alive">
+                                <label for="notDead">Alive</label><br>
+                                <input type="radio" id="isDead" name="healthStatus" value="dead">
+                                <label for="isDead">Dead</label>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Activation</legend>
+                                <input type="radio" id="notTurn" name="turnStatus" value="inactive">
+                                <label for="notTurn">Inactive</label><br>
+                                <input type="radio" id="yesTurn" name="turnStatus" value="active">
+                                <label for="yesTurn">Active</label>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Cover</legend>
+                                <input type="radio" id="hasCover" name="coverStatus" value="cover">
+                                <label for="hasCover">Has Cover</label><br>
+                                <input type="radio" id="noCover" name="coverStatus" value="noCover">
+                                <label for="noCover">No Cover</label>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Movement</legend>
+                                <input type="radio" id="normalSpeed" name="speedStatus" value="noSlow">
+                                <label for="normalSpeed">Normal</label><br>
+                                <input type="radio" id="slowSpeed" name="speedStatus" value="yesSlow">
+                                <label for="slowSpeed">Slowed</label>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Reserve Count</legend>
+                                <input type="number" id="editReserves" name="reserveCount" min="0" max="6" step="1" value="0">
+                            </fieldset>
+                            <fieldset>
+                                <legend>Free Rerolls</legend>
+                                <input type="number" id="freeRerolls" name="freeRerolls" min="0" max="10" step="1" value="0">
+                            </fieldset>
+                            <fieldset>
+                                <legend>Max Abilities</legend>
+                                <input type="number" id="maxAbilities" name="maxAbilities" min="1" max="5" step="1" value="1">
+                            </fieldset>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="name__container">
+                    <div class="solid__container">
+                        <div class="solid__title-bar">
+                            <label for="editTitle">Name:</label>
+                        </div>
+                        <div class="expandable__content-wrapper solid__content">
+                            <input type="text" id="editTitle" name="editTitle">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="btn__container">
+                    <div class="solid__container">
+                        <div class="solid__title-bar">
+                            <button type="button" id="save-edit">Finalize</button>
+                        </div>
+                        <div class="expandable__content-wrapper solid__content">
+                        </div>
+                    </div>
+                </div>
+
+                <dialog class="dialog__prompt" id="dialog__prompt">
+                    <p id="dialog-message"></p>
+                    <div id="button-container">
+                        <button onclick="resolveDialog(true)">Yes</button>
+                        <button onclick="resolveDialog(false)">Cancel</button>
+                    </div>
+                </dialog>
+                <dialog class="description-dialog" >
+                    <p></p>
+                </dialog>
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+      
+      const firebaseConfig = {
+      
+        apiKey: "AIzaSyA2YxFjYo4W8emc1nBZSOgMQ8yhyadrRrc",
+    
+        authDomain: "war-maker.firebaseapp.com",
+    
+        databaseURL: "https://war-maker-default-rtdb.firebaseio.com",
+    
+        projectId: "war-maker",
+    
+        storageBucket: "war-maker.appspot.com",
+    
+        messagingSenderId: "772619207902",
+    
+        appId: "1:772619207902:web:3d14a7bb5d333df0512e4f"
+    };
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
+      firebase.initializeApp(firebaseConfig);
     </script>
-  </body>
+    <script src="KeyPressListener.js"></script>
+    
+    <script src="app.js"></script>
+    <!-- <script src="https://open.spotify.com/embed/iframe-api/v1" async></script> -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
 </html>
