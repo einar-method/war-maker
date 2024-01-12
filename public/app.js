@@ -281,9 +281,15 @@ function displayPoints(ref) {
 
         //Remove character DOM element after they leave
         allPlayersRef.on("child_removed", (snapshot) => {
-            const removedKey = snapshot.val().id;
-            gameContainer.removeChild(playerElements[removedKey]);
-            delete playerElements[removedKey];
+            //const removedKey = snapshot.val().id;
+
+
+            //Here ??
+            console.log("removed something", snapshot)
+
+
+            //gameContainer.removeChild(playerElements[removedKey]);
+            //delete playerElements[removedKey];
         })
 
 
