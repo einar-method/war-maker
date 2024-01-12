@@ -234,14 +234,6 @@ function displayPoints(ref) {
             Object.keys(players).forEach((key) => {
                 const characterState = players[key];
                 let el = playerElements[key];
-
-                // Check if the player is in the same lobby as the current user
-                if (isInSameLobby(playerId, key)) {
-                    el.style.display = "block"; // Show the player icon
-                } else {
-                    el.style.display = "none"; // Hide the player icon
-                }
-
                 // Now update the DOM
                 el.querySelector(".Character_name").innerText = characterState.name;
                 // el.querySelector(".Character_coins").innerText = characterState.coins;
@@ -269,13 +261,6 @@ function displayPoints(ref) {
                 <div class="Character_you-arrow"></div>
             `);
             playerElements[addedPlayer.id] = characterElement;
-
-            // Check if the added player is in the same lobby as the current user
-            if (isInSameLobby(playerId, addedPlayer.id)) {
-                characterElement.style.display = "block"; // Show the player icon
-            } else {
-                characterElement.style.display = "none"; // Hide the player icon
-            }
 
             //Fill in some initial state
             characterElement.querySelector(".Character_name").innerText = addedPlayer.name;
