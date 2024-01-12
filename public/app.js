@@ -1,30 +1,20 @@
-class KeyPressListener {
-    constructor(keyCode, callback) {
-      let keySafe = true;
-      this.keydownFunction = function(event) {
-        if (event.code === keyCode) {
-           if (keySafe) {
-              keySafe = false;
-              callback();
-           }  
-        }
-     };
-     this.keyupFunction = function(event) {
-        if (event.code === keyCode) {
-           keySafe = true;
-        }         
-     };
-     document.addEventListener("keydown", this.keydownFunction);
-     document.addEventListener("keyup", this.keyupFunction);
+
+function handleRouting() {
+    const path = window.location.pathname;
+  
+    if (path === '/' || path === "/public/") {
+      // Handle the main page logic
+      console.log('Navigated to the main page');
+    } else if (path.startsWith('/join/')) {
+      // Extract the lobby ID and handle join logic
+      const lobbyId = path.substring('/join/'.length);
+      console.log(`Joining lobby with ID: ${lobbyId}`);
+    } else {
+      // Handle other routes or show a 404 page
+      console.log(`Unknown route: ${path}`);
     }
-  
-    unbind() { 
-      document.removeEventListener("keydown", this.keydownFunction);
-      document.removeEventListener("keyup", this.keyupFunction);
-    }
-  
-  
   }
+  
 
 
 const mapData = {
@@ -233,10 +223,10 @@ function displayPoints(ref) {
 
     function initGame() {
 
-        new KeyPressListener("ArrowUp", () => handleArrowPress(0, -1))
-        new KeyPressListener("ArrowDown", () => handleArrowPress(0, 1))
-        new KeyPressListener("ArrowLeft", () => handleArrowPress(-1, 0))
-        new KeyPressListener("ArrowRight", () => handleArrowPress(1, 0))
+        // new KeyPressListener("ArrowUp", () => handleArrowPress(0, -1))
+        // new KeyPressListener("ArrowDown", () => handleArrowPress(0, 1))
+        // new KeyPressListener("ArrowLeft", () => handleArrowPress(-1, 0))
+        // new KeyPressListener("ArrowRight", () => handleArrowPress(1, 0))
 
         const allPlayersRef = firebase.database().ref(`players`);
         const allCoinsRef = firebase.database().ref(`coins`);
@@ -363,10 +353,10 @@ function displayPoints(ref) {
     }
 
     document.getElementById("make-lobby").addEventListener("click", function() {
-        createLobby();
+        createAndListenToLobby();
     });
 
-    function createLobby() {
+    function createAndListenToLobby() {
         // Generate a random string for the lobby ID
         const lobbyId = getHash();
     
@@ -376,31 +366,46 @@ function displayPoints(ref) {
         // Reference to the lobby in the Realtime Database
         const lobbyRef = firebase.database().ref(`lobbies/${lobbyId}`);
     
+        // Set up onDisconnect for the lobby
+        lobbyRef.onDisconnect().remove();
+    
         // Check if the lobby already exists (to avoid collisions)
         lobbyRef.once('value', (snapshot) => {
-        if (!snapshot.exists()) {
-            // The lobby does not exist, create it
-            lobbyRef.set({
-            user1: userId,
-            user2: null,
-            createdAt: firebase.database.ServerValue.TIMESTAMP
-            });
-
-            // Update the HTML to display the lobby link
-            const lobbyLabel = document.getElementById("lobby-label");
-            lobbyLabel.innerText = `Lobby Link: ${window.location.origin}/join/${lobbyId}`;
+            if (!snapshot.exists()) {
+                // The lobby does not exist, create it
+                lobbyRef.set({
+                    user1: userId,
+                    user2: null,
+                    createdAt: firebase.database.ServerValue.TIMESTAMP
+                });
     
-            console.log(`Lobby created with ID: ${lobbyId}`);
-        } else {
-            console.error(`Error: Lobby ID ${lobbyId} already exists. Try again.`);
-        }
+                console.log(`Lobby created with ID: ${lobbyId}`);
+    
+                // Listen for changes in the lobby data
+                lobbyRef.on('value', (snapshot) => {
+                    const lobbyData = snapshot.val();
+    
+                    // Check if both users are not present
+                    if (lobbyData && lobbyData.user1 && lobbyData.user2) {
+                        const user1Connected = snapshot.child(`players/${lobbyData.user1}`).exists();
+                        const user2Connected = snapshot.child(`players/${lobbyData.user2}`).exists();
+    
+                        if (!user1Connected && !user2Connected) {
+                            // Both users are not present, delete the lobby
+                            lobbyRef.remove();
+                            console.log('Lobby deleted');
+                        }
+                    }
+                });
+            } else {
+                console.error(`Error: Lobby ID ${lobbyId} already exists. Try again.`);
+            }
         });
     }
-  
-  // Example usage:
-  // Call createLobby() when you want to create a lobby
-  
 
+  
+  
+  
 
     const database = firebase.database();
 
@@ -501,6 +506,7 @@ function displayPoints(ref) {
         })
 
         //Remove user from Firebase when diconnected
+        // playerRef.onDisconnect().update({ inLobby: null })
         playerRef.onDisconnect().remove();
 
         // Bootup after sign in
@@ -944,29 +950,29 @@ function getHash() {
 }
 
 const defaultImages = [
-    "assets/imgs/arturius token.png",
-    "assets/imgs/beetle man card.png",
-    "assets/imgs/beetle man token.png",
-    "assets/imgs/centurion token.png",
-    "assets/imgs/commando token 1b.png",
-    "assets/imgs/commando token 5d.png",
-    "assets/imgs/elram token.png",
-    "assets/imgs/evo suit token.png",
-    "assets/imgs/garvin token.png",
-    "assets/imgs/gunslinger token.png",
-    "assets/imgs/halo team fighter token.png",
-    "assets/imgs/halo team shield token.png",
-    "assets/imgs/iradrum outcast card.png",
-    "assets/imgs/oak walker card.png",
-    "assets/imgs/orc smile mantis blade token.png",
-    "assets/imgs/reptoid cyborg card.png",
-    "assets/imgs/reptoid token gunner.png",
-    "assets/imgs/rhino token.png",
-    "assets/imgs/riva token.png",
-    "assets/imgs/slayer token.png",
-    "assets/imgs/token ghost.png",
-    "assets/imgs/token helm.png",
-    "assets/imgs/vigg card.png"
+    "../assets/imgs/arturius token.png",
+    "../assets/imgs/beetle man card.png",
+    "../assets/imgs/beetle man token.png",
+    "../assets/imgs/centurion token.png",
+    "../assets/imgs/commando token 1b.png",
+    "../assets/imgs/commando token 5d.png",
+    "../assets/imgs/elram token.png",
+    "../assets/imgs/evo suit token.png",
+    "../assets/imgs/garvin token.png",
+    "../assets/imgs/gunslinger token.png",
+    "../assets/imgs/halo team fighter token.png",
+    "../assets/imgs/halo team shield token.png",
+    "../assets/imgs/iradrum outcast card.png",
+    "../assets/imgs/oak walker card.png",
+    "../assets/imgs/orc smile mantis blade token.png",
+    "../assets/imgs/reptoid cyborg card.png",
+    "../assets/imgs/reptoid token gunner.png",
+    "../assets/imgs/rhino token.png",
+    "../assets/imgs/riva token.png",
+    "../assets/imgs/slayer token.png",
+    "../assets/imgs/token ghost.png",
+    "../assets/imgs/token helm.png",
+    "../assets/imgs/vigg card.png"
 ];
 
 class Force {
@@ -1919,6 +1925,8 @@ document.body.addEventListener("click", (evt) => {
 
 
 window.onload = function() {
+    console.log("Window loaded");
+
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
@@ -1930,6 +1938,8 @@ window.onload = function() {
             element.click();
         }, 100); 
     }
+
+    handleRouting();
 };
 
 document.addEventListener("contextmenu", function (event) {
