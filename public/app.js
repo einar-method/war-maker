@@ -377,6 +377,277 @@ function displayPoints(ref) {
             }
         });
     }
+
+
+
+
+    document.getElementById("make-group").addEventListener("click", function() {
+        const code = getHash();
+        console.log("Lobby code created:", code)
+        createMessageGroup(code);
+    });
+    // Function to create a new message group
+    function createMessageGroup(groupName) {
+        // Generate a random string for the lobby ID
+        const lobbyId = groupName;
+    
+        // Get the current user's ID
+        const userId = firebase.auth().currentUser.uid;
+    
+        // Reference to the lobby in the Realtime Database
+        const lobbyRef = firebase.database().ref(`messageGroups/${lobbyId}`);
+    
+        // Set up onDisconnect for the lobby
+        lobbyRef.onDisconnect().remove();
+    
+        // Check if the lobby already exists (to avoid collisions)
+        lobbyRef.once('value', (snapshot) => {
+
+            if (!snapshot.exists()) {
+                // The group does not exist, create it
+                lobbyRef.set({
+                    members: [userId],
+                    createdAt: firebase.database.ServerValue.TIMESTAMP
+                });
+            }
+        });
+
+        playerRef.update({
+            currentLobby: lobbyId,
+        })
+
+
+        //     const currentUser = firebase.auth().currentUser;
+        //     const groupId = groupName;
+        //     const groupData = {
+        //     name: groupName,
+        //     members: [currentUser.uid], 
+        //     };
+    
+        // firebase.database().ref(`messageGroups/${groupId}`).set(groupData);
+    };
+
+    document.getElementById("join-group").addEventListener("click", function() {
+        const code = document.getElementById('groupIdInput').value;
+        console.log("attempting to join a group with code:", code)
+        joinMessageGroup(code);
+    });
+
+    // Function to join a message group using an invite code
+    function joinMessageGroup(groupId) {
+        console.log("Group code:", groupId)
+        console.log("Joining player ID:", playerId)
+        // Get a reference to the messageGroups node in the database
+        const messageGroupsRef = firebase.database().ref('messageGroups');
+    
+        // Check if the groupId exists
+        messageGroupsRef.child(groupId).once('value')
+        .then((snapshot) => {
+            const groupData = snapshot.val();
+    
+            // Check if the groupId is valid
+            if (groupData) {
+            // Check if the current user is already a member of the group
+            if (groupData.members && groupData.members.includes(playerId)) {
+                console.log('You are already a member of this group.');
+            } else {
+                // Add the current user to the group members
+                const updatedMembers = (groupData.members || []).concat(playerId);
+                
+                // Update the database with the new members list
+                messageGroupsRef.child(groupId).child('members').set(updatedMembers);
+
+                playerRef.update({
+                    currentLobby: groupId,
+                });
+    
+                console.log('Successfully joined the group!');
+            }
+            } else {
+            console.log('Invalid group ID. Please check and try again.');
+            }
+        })
+        .catch((error) => {
+            console.error('Error joining group:', error);
+        });
+    };
+  
+
+
+
+    function sendMessage(text) {
+        const chatFeed = document.getElementById('chat-feed');
+        const currentUser = firebase.auth().currentUser;
+      
+        if (currentUser) {
+          const userLobbyRef = firebase.database().ref(`players/${currentUser.uid}`);
+      
+          userLobbyRef.once('value')
+            .then((snapshot) => {
+              const userLobbyData = snapshot.val();
+      
+              if (userLobbyData && userLobbyData.currentLobby) {
+                const currentGroupId = userLobbyData.currentLobby;
+      
+                const messageData = {
+                  userId: currentUser.uid,
+                  text: text,
+                  timestamp: firebase.database.ServerValue.TIMESTAMP,
+                };
+      
+                // Push the message under the currentGroupId
+                const messagesRef = firebase.database().ref(`messageGroups/${currentGroupId}/messages`);
+                messagesRef.push(messageData);  
+
+                // Detach previous event listener to avoid receiving messages twice
+                messagesRef.off('child_added');
+
+                messagesRef.limitToLast(1).on('child_added', (snapshot) => {
+                    const message = snapshot.val();
+
+                    // Display the most recent message in the chat feed
+                    if (message) {
+                        const messageElement = document.createElement('p');
+
+                        const senderId = message.userId;
+                        const senderRef = firebase.database().ref(`players/${senderId}`);
+                        
+                        senderRef.once('value', (senderSnapshot) => {
+                            const senderData = senderSnapshot.val();
+                    
+                            if (senderData && senderData.name) {
+                                // Display the sender's name along with the most recent message text
+                                messageElement.textContent = `${senderData.name}: ${message.text}`;
+                                chatFeed.appendChild(messageElement);
+                                console.log(`User ${senderData.name} sent the message:`, text);
+                            }
+                        });
+                    }
+                });
+
+              } else {
+                console.error('Unable to send message: No current group ID available for the user.');
+              }
+            })
+            .catch((error) => {
+              console.error('Error getting current group ID:', error);
+            });
+        } else {
+          console.error('Unable to send message: No authenticated user.');
+        }
+    }
+      
+    // function sendMessage(text) {
+    //     const currentUser = firebase.auth().currentUser;
+      
+    //     if (currentUser) {
+    //       const userLobbyRef = firebase.database().ref(`players/${currentUser.uid}`);
+      
+    //       userLobbyRef.once('value')
+    //         .then((snapshot) => {
+    //           const userLobbyData = snapshot.val();
+      
+    //           if (userLobbyData && userLobbyData.currentLobby) {
+    //             const currentGroupId = userLobbyData.currentLobby;
+      
+    //             const messageData = {
+    //               userId: currentUser.uid,
+    //               text: text,
+    //               timestamp: firebase.database.ServerValue.TIMESTAMP,
+    //             };
+      
+    //             // Push the message under the currentGroupId
+    //             const messagesRef = firebase.database().ref(`messageGroups/${currentGroupId}/messages`);
+    //             messagesRef.push(messageData);  
+
+    //             loadMessages(currentGroupId);
+      
+    //             // Display sender's name in the console
+    //             const senderRef = firebase.database().ref(`players/${messageData.userId}`);
+                
+    //             senderRef.once('value', (senderSnapshot) => {
+    //               const senderData = senderSnapshot.val();
+    //               if (senderData && senderData.name) {
+    //                 console.log(`User ${senderData.name} sent the message:`, text);
+    //               }
+    //             });
+
+                
+                
+    //           } else {
+    //             console.error('Unable to send message: No current group ID available for the user.');
+    //           }
+    //         })
+    //         .catch((error) => {
+    //           console.error('Error getting current group ID:', error);
+    //         });
+    //     } else {
+    //       console.error('Unable to send message: No authenticated user.');
+    //     }
+    // }
+      
+ 
+  
+
+  
+  
+  
+
+    function loadMessages(groupId) {
+        const chatFeed = document.getElementById('chat-feed');
+
+        const messagesRef = firebase.database().ref(`messageGroups/${groupId}/messages`);
+
+        // Detach previous event listener to avoid receiving messages twice
+        messagesRef.off('child_added');
+
+        messagesRef.limitToLast(1).on('child_added', (snapshot) => {
+            const message = snapshot.val();
+
+            // Display the most recent message in the chat feed
+            if (message) {
+                const messageElement = document.createElement('p');
+
+                const senderId = message.userId;
+                const senderRef = firebase.database().ref(`players/${senderId}`);
+                
+                senderRef.once('value', (senderSnapshot) => {
+                    const senderData = senderSnapshot.val();
+            
+                    if (senderData && senderData.name) {
+                        // Display the sender's name along with the most recent message text
+                        messageElement.textContent = `${senderData.name}: ${message.text}`;
+                        chatFeed.appendChild(messageElement);
+                    }
+                });
+            }
+        });
+        //messagesRef.off('child_added');
+    }
+
+  
+    // Event listener for sending a message
+    document.getElementById('send-msg').addEventListener('click', function () {
+        const messageInput = document.getElementById('msgInput');
+        const messageText = messageInput.value.trim();
+
+        if (messageText !== '') {
+            sendMessage(messageText);
+            messageInput.value = '';
+        }
+    });
+  
+  
+  
+  
+
+
+
+
+
+
+
+  
     
     const database = firebase.database();
 
@@ -466,6 +737,7 @@ function displayPoints(ref) {
             currentPoints: 40,
             canEdit: true,
             units: [],
+            currentLobby: null,
         })
 
         //Remove user from Firebase when diconnected

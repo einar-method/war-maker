@@ -930,6 +930,12 @@ input[type="number"] {
 /* ******************** */
 /* Game Board */
 /* ******************** */
+.queue {
+    position: relative;
+    left: 1rem;
+    display: flex;
+    flex-direction: column;
+}
 #canvas-container {
     position: absolute;
     left: 15rem;
