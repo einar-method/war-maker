@@ -295,97 +295,95 @@ function displayPoints(ref) {
         }, 3000);
     };
 
-    document.getElementById("make-lobby").addEventListener("click", function() {
-        createAndListenToLobby();
-    });
+    // document.getElementById("make-lobby").addEventListener("click", function() {
+    //     createAndListenToLobby();
+    // });
 
-    function createAndListenToLobby() {
-        // Generate a random string for the lobby ID
-        const lobbyId = getHash();
+    // function createAndListenToLobby() {
+    //     // Generate a random string for the lobby ID
+    //     const lobbyId = getHash();
     
-        // Get the current user's ID
-        const userId = firebase.auth().currentUser.uid;
+    //     // Get the current user's ID
+    //     const userId = firebase.auth().currentUser.uid;
     
-        // Reference to the lobby in the Realtime Database
-        const lobbyRef = firebase.database().ref(`lobbies/${lobbyId}`);
+    //     // Reference to the lobby in the Realtime Database
+    //     const lobbyRef = firebase.database().ref(`lobbies/${lobbyId}`);
     
-        // Set up onDisconnect for the lobby
-        lobbyRef.onDisconnect().remove();
+    //     // Set up onDisconnect for the lobby
+    //     lobbyRef.onDisconnect().remove();
     
-        // Check if the lobby already exists (to avoid collisions)
-        lobbyRef.once('value', (snapshot) => {
-            if (!snapshot.exists()) {
-                // The lobby does not exist, create it
-                lobbyRef.set({
-                    user1: userId,
-                    user2: null,
-                    createdAt: firebase.database.ServerValue.TIMESTAMP
-                });
+    //     // Check if the lobby already exists (to avoid collisions)
+    //     lobbyRef.once('value', (snapshot) => {
+    //         if (!snapshot.exists()) {
+    //             // The lobby does not exist, create it
+    //             lobbyRef.set({
+    //                 user1: userId,
+    //                 user2: null,
+    //                 createdAt: firebase.database.ServerValue.TIMESTAMP
+    //             });
     
-                // Update the HTML to display the lobby link
-                const lobbyLabel = document.getElementById("lobby-label");
-                lobbyLabel.innerText = `Lobby Link: ${window.location.origin}/join/${lobbyId}`;
-                console.log(`Lobby created with ID: ${lobbyId}`);
+    //             // Update the HTML to display the lobby link
+    //             const lobbyLabel = document.getElementById("lobby-label");
+    //             lobbyLabel.innerText = `Lobby Link: ${window.location.origin}/join/${lobbyId}`;
+    //             console.log(`Lobby created with ID: ${lobbyId}`);
     
-                // Listen for changes in the lobby data
-                lobbyRef.on('value', (snapshot) => {
-                    const lobbyData = snapshot.val();
+    //             // Listen for changes in the lobby data
+    //             lobbyRef.on('value', (snapshot) => {
+    //                 const lobbyData = snapshot.val();
     
-                    // Check if the lobby exists
-                    if (lobbyData) {
-                        const user1ConnectedRef = firebase.database().ref(`players/${lobbyData.user1}`);
-                        const user2ConnectedRef = firebase.database().ref(`players/${lobbyData.user2}`);
+    //                 // Check if the lobby exists
+    //                 if (lobbyData) {
+    //                     const user1ConnectedRef = firebase.database().ref(`players/${lobbyData.user1}`);
+    //                     const user2ConnectedRef = firebase.database().ref(`players/${lobbyData.user2}`);
     
-                        // Set up onDisconnect for user1
-                        user1ConnectedRef.onDisconnect().remove();
+    //                     // Set up onDisconnect for user1
+    //                     user1ConnectedRef.onDisconnect().remove();
     
-                        // Set up onDisconnect for user2
-                        user2ConnectedRef.onDisconnect().remove();
-                    }
-                });
+    //                     // Set up onDisconnect for user2
+    //                     user2ConnectedRef.onDisconnect().remove();
+    //                 }
+    //             });
 
-            } else {
-                console.error(`Error: Lobby ID ${lobbyId} already exists. Try again.`);
-            }
-        });
+    //         } else {
+    //             console.error(`Error: Lobby ID ${lobbyId} already exists. Try again.`);
+    //         }
+    //     });
 
-    };
+    // };
 
-    document.getElementById("join-lobby").addEventListener("click", function() {
-        console.log("Entered lobby ID:", document.getElementById('lobbyIdInput').value);
-        joinLobby(document.getElementById('lobbyIdInput').value);
-    });
-    function joinLobby(lobbyId) {
+    // document.getElementById("join-lobby").addEventListener("click", function() {
+    //     console.log("Entered lobby ID:", document.getElementById('lobbyIdInput').value);
+    //     joinLobby(document.getElementById('lobbyIdInput').value);
+    // });
+    // function joinLobby(lobbyId) {
 
-        //onclick="joinLobby(document.getElementById('lobbyIdInput').value)"
-        const userId = firebase.auth().currentUser.uid;
-        const lobbyRef = firebase.database().ref(`lobbies/${lobbyId}`);
+    //     //onclick="joinLobby(document.getElementById('lobbyIdInput').value)"
+    //     const userId = firebase.auth().currentUser.uid;
+    //     const lobbyRef = firebase.database().ref(`lobbies/${lobbyId}`);
     
-        // Check if the lobby exists
-        lobbyRef.once('value', (snapshot) => {
-            if (snapshot.exists()) {
-                // Check if user2 is not already set
-                if (!snapshot.child('user2').exists()) {
-                    // Set user2 to the current user ID
-                    lobbyRef.child('user2').set(userId);
-                    console.log(`User ${userId} joined lobby ${lobbyId}`);
-                } else {
-                    console.error(`Error: Lobby ${lobbyId} is already full.`);
-                }
-            } else {
-                console.error(`Error: Lobby ${lobbyId} does not exist.`);
-            }
-        });
-    }
-
-
-
+    //     // Check if the lobby exists
+    //     lobbyRef.once('value', (snapshot) => {
+    //         if (snapshot.exists()) {
+    //             // Check if user2 is not already set
+    //             if (!snapshot.child('user2').exists()) {
+    //                 // Set user2 to the current user ID
+    //                 lobbyRef.child('user2').set(userId);
+    //                 console.log(`User ${userId} joined lobby ${lobbyId}`);
+    //             } else {
+    //                 console.error(`Error: Lobby ${lobbyId} is already full.`);
+    //             }
+    //         } else {
+    //             console.error(`Error: Lobby ${lobbyId} does not exist.`);
+    //         }
+    //     });
+    // };
 
     document.getElementById("make-group").addEventListener("click", function() {
         const code = getHash();
         console.log("Lobby code created:", code)
         createMessageGroup(code);
     });
+
     // Function to create a new message group
     function createMessageGroup(groupName) {
         // Generate a random string for the lobby ID
@@ -415,16 +413,6 @@ function displayPoints(ref) {
         playerRef.update({
             currentLobby: lobbyId,
         })
-
-
-        //     const currentUser = firebase.auth().currentUser;
-        //     const groupId = groupName;
-        //     const groupData = {
-        //     name: groupName,
-        //     members: [currentUser.uid], 
-        //     };
-    
-        // firebase.database().ref(`messageGroups/${groupId}`).set(groupData);
     };
 
     document.getElementById("join-group").addEventListener("click", function() {
@@ -472,7 +460,6 @@ function displayPoints(ref) {
         });
     };
   
-
     function sendMessage(text) {
         const chatFeed = document.getElementById('chat-feed');
         const currentUser = firebase.auth().currentUser;
@@ -535,113 +522,7 @@ function displayPoints(ref) {
         } else {
             console.error('Unable to send message: No authenticated user.');
         }
-    }
-    
-
-
-
-    // function sendMessage(text) {
-    //     const chatFeed = document.getElementById('chat-feed');
-    //     const currentUser = firebase.auth().currentUser;
-      
-    //     if (currentUser) {
-    //       const userLobbyRef = firebase.database().ref(`players/${currentUser.uid}`);
-      
-    //       userLobbyRef.once('value')
-    //         .then((snapshot) => {
-    //           const userLobbyData = snapshot.val();
-      
-    //           if (userLobbyData && userLobbyData.currentLobby) {
-    //             const currentGroupId = userLobbyData.currentLobby;
-      
-    //             const messageData = {
-    //               userId: currentUser.uid,
-    //               text: text,
-    //               timestamp: firebase.database.ServerValue.TIMESTAMP,
-    //             };
-      
-    //             // Push the message under the currentGroupId
-    //             const messagesRef = firebase.database().ref(`messageGroups/${currentGroupId}/messages`);
-    //             messagesRef.push(messageData);  
-
-    //             // Detach previous event listener to avoid receiving messages twice
-    //             messagesRef.off('child_added');
-
-    //             messagesRef.limitToLast(1).on('child_added', (snapshot) => {
-    //                 const message = snapshot.val();
-
-    //                 // Display the most recent message in the chat feed
-    //                 if (message) {
-    //                     const messageElement = document.createElement('p');
-
-    //                     const senderId = message.userId;
-    //                     const senderRef = firebase.database().ref(`players/${senderId}`);
-                        
-    //                     senderRef.once('value', (senderSnapshot) => {
-    //                         const senderData = senderSnapshot.val();
-                    
-    //                         if (senderData && senderData.name) {
-    //                             // Display the sender's name along with the most recent message text
-    //                             messageElement.textContent = `${senderData.name}: ${message.text}`;
-    //                             chatFeed.appendChild(messageElement);
-    //                             console.log(`User ${senderData.name} sent the message:`, text);
-    //                         }
-    //                     });
-    //                 }
-    //             });
-
-    //           } else {
-    //             console.error('Unable to send message: No current group ID available for the user.');
-    //           }
-    //         })
-    //         .catch((error) => {
-    //           console.error('Error getting current group ID:', error);
-    //         });
-    //     } else {
-    //       console.error('Unable to send message: No authenticated user.');
-    //     }
-    // }
-      
-
- 
-  
-
-  
-  
-  
-
-    function loadMessages(groupId) {
-        const chatFeed = document.getElementById('chat-feed');
-
-        const messagesRef = firebase.database().ref(`messageGroups/${groupId}/messages`);
-
-        // Detach previous event listener to avoid receiving messages twice
-        messagesRef.off('child_added');
-
-        messagesRef.limitToLast(1).on('child_added', (snapshot) => {
-            const message = snapshot.val();
-
-            // Display the most recent message in the chat feed
-            if (message) {
-                const messageElement = document.createElement('p');
-
-                const senderId = message.userId;
-                const senderRef = firebase.database().ref(`players/${senderId}`);
-                
-                senderRef.once('value', (senderSnapshot) => {
-                    const senderData = senderSnapshot.val();
-            
-                    if (senderData && senderData.name) {
-                        // Display the sender's name along with the most recent message text
-                        messageElement.textContent = `${senderData.name}: ${message.text}`;
-                        chatFeed.appendChild(messageElement);
-                    }
-                });
-            }
-        });
-        //messagesRef.off('child_added');
-    }
-
+    };
   
     // Event listener for sending a message
     document.getElementById('send-msg').addEventListener('click', function () {
@@ -1201,29 +1082,29 @@ function getHash() {
 }
 
 const defaultImages = [
-    "../public/assets/imgs/arturius token.png",
-    "../public/assets/imgs/beetle man card.png",
-    "../public/assets/imgs/beetle man token.png",
-    "../public/assets/imgs/centurion token.png",
-    "../public/assets/imgs/commando token 1b.png",
-    "../public/assets/imgs/commando token 5d.png",
-    "../public/assets/imgs/elram token.png",
-    "../public/assets/imgs/evo suit token.png",
-    "../public/assets/imgs/garvin token.png",
-    "../public/assets/imgs/gunslinger token.png",
-    "../public/assets/imgs/halo team fighter token.png",
-    "../public/assets/imgs/halo team shield token.png",
-    "../public/assets/imgs/iradrum outcast card.png",
-    "../public/assets/imgs/oak walker card.png",
-    "../public/assets/imgs/orc smile mantis blade token.png",
-    "../public/assets/imgs/reptoid cyborg card.png",
-    "../public/assets/imgs/reptoid token gunner.png",
-    "../public/assets/imgs/rhino token.png",
-    "../public/assets/imgs/riva token.png",
-    "../public/assets/imgs/slayer token.png",
-    "../public/assets/imgs/token ghost.png",
-    "../public/assets/imgs/token helm.png",
-    "../public/assets/imgs/vigg card.png"
+    "./assets/imgs/arturius token.png",
+    "./assets/imgs/beetle man card.png",
+    "./assets/imgs/beetle man token.png",
+    "./assets/imgs/centurion token.png",
+    "./assets/imgs/commando token 1b.png",
+    "./assets/imgs/commando token 5d.png",
+    "./assets/imgs/elram token.png",
+    "./assets/imgs/evo suit token.png",
+    "./assets/imgs/garvin token.png",
+    "./assets/imgs/gunslinger token.png",
+    "./assets/imgs/halo team fighter token.png",
+    "./assets/imgs/halo team shield token.png",
+    "./assets/imgs/iradrum outcast card.png",
+    "./assets/imgs/oak walker card.png",
+    "./assets/imgs/orc smile mantis blade token.png",
+    "./assets/imgs/reptoid cyborg card.png",
+    "./assets/imgs/reptoid token gunner.png",
+    "./assets/imgs/rhino token.png",
+    "./assets/imgs/riva token.png",
+    "./assets/imgs/slayer token.png",
+    "./assets/imgs/token ghost.png",
+    "./assets/imgs/token helm.png",
+    "./assets/imgs/vigg card.png"
 ];
 
 class Force {
