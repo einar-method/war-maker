@@ -937,6 +937,7 @@ input[type="number"] {
     flex-direction: column;
 }
 #canvas-container {
+    display: none;
     position: absolute;
     left: 15rem;
     top: 20rem;
@@ -961,6 +962,7 @@ canvas {
     background: url(../public/assets/images/map.png) no-repeat no-repeat;
     transform: scale(3);
     image-rendering: pixelated;
+    display: none;
 }
   
   
