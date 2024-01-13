@@ -413,6 +413,8 @@ function displayPoints(ref) {
         playerRef.update({
             currentLobby: lobbyId,
         })
+
+        sendMessage("Your sharable lobby code is: " + groupName);
     };
 
     document.getElementById("join-group").addEventListener("click", function() {
@@ -449,7 +451,8 @@ function displayPoints(ref) {
                     currentLobby: groupId,
                 });
     
-                console.log('Successfully joined the group!');
+                console.log("Successfully joined lobby: " + groupId);
+                sendMessage("Has joined lobby:", groupId);
             }
             } else {
             console.log('Invalid group ID. Please check and try again.');
