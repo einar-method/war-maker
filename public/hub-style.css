@@ -962,7 +962,7 @@ canvas {
     background: url(../public/assets/images/map.png) no-repeat no-repeat;
     transform: scale(3);
     image-rendering: pixelated;
-    display: none;
+    /* display: none; */
 }
   
   

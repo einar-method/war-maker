@@ -32,10 +32,10 @@ document.getElementById("points-display-box").onclick = editPoints; // Function 
 
 function initGame() {
 
-    new KeyPressListener("ArrowUp", () => handleArrowPress(0, -1))
-    new KeyPressListener("ArrowDown", () => handleArrowPress(0, 1))
-    new KeyPressListener("ArrowLeft", () => handleArrowPress(-1, 0))
-    new KeyPressListener("ArrowRight", () => handleArrowPress(1, 0))
+    new KeyPressListener("KeyW", () => handleArrowPress(0, -1))
+    new KeyPressListener("KeyS", () => handleArrowPress(0, 1))
+    new KeyPressListener("KeyA", () => handleArrowPress(-1, 0))
+    new KeyPressListener("KeyD", () => handleArrowPress(1, 0))
 
     const allPlayersRef = firebase.database().ref(`players`);
     const allUnitsRef = firebase.database().ref(`units`);
