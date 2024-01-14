@@ -281,7 +281,7 @@ class Force {
         this.isSlowed = Math.random() < 0.5 ? false : true;
         this.name = this.getCurrentType().name;
         //this.attackRange = 0; Math.random() < 0.5 ? "🏹" : "⚔️";
-    }
+    };
 
     calcStats() {
         const type = this.types.filter(type => type.isType)[0];
@@ -319,7 +319,7 @@ class Force {
         console.log(`Unit ${this.unitID} is of type: ${type.name}.`);
         console.log(`Unit ${this.unitID}'s max abilitiy count is now ${this.maxAbilities}.`);
         console.log(`Unit ${this.unitID}'s current ability list:`, this.abilities.filter(ability => ability.hasAbility))
-    }
+    };
 
     getAbil() {
         // Filter abilities with hasAbility set to true
@@ -336,11 +336,145 @@ class Force {
         const c = temp[2] ? temp[0] : { name: "" };
 
         return [ a, b, c ]
-    }
+    };
+
+    calcDamage() {
+        if (this.unitTier === 3) {
+            //is commander
+            if (this.hitsTaken >= 6) {
+                this.unitCount -= this.hitsTaken;
+                this.diceCount -= this.hitsTaken;
+                this.hitsTaken = 0;
+            } else {console.log("not enough for cmdr")};
+        } else if (this.unitTier === 2) {
+            //is hero
+            if (this.hitsTaken >= 3) {
+                this.unitCount -= this.hitsTaken;
+                this.diceCount -= this.hitsTaken;
+                this.hitsTaken = 0;
+            } else {console.log("not enough for hero")};
+        } else if (this.unitTier === 1) {
+            //is basic unit
+            this.unitCount -= this.hitsTaken;
+            this.diceCount -= this.hitsTaken;
+        } else { console.log("Error 485: trouble dealing dmg")};
+        
+        
+        if (this.unitCount <= 0) {
+            this.isDead = true;
+        };
+        if (this.freeRerolls < 0) {
+            this.freeRerolls = 0;
+        }; // we dont't want to go below 0 with this resource
+    }; // we still need to consider armor and other skills
+    
+    rollAttacks(target) {
+        console.log("Target this turn:", target)
+
+        this.rollResults = [];
+        let tempRolls = [];
+
+        // Roll binary dice according to tier and diceCount
+        // then store in temp rolls
+        for (let i = 0; i < this.diceCount; i++) {
+            tempRolls.push(getRndInteger(1, 2));
+        };
+        console.log("First attack roll:", tempRolls)
+        
+        // we need to check for range
+
+        // we need to check for cover
+
+        // Armor - check foe, reroll hits
+        console.log("Target unit has ARMOR?", target.checkAbility(3));
+        if (target.checkAbility(3)) {
+            //console.log("Target has ARMOR, first rolls were", tempRolls)
+            for (let i = 0; i < tempRolls.length; i++) {
+            if (tempRolls[i] == 2) {
+                tempRolls[i] = getRndInteger(1, 2);
+                console.log("New attack roll against ARMOR", tempRolls)
+            }
+            }
+        }; 
+
+        // check MARKSMAN ability
+        console.log("This unit is a MARKSMAN?", this.checkAbility(16));
+        if (this.checkAbility(16)) {
+            console.log("MARKSMAN's first rolls were", tempRolls)
+            for (let i = 0; i < tempRolls.length; i++) {
+            if (tempRolls[i] === 1) {
+                tempRolls[i] = getRndInteger(1, 2);
+                console.log("MARKSMAN's new attack rolls", tempRolls)
+            }
+            }
+        }; 
+
+        // check foe for BANNER target, reroll misses
+        console.log("Target is marked by BANNER?", target.isBannerTarget);
+        if (target.isBannerTarget === true) {
+            console.log("Unit is a BANNER target, first rolls were", tempRolls)
+            for (let i = 0; i < tempRolls.length; i++) {
+            if (tempRolls[i] == 1) {
+                tempRolls[i] = getRndInteger(1, 2);
+                console.log("New attack roll against BANNER target", tempRolls)
+            }
+            }
+        }; 
+        
+
+        // All other abilities to check for attack rolls
+
+        // Artillery - attack more than 1 unit- pron in targeting
+
+        // Banner - reroll misses if ally has this on a target
+
+        // Bolster - anyone can have 1 die reroll
+
+        // Demolish - takes 3 hits to destroy object
+
+        // Fury - log any attacks with at least 1 hit for later
+
+        // Heat Vision - ignore cover
+
+        // Melee Reflexes - special 3 dice only attack
+
+        // Power Up - similar to bolster in function
+        console.log("Unit has POWER UP?", target.checkAbility(19));
+        if (target.checkAbility(19) && this.freeRerolls > 0) {
+            if (tempRolls.indexOf(1) !== -1) {
+            this.freeRerolls--;
+            tempRolls[tempRolls.indexOf(1)] = getRndInteger(1, 2);
+            console.log("Used a POWER UP, new attack rolls:", tempRolls);
+            }
+        }; //room for intelligent AI here, some commanders might use
+        // all free dice at any time, others may hoard for the right
+        // moment, others may use 1 if they have at least 1.
+
+        // Ranged Reflexes - similar function as Melee
+
+        // After all checks, push temp rolls to main
+        this.rollResults.push(...tempRolls);
+    };
+    
+    evaluateAttacks() {
+        let workingHits = 0;
+        for (let i = 0; i < this.rollResults.length; i++) {
+          
+          if (this.rollResults[i] === 2) {
+            //console.log(this.commander.name + "'s unit " + this.unitID + " rolled a hit!")
+            workingHits++;
+            //.commander.currentHits++;
+            //console.log("Working hits " + this.commander.currentHits)
+            //this.enemy.hitsTaken += i;
+            //console.log("Enemy has taken " + this.enemy.hitsTaken + " hits.")
+          }
+        };
+        return workingHits;
+    };
 
     rndDefaultImg() {
         this.imageSrc = defaultImages[Math.floor(Math.random() * defaultImages.length)];
-    }
+    };
 
     createCard() {
         const section = document.createElement('section');
@@ -420,7 +554,7 @@ class Force {
         section.appendChild(footer);
 
         return section;
-    }
+    };
 
     removeUnit(section) {
         console.log("Attempting to remove unit with ID:", this.unitID);

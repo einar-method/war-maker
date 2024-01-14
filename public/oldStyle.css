@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+}
+
+html {
+    font-size: 16px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap');
+:root {
+    --green-light: #444F33;
+    --orange-light: #FEA72E;
+    --orange-dark: #FEA72E;
+    --tan-light: #F3DAC0;
+    --brown-dark: #482D1B;
+    --font-main: 'DM Mono', monospace, Verdana, Geneva, sans-serif;
+    --card-width: 15rem; /* Set your width variable */
+    --aspect-ratio: 89 / 64; /* Set the aspect ratio */
+    --card-height: calc(var(--card-width) * var(--aspect-ratio));
+}
+
+
+
+body {
+    background-color: #2b2a33;
+    /* text-align: center; */
+    color: whitesmoke;
+    font-family: monospace;
+    background: url("./assets/imgs/stars bg.png") repeat;
+    background-size: 250px;
+  
+}
+
+h1 {
+    font-weight: 700;
+    color: var(--orange-dark);
+    text-align: center;
+    text-decoration-line: underline;
+}
+
+h2, p {
+    padding: 1rem;
+}
+
+#myCanvas {
+    background-color: var(--green-light);
+}
+
+main {
+    display:flex;
+    --s: 50px;  /* size  */
+    --m: 1px;    /* margin */
+    --f: calc(1.732 * var(--s) + 4 * var(--m)  - 1px);
+}
+  
+#map {
+font-size: 0; /*disable white space between inline block element */
+}
+
+#map div {
+width: var(--s);
+margin: var(--m);
+height: calc(var(--s)*1.1547); 
+display: inline-block;
+font-size:initial;
+clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+background: rgb(229, 211, 141);
+margin-bottom: calc(var(--m) - var(--s)*0.2885); 
+}
+
+#map div:nth-child(odd) {
+background:rgb(138, 139, 138);
+}
+
+#map::before {
+content: "";
+width: calc(var(--s)/2 + var(--m));
+float: left;
+height: 120%;
+shape-outside: repeating-linear-gradient(     
+                    #0000 0 calc(var(--f) - 3px),      
+                    #000  0 var(--f));
+}
+
+#canvas1 {
+    border: 1px solid black;
+    background: transparent;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+dialog {
+    opacity: 0; /* Start with opacity set to 0 */
+    -webkit-transition: all 0.4s ease-in-out;
+    -moz-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+}
+
+#error {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#tip {
+font-size: .8rem;
+position: fixed;
+width: 6rem;
+top: 4%;
+left: 70%;
+/* transform: translate(-50%, -50%); */
+}
+  
+  

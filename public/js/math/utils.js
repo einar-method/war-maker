@@ -329,3 +329,27 @@ const checkGrid = (point, { side, color } = {}) => {
 
     return center;
 };
+
+function getSqr(a, b) {
+    return Math.sqrt(a ** 2 + b ** 2);
+};
+ 
+function limitMove(current, start, range) {
+    const deltaX = current.x - start.x;
+    const deltaY = current.y - start.y;
+
+    const distance = getSqr(deltaX, deltaY);
+
+    if (distance > range) {
+        const angle = Math.atan2(deltaY, deltaX); // Math I dont understand
+        return {
+            x: start.x + range * Math.cos(angle),
+            y: start.y + range * Math.sin(angle)
+        };
+    } else {
+        return {
+            x: current.x,
+            y: current.y
+        };
+    }
+};

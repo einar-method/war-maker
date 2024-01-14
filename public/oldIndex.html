@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:;base64,=">
+    <link rel="stylesheet" href="./oldStyle.css">
+    <title>War | Maker</title>
+</head>
+<body>
+    <dialog class="error-dialog" id="error"><strong>Error:</strong> <span id="error-txt"></span></dialog>
+    <dialog class="tip-dialog" id="tip"><strong>Tip:</strong> <span id="tip-txt"></span></dialog>
+    <h1>WAR|MAKER</h1>
+
+    <div id="controls">
+        <p>Basic Tests</p>
+        <button onclick="setupWar()">Create War</button>
+        <button onclick="startBattle()">Start Battle</button>
+        <button onclick="stepCombat()">Next Turn</button>
+        <button onclick="addRandomPoint()">Test Nodes</button>
+        <!-- <button onclick="removeAll()">Remove All</button> -->
+    </div>
+    <div id="controls">
+        <p>Troop Asign Tests</p>
+        <button onclick="step1()">Create War, Assign Battle</button>
+        <button onclick="step2()">Start Placement</button>
+        <button onclick="step3()">Step 3</button>
+        <!-- <button onclick="testNodes()">Test Nodes</button> -->
+        <!-- <button onclick="removeAll()">Remove All</button> -->
+    </div>
+
+    <h2>Battle Log:</h2>
+
+    <p id="log1"></p>
+    <p id="log2"></p>
+
+    <canvas id="myCanvas"></canvas>
+    
+    <!-- <script src="app.js"></script> -->
+    <script src="js/math/utils.js"></script>
+    <script src="js/graphEditor.js"></script>
+    <script src="js/music.js"></script>
+    <script src="js/placement.js"></script>
+    <script src="js/combat.js"></script>
+    <script src="js/targetting.js"></script>
+    <script src="js/war.js"></script>
+    <script src="js/battle.js"></script>
+    <script src="js/commander.js"></script>
+    <script src="js/force.js"></script>
+    <script src="js/combat/tester.js"></script>
+    
+    
+    <script src="js/math/graph.js"></script>
+    <script src="js/primitives/point.js"></script>
+    <script src="js/primitives/segment.js"></script>
+    <script src="js/primitives/grid.js"></script>
+    <script>
+        /* function removeAll() {
+            graph.dispose();
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            graph.draw(ctx);
+        }
+        function removeRndPoint() {
+            if (graph.points.length == 0) {
+                console.log("no points")
+                return;
+            }
+            const index = Math.floor(Math.random() * graph.points.length);
+            graph.removePoint(graph.points[index]);
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            graph.draw(ctx);
+            //console.log(success);
+        };
+
+        function removeRndSegment() {
+            if (graph.segments.length == 0) {
+                console.log("no segments")
+                return;
+            }
+            const index = Math.floor(Math.random() * graph.segments.length);
+            graph.removeSegment(graph.segments[index]);
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            graph.draw(ctx);
+            //console.log(success);
+        };
+
+        function addRandomSegment() {
+            const index1 = Math.floor(Math.random() * graph.points.length);
+            const index2 = Math.floor(Math.random() * graph.points.length);
+            const success = graph.tryAddSegment(
+                new Segment(graph.points[index1], graph.points[index2])
+            );
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            graph.draw(ctx);
+            console.log(success);
+        };
+
+        function addRandomPoint() {
+            const success = graph.tryAddPoint(
+                new Point(
+                    Math.random() * myCanvas.width,
+                    Math.random() * myCanvas.height
+                )
+            );
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            graph.draw(ctx);
+            console.log(success);
+        }; */
+
+        myCanvas.width = 600;
+        myCanvas.height = 600;
+
+        const ctx = myCanvas.getContext("2d");
+
+
+        let isP1Automated = false;
+        let isP2Automated = true;
+
+
+
+        let pointsArr = [];
+
+  /*       let xFactor = 30;
+        let yFactor = 30;
+
+        for (let i = 0; i < 100; i++) {
+            pointsArr.push(new Point(xFactor, yFactor));
+            xFactor += 60;
+            if (xFactor > 570) {
+                xFactor = 30;
+                yFactor += 60;
+            }
+        } */
+
+        const gridArr = [];
+
+        let gridX = 30;
+        let gridY = 30;
+        for (let i = 0; i < 100; i++) {
+            gridArr.push(new TerrainGrid(gridX, gridY, i));
+            gridX += 60;
+            if (gridX > 570) {
+                gridX = 30;
+                gridY += 60;
+            }
+        }
+
+        let p1Points = getRndInteger(5, 10);
+        let p2Points = getRndInteger(5, 10);
+
+        /* // this worked so well :(
+        pointsArr.push(...Array(p1Points).fill().map(() => new Point(checkGrid(), {side: 1, color: "green"})));
+        pointsArr.push(...Array(p2Points).fill().map(() => new Point(checkGrid(), {side: 2, color: "red"}))); */
+
+/*         pointsArr.push(...Array(p1Points).fill().map(() => {
+            const newPoint = new Point({});
+            checkGrid(newPoint, { side: 1, color: "black" });
+            return newPoint;
+        }));
+
+        pointsArr.push(...Array(p2Points).fill().map(() => {
+            const newPoint = new Point({});
+            checkGrid(newPoint, { side: 2, color: "white" });
+            return newPoint;
+        })); */
+        
+        //console.log(pointsArr)
+        //console.log(gridArr)
+        
+
+        
+
+        let currentWar = null;
+        //simulateCombat()
+        function testNodes() {
+            currentWar.commanders[0].assignBattleForces()
+            currentWar.commanders[1].assignBattleForces()
+            console.log(gridArr.filter(grid => grid.forceInside.length > 0))
+        }
+        
+
+        const graph = new Graph(pointsArr, [], gridArr);
+        const graphEditor = new GraphEditor(myCanvas, graph);
+
+        animate();
+
+        function animate() {
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            graphEditor.display();
+            requestAnimationFrame(animate);
+        };
+
+        function addRandomPoint() {
+            const success = graph.tryAddPoint(
+                new Point(
+                    Math.random() * myCanvas.width,
+                    Math.random() * myCanvas.height
+                )
+            );
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            graph.draw(ctx);
+            console.log(success);
+        };
+
+        // console.log(gridArr.filter(grid => grid.forceInside.length > 0))
+
+        //const myTimeout = setTimeout(simulateCombat, 2000)
+
+    </script>
+</body>
+</html>
