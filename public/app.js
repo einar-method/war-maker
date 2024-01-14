@@ -1,6 +1,25 @@
 /************************************************************/
 /*    Crucial listeners, variables, and firebase init       */
 /************************************************************/
+const firebaseConfig = {
+      
+    apiKey: "AIzaSyA2YxFjYo4W8emc1nBZSOgMQ8yhyadrRrc",
+
+    authDomain: "war-maker.firebaseapp.com",
+
+    databaseURL: "https://war-maker-default-rtdb.firebaseio.com",
+
+    projectId: "war-maker",
+
+    storageBucket: "war-maker.appspot.com",
+
+    messagingSenderId: "772619207902",
+
+    appId: "1:772619207902:web:3d14a7bb5d333df0512e4f"
+};
+
+firebase.initializeApp(firebaseConfig);
+
 let playerId;
 let playerRef;
 let players = {};
