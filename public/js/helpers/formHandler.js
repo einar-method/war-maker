@@ -214,7 +214,7 @@ function removeImage(unit, target) {
     // const expand = evt.target.closest(".expandable");
 
 
-function clickAbility(event, ability, unit) {
+function clickAbility(event, ability, unit, mobile) {
     let bool = false;
 
     const userInput = event.button;
@@ -226,9 +226,11 @@ function clickAbility(event, ability, unit) {
         const el = document.getElementById("showAbilityDescription");
         showDescription(ability, defaultText, el);
         //return true;
-    }
-    // Shift + Left click = edit abilities
-    if (isListItem && userInput === 0 && event.shiftKey) {
+    };
+
+    // Shift + Left click (or double tap on mobile) = edit abilities
+    const checker1 = isListItem && userInput === 0 && event.shiftKey && mobile === false;
+    if (checker1 || mobile === true) { // mobile refers to checks to ensure it was a mobile double tap
         if (ability.hasAbility) { return bool; }
 
         const condition1 = unit.abilities.filter(obj => obj.hasAbility).length < unit.maxAbilities;

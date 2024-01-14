@@ -2,6 +2,28 @@
 /* A collection of functions that manipulate DOM elements. */
 /************************************************************/
 
+function isTouchSupported() {
+    return 'ontouchstart' in window;
+};
+
+const addDoubleTapListener = (element, callback, input1, input2) => {
+    let lastTapTime = 0;
+  
+    element.addEventListener('touchend', function(event) {
+      const currentTime = new Date().getTime();
+      const tapDuration = currentTime - lastTapTime;
+  
+      if (tapDuration < 300) { // Adjust the time threshold as needed
+        callback(event, input1, input2, true);
+        return true; // Double tap occurred
+      }
+  
+      lastTapTime = currentTime;
+      return false; // Single tap
+    });
+};
+  
+
 function populateAbilityUI(unit) {
     const fullAbilityList = document.getElementById("fullAbilityList");
     const currentAbilityDisplay = document.getElementById("currentAbilityDisplay");
@@ -14,16 +36,22 @@ function populateAbilityUI(unit) {
         const mainAbility = document.createElement('li');
         mainAbility.textContent = ability.name;
 
-        mainAbility.onclick = (evt) => clickAbility(evt, ability, unit);
+        mainAbility.onclick = (evt) => clickAbility(evt, ability, unit, false);
         mainAbility.addEventListener('contextmenu', event => promptRemoveAbility(event, ability, unit));
         //mainAbility.addEventListener('mouseover', event => showDescription(event, ability));
+
+        if (isTouchSupported()) {
+            addDoubleTapListener(mainAbility, clickAbility, ability, unit,);
+        }
+        
+
 
         fullAbilityList.appendChild(mainAbility);
         
         if (ability.hasAbility) {
             const displayedAbility = document.createElement('li');
             displayedAbility.textContent = ability.name;
-            displayedAbility.onclick = (evt) => clickAbility(evt, ability, unit);
+            displayedAbility.onclick = (evt) => clickAbility(evt, ability, unit, false);
             displayedAbility.addEventListener('contextmenu', event => promptRemoveAbility(event, ability, unit));
             currentAbilityDisplay.appendChild(displayedAbility);
             displayedAbility.classList.add('selected');
