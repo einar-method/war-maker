@@ -931,11 +931,37 @@ input[type="number"] {
 /* Game Board */
 /* ******************** */
 .queue {
-    position: relative;
-    left: 1rem;
+    /* position: relative;
+    left: 1rem; */
     display: flex;
+    max-width: min-content;
     flex-direction: column;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    gap: .5rem;
 }
+
+.queue button {
+    font-family: var(--font-main);
+    font-weight: 700;
+    color: var(--tan-color);
+    background-color: var(--brown-color);
+    border-color: var(--tan-color);
+    border-radius: 1px;
+    padding: .2rem;
+    cursor: pointer;
+    transition: .2s all ease-in-out;
+}
+
+.queue button:hover {
+    color: var(--primary-color);
+    background-color: var(--orange-med);
+    border-color: var(--tan-color);
+    border-radius: 1px;
+    padding: .2rem;
+    cursor: pointer;
+}
+
 #canvas-container {
     display: none;
     position: absolute;
@@ -962,7 +988,7 @@ canvas {
     background: url(../public/assets/images/map.png) no-repeat no-repeat;
     transform: scale(3);
     image-rendering: pixelated;
-    /* display: none; */
+    display: none;
 }
   
   

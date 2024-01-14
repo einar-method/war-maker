@@ -13,7 +13,7 @@
         <a href="#hub"><ion-icon name="planet"></ion-icon></a>
         <a href="#roster"><ion-icon name="add-circle"></ion-icon></a>
         <a href="#battle"><ion-icon name="shield-half"></ion-icon></a>
-        <a href="#third"><ion-icon name="musical-notes"></ion-icon></a>
+        <!-- <a href="#third"><ion-icon name="musical-notes"></ion-icon></a> -->
         <a href="#fifth"><ion-icon name="information-circle"></ion-icon></a>
     </nav>
        
@@ -41,15 +41,7 @@
     <section id= "battle" class="page">
         <div class="page__battle-header">
             <h1>Campaign|Builder</h1>
-            <div class="player-info">
-                <div>
-                <label for="player-name">Callsign</label>
-                <input id="player-name" maxlength="10" type="text" />
-                </div>
-                <div>
-                <button id="player-color">Change Color</button>
-                </div>
-            </div>
+            
         </div>
         <div class="queue">
             <!-- <button id="make-lobby">Make a Lobby</button>
@@ -58,14 +50,24 @@
             <input type="text" id="lobbyIdInput" placeholder="Enter Lobby ID">
             <button id="join-lobby">Join a Lobby</button> -->
 
-            <button id="make-group">Make Group</button>
+            <div class="player-info">
+                <div>
+                <label for="player-name">Callsign:</label>
+                <input id="player-name" maxlength="40" type="text" />
+                </div>
+                <div>
+                <button id="player-color">Change Color</button>
+                </div>
+            </div>
+
+            <button id="make-group">Make War</button>
             <p id="group-label"></p>
 
-            <input type="text" id="groupIdInput" placeholder="Enter Code">
-            <button id="join-group">Join Group</button>
+            <input type="text" id="groupIdInput" placeholder="Enter a war code">
+            <button id="join-group">Join War</button>
 
-            <input type="text" id="msgInput" placeholder="Enter a message">
-            <button id="send-msg">Send</button>
+            <input type="text" id="msgInput" placeholder="Write a dispatch">
+            <button id="send-msg">Send Dispatch</button>
             <section id="chat-feed">
 
             </section>
@@ -83,10 +85,12 @@
         <div class="game-container"></div>
     </section>
 
-    <section id= 'third' class="page">
+    <!-- <section id= 'third' class="page">
         <h1>Cadence|Caller</h1>
-        <!-- <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/26UCTe0HBj1dtTDbibBg3T?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe> -->
-    </section>
+        <div id="embed-iframe"></div>
+
+
+    </section> -->
 
     <section id= 'fifth' class="page">
     <h1>Info|Holder</h1>
@@ -282,7 +286,6 @@
     <script src="./js/unit.js"></script>
     <script src="./app.js"></script>
     
-    <!-- <script src="https://open.spotify.com/embed/iframe-api/v1" async></script> -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>

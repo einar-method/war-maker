@@ -44,7 +44,7 @@ function createMessageGroup(groupName) {
       currentLobby: lobbyId,
   })
 
-  sendMessage("Your sharable lobby code is: " + groupName);
+  sendMessage("Your sharable war code is: " + groupName);
 };
 
  // Function to join a message group using an invite code
@@ -62,6 +62,7 @@ function createMessageGroup(groupName) {
       // Check if the groupId is valid
       if (groupData) {
       // Check if the current user is already a member of the group
+      //TODO: this checker has stopped working!
       if (groupData.members && groupData.members.includes(playerId)) {
           console.log('You are already a member of this group.');
       } else {

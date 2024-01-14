@@ -57,7 +57,7 @@ function initGame() {
         })
     })
     allPlayersRef.on("child_added", (snapshot) => {
-        //Fires whenever a new node is added the tree
+        //Fires whenever a new player is added to the tree
         const addedPlayer = snapshot.val();
         const characterElement = document.createElement("div");
         characterElement.classList.add("Character", "grid-cell");
@@ -272,3 +272,4 @@ window.onload = function() {
 document.addEventListener("contextmenu", function (event) {
     event.preventDefault();
 });
+
