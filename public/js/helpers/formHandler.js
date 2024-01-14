@@ -208,7 +208,13 @@ function removeImage(unit, target) {
     }
 };
 
-function clickAbility(ability, unit) {
+// document.body.addEventListener("click", (evt) => {
+    //closeBoxes(evt)
+    // const isExand = !!evt.target.closest(".expandable__title-bar");
+    // const expand = evt.target.closest(".expandable");
+
+
+function clickAbility(event, ability, unit) {
     let bool = false;
 
     const userInput = event.button;
@@ -339,7 +345,7 @@ function promptRemoveAbility(event, ability, unit) {
 
             if (result) {
                 ability.hasAbility = false;
-                ability.unit.calculatePoints();
+                unit.calculatePoints();
                 populateAbilityUI(unit);
             } else { console.log("Dialog closed without removing ability.") }
             };

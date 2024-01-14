@@ -14,7 +14,7 @@ function populateAbilityUI(unit) {
         const mainAbility = document.createElement('li');
         mainAbility.textContent = ability.name;
 
-        mainAbility.onclick = () => clickAbility(ability, unit);
+        mainAbility.onclick = (evt) => clickAbility(evt, ability, unit);
         mainAbility.addEventListener('contextmenu', event => promptRemoveAbility(event, ability, unit));
         //mainAbility.addEventListener('mouseover', event => showDescription(event, ability));
 
@@ -23,7 +23,7 @@ function populateAbilityUI(unit) {
         if (ability.hasAbility) {
             const displayedAbility = document.createElement('li');
             displayedAbility.textContent = ability.name;
-            displayedAbility.onclick = () => clickAbility(ability, unit);
+            displayedAbility.onclick = (evt) => clickAbility(evt, ability, unit);
             displayedAbility.addEventListener('contextmenu', event => promptRemoveAbility(event, ability, unit));
             currentAbilityDisplay.appendChild(displayedAbility);
             displayedAbility.classList.add('selected');
