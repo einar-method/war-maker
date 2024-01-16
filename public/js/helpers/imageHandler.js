@@ -3,29 +3,10 @@
 /************************************************************/
 
 const defaultImages = [
-    "./assets/imgs/arturius token.png",
-    "./assets/imgs/beetle man card.png",
-    "./assets/imgs/beetle man token.png",
-    "./assets/imgs/centurion token.png",
-    "./assets/imgs/commando token 1b.png",
-    "./assets/imgs/commando token 5d.png",
-    "./assets/imgs/elram token.png",
-    "./assets/imgs/evo suit token.png",
-    "./assets/imgs/garvin token.png",
-    "./assets/imgs/gunslinger token.png",
-    "./assets/imgs/halo team fighter token.png",
-    "./assets/imgs/halo team shield token.png",
-    "./assets/imgs/iradrum outcast card.png",
-    "./assets/imgs/oak walker card.png",
-    "./assets/imgs/orc smile mantis blade token.png",
-    "./assets/imgs/reptoid cyborg card.png",
-    "./assets/imgs/reptoid token gunner.png",
-    "./assets/imgs/rhino token.png",
-    "./assets/imgs/riva token.png",
-    "./assets/imgs/slayer token.png",
-    "./assets/imgs/token ghost.png",
-    "./assets/imgs/token helm.png",
-    "./assets/imgs/vigg card.png"
+    "./assets/imgs/a1.png",
+    "./assets/imgs/a2.png",
+    "./assets/imgs/a3.png",
+    "./assets/imgs/a4.png",
 ];
 
 function handleImageUpload(input, unit, target) {
