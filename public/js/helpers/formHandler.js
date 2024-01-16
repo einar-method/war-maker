@@ -287,19 +287,19 @@ function changeType(type, unit) {
     populateTypeUI(unit);
 };
 
-function clickType(type, unit) {
+function clickType(event, type, unit, mobile) { // mobile refers to checks to ensure it was a mobile double tap
     const userInput = event.button;
     const isListItem = event.target.tagName === 'LI';
 
-    // Left click - show
+    // Left click (or single tap on mobile) = show type description
     if (isListItem && userInput === 0 && !event.shiftKey) {
         const defaultText = "Left click to see unit type description.\nShift + Left click to change unit type."
         const el = document.getElementById("showTypeDescription");
         showDescription(type, defaultText, el)
     }
 
-    // Shift Left - change
-    if (isListItem && userInput === 0 && event.shiftKey) {
+    // Shift + Left click (or double tap on mobile) = change type
+    if (isListItem && userInput === 0 && event.shiftKey || mobile === true) {
         if (type.isType) { return }
 
         changeType(type, unit);
@@ -327,6 +327,9 @@ function showDescription(input, text, el) {
 function promptRemoveAbility(event, ability, unit) {
     event.preventDefault(); // Prevent the default context menu from appearing
 
+    // console.log("Is this an event?", event)
+    // console.log("Is this an ability?", ability)
+    // console.log("Is this a unit?", unit)
     if (unit.abilities.filter(obj => obj.hasAbility).includes(ability)) {
         
         document.getElementById('dialog__prompt').style.top = event.clientY - document.getElementById('dialog__prompt').clientHeight - 100 + "px";

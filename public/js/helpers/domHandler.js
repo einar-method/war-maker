@@ -6,6 +6,7 @@ function isTouchSupported() {
     return 'ontouchstart' in window;
 };
 
+// My attempt at mobile support, listen for double tap
 const addDoubleTapListener = (element, callback, input1, input2) => {
     let lastTapTime = 0;
   
@@ -22,7 +23,7 @@ const addDoubleTapListener = (element, callback, input1, input2) => {
       return false; // Single tap
     });
 };
-  
+
 
 function populateAbilityUI(unit) {
     const fullAbilityList = document.getElementById("fullAbilityList");
@@ -36,22 +37,31 @@ function populateAbilityUI(unit) {
         const mainAbility = document.createElement('li');
         mainAbility.textContent = ability.name;
 
-        mainAbility.onclick = (evt) => clickAbility(evt, ability, unit, false);
+        mainAbility.addEventListener("pointerdown", e => {
+            clickAbility(e, ability, unit, false)
+        });
+
+        //mainAbility.onclick = (evt) => clickAbility(evt, ability, unit, false);
+        
         mainAbility.addEventListener('contextmenu', event => promptRemoveAbility(event, ability, unit));
+        
         //mainAbility.addEventListener('mouseover', event => showDescription(event, ability));
 
         if (isTouchSupported()) {
             addDoubleTapListener(mainAbility, clickAbility, ability, unit,);
-        }
+            }
         
-
+        
 
         fullAbilityList.appendChild(mainAbility);
         
         if (ability.hasAbility) {
             const displayedAbility = document.createElement('li');
             displayedAbility.textContent = ability.name;
-            displayedAbility.onclick = (evt) => clickAbility(evt, ability, unit, false);
+            displayedAbility.addEventListener("pointerdown", e => {
+                clickAbility(e, ability, unit, false)
+            });
+            //displayedAbility.onclick = (evt) => clickAbility(evt, ability, unit, false);
             displayedAbility.addEventListener('contextmenu', event => promptRemoveAbility(event, ability, unit));
             currentAbilityDisplay.appendChild(displayedAbility);
             displayedAbility.classList.add('selected');
@@ -73,9 +83,13 @@ function populateTypeUI(unit) {
         const typeLI = document.createElement('li');
         typeLI.textContent = type.name;
 
-        typeLI.onclick = () => clickType(type, unit);
+        typeLI.onclick = (evt) => clickType(evt, type, unit, false);
         //typeLI.addEventListener('contextmenu', event => promptRemoveAbility(event, ability));
         //typeLI.addEventListener('mouseover', event => showDescription(event, ability));
+
+        if (isTouchSupported()) {
+            addDoubleTapListener(typeLI, clickType, type, unit,);
+        }
 
         currentTypeDisplay.appendChild(typeLI);
         
