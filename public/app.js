@@ -102,9 +102,14 @@ function initGame() {
         })
     })
 
-    setTimeout(() => {
-        displayPoints(players[playerId].currentPoints);
-    }, 3000); // TODO: add error checks and retry
+    const intervalId = setInterval(() => {
+        if (players[playerId] && players[playerId].currentPoints) {
+            displayPoints(players[playerId].currentPoints);
+            clearInterval(intervalId); 
+        } else {
+            console.log("Waiting for currentPoints. Retrying in 3 seconds...");
+        }
+    }, 3000);
 };
 
 // Create Lobby button
