@@ -212,11 +212,11 @@ document.addEventListener("DOMContentLoaded", function () {
             sections.forEach(function (section) {
                 // Check if the section matches the target ID
                 if (section.id === targetSectionId) {
-                    if (section.id === "roster" || section.id === "battle") {
+                    if (section.id === "roster" || section.id === "battle" || section.id === "info") {
                         section.style.display = "grid";
                     } else {
                         section.style.display = "flex";
-                    }
+                    } // TODO: we prob only need grid here, except for welcome page
                 } else {
                     section.style.display = 'none';
                 }
