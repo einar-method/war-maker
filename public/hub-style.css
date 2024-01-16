@@ -83,6 +83,22 @@ input {
 
 } */
 
+.radio__button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--brown-color);
+    background-color: var(--primary-color);
+}
+  
+.radio__button:checked {
+/* border: 2px solid var(--brown-color); */
+background-color: var(--orange-med);
+outline: var(--primary-color) solid 2px;
+}
+
 
 
 /******************************/
