@@ -28,7 +28,7 @@ const addDoubleTapListener = (element, callback, input1, input2) => {
 function populateAbilityUI(unit) {
     const fullAbilityList = document.getElementById("fullAbilityList");
     const currentAbilityDisplay = document.getElementById("currentAbilityDisplay");
-    const defaultText = "Left click an ability for desrciption.\nShift + Left click to add an ability.\nRight click to remove an ability."
+    const defaultText = "Tap ability for desrciption.\nDouble tap an ability to add it.\nPress and hold to remove an ability."
     const el = document.getElementById("showAbilityDescription");
 
     // Clear existing abilities in the UI

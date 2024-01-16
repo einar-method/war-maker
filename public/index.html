@@ -85,30 +85,31 @@
         </div>
         <div class="info__container">
             <h2>Notice</h2>
-            <p>This web app is a WIP and has been optimized for desktop browsers.</p>
-            <p></p>
-            <p>All information sent to the database is deleted when you refresh or close the browser, however, please do not send any private information.</p>
+            <p>This web app is a WIP by E•M (maker of the EZ Tools app). It has been optimized for desktop browsers, but does have some mobile support. In no way is this a finished project, nor does its creator have vast experience with web development.</p>
+            <p>All information sent to the database is deleted when you refresh or close the browser, however, please do not send any private information. Stay safe friends. Speaking of, if you see trackers on this site, it's because it uses the Firebase realtime database (a Google service). In no way am I collecting analytics or any other data.</p>
+            <p>Visit the <a href="https://github.com/einar-method/war-maker" target="_blank">GitHub page</a> if you'd like to check out my spaghetti code, <a href="https://github.com/einar-method/war-maker/issues" target="_blank">log an issue</a>, or <a href="https://github.com/einar-method/war-maker/discussions" target="_blank">start a discussion</a>.</p>
+            <p>Or, if you want something easier, fill in this <a href="https://forms.gle/MvadBNNwiFxeabun7" target="_blank">Google Form</a>.</p>
             
             <hr class="page__divider_big">
 
             <h2>FAQ</h2>
-            <p>Double tap to add abilities or change unit type.</p>
-            <p>Tap once to see an ability or type description.</p>
             <p>Press and hold to remove an ability or delete a unit.</p>
+            <p>Double tap (double left click with mouse) to add abilities or change unit type.</p>
+            <p>Tap once (left click with mouse) to see an ability or unit quality description.</p>
             
             <hr class="page__divider_big">
 
             <h2>Roadmap</h2>
             <h3>Alpha v0.2</h3>
             <p>Easier bug reporting.</p>
-            <p>Draw the battle map and place your units on it.</p>
             <p>Battle the AI in an assortment of scenarios.</p>
+            <p>Draw the battle map and place your units on it.</p>
             <hr class="page__divider_small">
             <h3>Beta v0.3</h3>
-            <p>Login with email or link an external account (such as Google).</p>
-            <p>Rewrite all combat code to work with War | Maker 2.0.</p>
             <p>Opt to save your data upon logout</p>
+            <p>Rewrite all combat code to work with War | Maker 2.0.</p>
             <p>Go head to head with other players through the war lobby.</p>
+            <p>Login with email or link an external account (such as Google or Discord).</p>
             <hr class="page__divider_small">
             <h3>Beta v0.4</h3>
             <p>Save your campaigns.</p>
@@ -119,8 +120,9 @@
             <p>Resolve all major bugs and issues leading up to Stable Release v1.</p>
             <hr class="page__divider_small">
             <h3>Lofty Ideas</h3>
+            <p>Support for community touranments.</p>
             <p>Upload 3D models to use on the battlemap.</p>
-            <p>Support community touranments.</p>
+            <p>Support for community imagiNation campaigns.</p>
             <p>Compile Steam and mobile app store versions of the app for Runehammer to publish.</p>
             <hr class="page__divider_big">
         </div>
@@ -167,7 +169,7 @@
                         <div class="expandable__content-wrapper solid__content">
                             <ul class="short-list" id="currentAbilityDisplay"></ul>
                             <!-- <h2>Ability</h2> -->
-                            <p id="showAbilityDescription">Left click an ability for desrciption.<br>Shift + Left click to add an ability.<br>Right click to remove an ability.</p>
+                            <p id="showAbilityDescription">Tap ability for desrciption.<br>Double tap an ability to add it.<br>Press and hold to remove an ability.</p>
                         </div>
                     </div>
                     <hr class="hr__inner">
