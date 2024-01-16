@@ -4,7 +4,7 @@
 --font-main: 'DM Mono', monospace, Verdana, Geneva, sans-serif;
 --font-size-base: 16px;
 --font-title: 2rem;
---font-size-scaled: calc(min(3vmin, var(--font-size-base)));
+--font-size-scaled: calc(min(3.8vmin, var(--font-size-base)));
 --font-size-label-scaled: calc(min(4vmin, var(--font-size-base)));
 --font-size-title-scaled: calc(min(4vmin, var(--font-title)));
 --bar-size-scaled: calc(min(5vmin, var(--font-title)));
@@ -53,7 +53,7 @@ h1 span {
     font-size: var(--bar-size-scaled);
 }
 
-h2 {
+h4 {
 font-size: xx-small;
 }
 
@@ -306,7 +306,7 @@ align-items: center;
     font-weight: normal;
     margin: 0;
     font-size: var(--font-size-scaled);
-    height: 8rem;
+    /* height: 8rem; */
     display: flex;
     align-items: flex-end;
 }
@@ -645,13 +645,13 @@ transform: translateY(-1rem) scale(1.05);
 
 .card-img {
     grid-area: i;
-    display: block;
+    /* display: block; */
     height: 100%;
     width: 100%;
     background-color: black;
     position: relative;
     overflow: hidden;
-    object-fit: scale-down;
+    object-fit: contain;
     border-left: var(--brown-color) groove 2px;
 }
 
@@ -818,6 +818,7 @@ transform: translateY(-1rem) scale(1.05);
     -moz-box-shadow: 2.5px 5px 5px -1.25px rgba(68, 79, 51, 1);
     box-shadow: 2.5px 5px 5px -1.25px rgba(68, 79, 51, 1);
     cursor: pointer;
+    font-family: var(--font-main);
 }
 
 .points-display:hover {
@@ -1313,6 +1314,23 @@ to {
     .card {
         max-width: var(--card-width-small);
         max-height: var(--card-height-small);
+        font-size: var(--font-size-scaled);
+    }
+
+    .card h2 {
+        font-size: var(--font-size-scaled);
+    }
+
+    .card img {
+        max-height: 50px;
+        width: 100%;
+        object-fit: contain;
+    }
+
+    .grid-container :nth-child(2) {
+        grid-area: i;
+        place-content: center;
+        background-color: #000;
     }
 
     #roster {
