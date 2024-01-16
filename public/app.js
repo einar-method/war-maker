@@ -104,7 +104,7 @@ function initGame() {
 
     setTimeout(() => {
         displayPoints(players[playerId].currentPoints);
-    }, 3000);
+    }, 3000); // TODO: add error checks and retry
 };
 
 // Create Lobby button

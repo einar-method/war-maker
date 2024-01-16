@@ -28,6 +28,8 @@ const addDoubleTapListener = (element, callback, input1, input2) => {
 function populateAbilityUI(unit) {
     const fullAbilityList = document.getElementById("fullAbilityList");
     const currentAbilityDisplay = document.getElementById("currentAbilityDisplay");
+    const defaultText = "Left click an ability for desrciption.\nShift + Left click to add an ability.\nRight click to remove an ability."
+    const el = document.getElementById("showAbilityDescription");
 
     // Clear existing abilities in the UI
     fullAbilityList.innerHTML = '';
@@ -37,32 +39,48 @@ function populateAbilityUI(unit) {
         const mainAbility = document.createElement('li');
         mainAbility.textContent = ability.name;
 
-        mainAbility.addEventListener("pointerdown", e => {
-            clickAbility(e, ability, unit, false)
+        const pressEvent = new Hammer(mainAbility, {
+            recognizers: [
+                [Hammer.Press, { time: 1200, threshold: 10 }]
+            ]
+        });
+        
+        pressEvent.on("press", event => {
+            promptRemoveAbility(event, ability, unit);
         });
 
-        //mainAbility.onclick = (evt) => clickAbility(evt, ability, unit, false);
-        
-        mainAbility.addEventListener('contextmenu', event => promptRemoveAbility(event, ability, unit));
-        
-        //mainAbility.addEventListener('mouseover', event => showDescription(event, ability));
+        const tapEvent = new Hammer(mainAbility);
 
-        if (isTouchSupported()) {
-            addDoubleTapListener(mainAbility, clickAbility, ability, unit,);
+        tapEvent.on("tap", event => {
+            if (event.tapCount >= 2) {
+                addAbility(ability, unit);
+            } else {
+                showDescription(ability, defaultText, el);
             }
-        
-        
+        });
 
         fullAbilityList.appendChild(mainAbility);
         
         if (ability.hasAbility) {
             const displayedAbility = document.createElement('li');
             displayedAbility.textContent = ability.name;
-            displayedAbility.addEventListener("pointerdown", e => {
-                clickAbility(e, ability, unit, false)
+
+            const pressEvent = new Hammer(displayedAbility, {
+                recognizers: [
+                    [Hammer.Press, { time: 1200, threshold: 10 }]
+                ]
             });
-            //displayedAbility.onclick = (evt) => clickAbility(evt, ability, unit, false);
-            displayedAbility.addEventListener('contextmenu', event => promptRemoveAbility(event, ability, unit));
+            
+            pressEvent.on("press", event => {
+                promptRemoveAbility(event, ability, unit);
+            });
+    
+            const tapEvent = new Hammer(displayedAbility);
+    
+            tapEvent.on("tap", () => {
+                showDescription(ability, defaultText, el);
+            });
+
             currentAbilityDisplay.appendChild(displayedAbility);
             displayedAbility.classList.add('selected');
             mainAbility.classList.add('selected');
@@ -71,32 +89,39 @@ function populateAbilityUI(unit) {
 };
 
 function populateTypeUI(unit) {
-    //const fullTypeList = document.getElementById("currentTypeDisplay");
-    // const diceCount = document.getElementById("unit-dice");
+    const defaultText = "Tap to see unit type description.\nDouble tap to change unit type."
+    const el = document.getElementById("showTypeDescription");
 
     // Clear existing abilities in the UI
     currentTypeDisplay.innerHTML = "";
-    // diceCount.innerHTML = "";
-    // diceCount.innerHTML = unit.unitDice;
 
     unit.types.forEach(type => {
         const typeLI = document.createElement('li');
         typeLI.textContent = type.name;
 
-        typeLI.onclick = (evt) => clickType(evt, type, unit, false);
-        //typeLI.addEventListener('contextmenu', event => promptRemoveAbility(event, ability));
-        //typeLI.addEventListener('mouseover', event => showDescription(event, ability));
+        //typeLI.onclick = (evt) => clickType(evt, type, unit, false);
 
-        if (isTouchSupported()) {
-            addDoubleTapListener(typeLI, clickType, type, unit,);
-        }
+        const tapEvent = new Hammer(typeLI);
+
+        tapEvent.on("tap", event => {
+            if (event.tapCount >= 2) { // Double tap
+                if (type.isType) { return }
+
+                changeType(type, unit);
+                
+                setTimeout(() => { // We need a small delay before updating the dom
+                    document.getElementById("unitDice").value = unit.unitDice;
+                    document.getElementById("maxAbilities").value = unit.maxAbilities;
+                }, 100); 
+            } else { // Single tap
+                showDescription(type, defaultText, el);
+            }
+        });
 
         currentTypeDisplay.appendChild(typeLI);
         
         if (type.isType) {
             typeLI.classList.add('selected');
-            const defaultText = "Left click to see unit type description.\nShift + Left click to change unit type."
-            const el = document.getElementById("showTypeDescription");
             showDescription(type, defaultText, el)
         };
     });

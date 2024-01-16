@@ -43,7 +43,7 @@ function addUnit() {
                 console.error('Error adding force:', error);
             });
 
-        showEditForm(null, unit, card)
+        showEditForm(unit, card)
         window.scrollTo({
             top: 0,
             behavior: 'smooth'

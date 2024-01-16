@@ -2,16 +2,14 @@
 /* A collection of functions to handle the unit edit form. */
 /************************************************************/
 
-function showEditForm(event, unit, input) {
+function showEditForm(unit, section) {
     
     document.body.style.overflow = "hidden";
 
-    let target = null;
+    const target = section;
 
     // Use cloning to remove listeners on all other unit cards
     let editBtn = document.getElementById("save-edit");
-    // const newSave = editBtn.cloneNode(true);
-    // editBtn.parentNode.replaceChild(newSave, editBtn);
 
     const originalForm = document.getElementById("editForm");
 
@@ -30,16 +28,7 @@ function showEditForm(event, unit, input) {
         });
     });
 
-
-    if (event) {
-        event.preventDefault();
-        target = event.currentTarget;
-    } else if (input) {
-        target = input;
-    } else {console.log("Problem with showing Edit Form")}
-
     document.getElementById('editOverlay').style.display = 'flex';
-
 
     editBtn.addEventListener("click", function() {
         saveEdit(unit, target);
@@ -208,54 +197,32 @@ function removeImage(unit, target) {
     }
 };
 
-// document.body.addEventListener("click", (evt) => {
-    //closeBoxes(evt)
-    // const isExand = !!evt.target.closest(".expandable__title-bar");
-    // const expand = evt.target.closest(".expandable");
-
-
-function clickAbility(event, ability, unit, mobile) {
+function addAbility(ability, unit) {
     let bool = false;
+    if (ability.hasAbility) { return bool; }
 
-    const userInput = event.button;
-    const isListItem = event.target.tagName === 'LI';
-
-    // Left click = show ability description
-    if (isListItem && userInput === 0 && !event.shiftKey) {
-        const defaultText = "Left click an ability for desrciption.\nShift + Left click to add an ability.\nRight click to remove an ability."
-        const el = document.getElementById("showAbilityDescription");
-        showDescription(ability, defaultText, el);
-        //return true;
+    const condition1 = unit.abilities.filter(obj => obj.hasAbility).length < unit.maxAbilities;
+    if (!condition1) { 
+        alert(`This unit's max ability count is ${unit.maxAbilities}.`);
+        return bool; 
     };
 
-    // Shift + Left click (or double tap on mobile) = edit abilities
-    const checker1 = isListItem && userInput === 0 && event.shiftKey && mobile === false;
-    if (checker1 || mobile === true) { // mobile refers to checks to ensure it was a mobile double tap
-        if (ability.hasAbility) { return bool; }
-
-        const condition1 = unit.abilities.filter(obj => obj.hasAbility).length < unit.maxAbilities;
-        if (!condition1) { 
-            alert(`This unit's max ability count is ${unit.maxAbilities}.`);
-            return bool; 
-        };
-
-        const condition2 = ability.cost <= players[playerId].currentPoints;
-        if (!condition2) { 
-            alert(`Not enough points to purchase ability. Points remaining: ${players[playerId].currentPoints}`);
-            return bool;
-        };
-        
-        if (condition1 && condition2) {
-            ability.hasAbility = true;
-            populateAbilityUI(unit);
-        } else { conolse.error("No"); return bool;}
-        
-        if (!unit.calculatePoints()) {
-            ability.hasAbility = false;
-            unit.calculatePoints();
-            console.log("ability " + ability.name + " is",  ability.hasAbility);
-            populateAbilityUI(unit);
-        }
+    const condition2 = ability.cost <= players[playerId].currentPoints;
+    if (!condition2) { 
+        alert(`Not enough points to purchase ability. Points remaining: ${players[playerId].currentPoints}`);
+        return bool;
+    };
+    
+    if (condition1 && condition2) {
+        ability.hasAbility = true;
+        populateAbilityUI(unit);
+    } else { conolse.error("No"); return bool;}
+    
+    if (!unit.calculatePoints()) {
+        ability.hasAbility = false;
+        unit.calculatePoints();
+        console.log("ability " + ability.name + " is",  ability.hasAbility);
+        populateAbilityUI(unit);
     }
 };
 
@@ -325,14 +292,10 @@ function showDescription(input, text, el) {
 };
 
 function promptRemoveAbility(event, ability, unit) {
-    event.preventDefault(); // Prevent the default context menu from appearing
 
-    // console.log("Is this an event?", event)
-    // console.log("Is this an ability?", ability)
-    // console.log("Is this a unit?", unit)
     if (unit.abilities.filter(obj => obj.hasAbility).includes(ability)) {
         
-        document.getElementById('dialog__prompt').style.top = event.clientY - document.getElementById('dialog__prompt').clientHeight - 100 + "px";
+        document.getElementById('dialog__prompt').style.top = event.center.y - document.getElementById('dialog__prompt').clientHeight - 100 + "px";
         document.getElementById('dialog__prompt').show();
 
         // Set dialog message

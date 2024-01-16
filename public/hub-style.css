@@ -286,7 +286,7 @@ align-items: center;
     border-width: 0;
     padding: 0;
     font-family: var(--font-main);
-    /* background-color: rgba(0, 0, 0, 0.3); */
+    color: var(--primary-color);
     background-color: transparent;
     text-decoration: underline;
     cursor: pointer;
@@ -316,9 +316,9 @@ ul {
     gap: .3rem;
 }
 
-#currentAbilityDisplay {
+/* #currentAbilityDisplay {
     height: 3rem;
-}
+} */
 
 /* .short-list {
     height: 3rem;
@@ -370,8 +370,8 @@ li.selected:hover {
     text-align: center;
 }
 
-/* .dialog__prompt {
-    position: absolute;
+.dialog__prompt[open] {
+    /* position: absolute;
     top: 50%;
     left: calc(50% + 2.5rem);
     width: var(--card-width);
@@ -385,8 +385,18 @@ li.selected:hover {
     background-color: var(--orange-med);
     transition:.2s ease-in-out;
     border-radius: 10px;
-    border: #482D1B groove 2px;
-} */
+    border: #482D1B groove 2px; */
+    width: 100%;
+    height: 6rem;
+    align-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--orange-light);
+    color: var(--primary-color);
+    border-color: var(--brown-color);
+}
 
 #dialog__prompt-main {
     position: absolute;
@@ -785,8 +795,7 @@ transform: translateY(-1rem) scale(1.05);
             "b b"
             "c c"
             "d d"
-            "e e"
-            "f f";
+            "e e";
     padding-bottom: 1rem;
     color: #212121;
 }
@@ -809,6 +818,14 @@ transform: translateY(-1rem) scale(1.05);
     
 }
 
+.form__input {
+    width: 100%;
+    outline: none;
+}
+.form__input:focus {
+    outline: 2px solid var(--orange-med);
+}
+
 .type__container {
     grid-area: a;
 }
@@ -821,11 +838,8 @@ transform: translateY(-1rem) scale(1.05);
 .stats__container {
     grid-area: d;
 }
-.name__container {
-    grid-area: e;
-}
 .btn__container {
-    grid-area: f;
+    grid-area: e;
 }
 
 .btn__container .expandable__content-wrapper{
@@ -887,7 +901,7 @@ label.loader, .expandable__content-btn-holder button {
 
 input[type="text"],
 input[type="number"] {
-  background-color: #212121;
+  background-color: var(--primary-color);
   border: none;
   color: whitesmoke;
   font-size: var(--font-size-base);
@@ -1283,29 +1297,29 @@ to {
         padding: .5rem;
         font-size: var(--font-size-label-scaled);
     }
+
     .solid__content input {
         font-size: var(--font-size-scaled);
     }
 
-    #save-edit {
-        font-size: var(--font-size-label-scaled);
-    }
+    
     .expandable__content-btn-holder label, 
     .expandable__content-btn-holder button, 
     .expandable__content-btn-holder p {
         font-size: var(--font-size-scaled);
+    }
+
+    .solid__title-bar button, #name__header {
+        font-size: var(--font-size-label-scaled);
     }
 }
 
 @media (min-width: 900px) {
     #editForm {
         grid-template-areas:
-            "b a c"
-            "b d c"
-            "b e c"
-            "b f c"
-            "b x c"
-            "b x c"
-            "b x c";
+            "b e d"
+            "b a d"
+            "b c d"
+            "b x d";
     }
 }

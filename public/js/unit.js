@@ -482,23 +482,33 @@ class Force {
         section.id = `card-${this.unitID}`;
         const self = this;
 
-        // Right click to edit
-        section.oncontextmenu = function(event) {
-            showEditForm(event, self);
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        };
-
-        // Shift + Left click to delete
-        section.addEventListener('click', function(event) {
-            console.log("Left mouse clicked")
-            if (event.shiftKey && event.button === 0 && players[playerId].canEdit) {
-                console.log("Shift + Left mouse clicked")
+        // Press + hold to prompt deletion
+        const pressEvent = new Hammer(section, {
+            recognizers: [
+                [Hammer.Press, { time: 1200, threshold: 10 }]
+            ]
+        });
+        
+        pressEvent.on("press", () => {
+            if (players[playerId].canEdit) {
                 self.removeUnit.bind(self)(section);
             }
-            
+        });
+
+        // Tap to edit unit
+        const tapEvent = new Hammer(section);
+
+        tapEvent.on("tap", event => {
+            if (event.tapCount >= 2) {
+                // TODO: Activate unit or deploy it to map
+            } else {
+                console.log(self)
+                showEditForm(self, section);
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
         });
 
         // Status Bar
