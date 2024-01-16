@@ -113,25 +113,27 @@ function initGame() {
 };
 
 // Create Lobby button
-document.getElementById("make-group").addEventListener("click", function() {
+document.getElementById("makeLobby").addEventListener("click", function() {
     const code = getHash();
     console.log("Lobby code created:", code)
-    createMessageGroup(code);
+    createLobby(code);
 });
 
 // Join Lobby button
-document.getElementById("join-group").addEventListener("click", function() {
-    const code = document.getElementById('groupIdInput').value;
-    console.log("attempting to join a group with code:", code)
-    joinMessageGroup(code);
+const codeInput = document.getElementById("joinLobby");
+codeInput.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        const code = codeInput.value;
+        console.log("attempting to join a group with code:", code)
+        joinLobby(code);
+    }
 });
 
 // Sending messages
-document.getElementById('send-msg').addEventListener('click', function () {
-    const messageInput = document.getElementById('msgInput');
+const messageInput = document.getElementById('msgInput');
+messageInput.addEventListener('keydown', function (event) {
     const messageText = messageInput.value.trim();
-
-    if (messageText !== '') {
+    if (event.key === 'Enter' && messageText !== '') {
         sendMessage(messageText);
         messageInput.value = '';
     }

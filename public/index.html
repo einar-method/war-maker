@@ -20,14 +20,14 @@
     <div class= 'container'> 
     <section id="hub" class="page">
         <div class="page__welcome-header">
-            <h1>WAR|MAKER</h1>
+            <h1>WAR<span>|</span>MAKER</h1>
             <h2>Alpha v0.1: Unit Cards</h2>
         </div>        
     </section>
     
     <section id="roster" class="page grid">
         <div class="page__unit-header">
-            <h1>Unit | Roster</h1>
+            <h1>Unit<span>|</span>Roster</h1>
             <div id="points-display-box" class="points-display">
                 <!-- onclick="editPoints()" // used above before fb -->
                 <p>Points: <span id="points-display"></span></p>
@@ -40,38 +40,25 @@
     
     <section id= "battle" class="page">
         <div class="page__battle-header">
-            <h1>Campaign|Builder</h1>
+            <h1>Campaign<span>|</span>Builder</h1>
             
         </div>
         <div class="queue">
-            <!-- <button id="make-lobby">Make a Lobby</button>
-            <p id="lobby-label"></p>
 
-            <input type="text" id="lobbyIdInput" placeholder="Enter Lobby ID">
-            <button id="join-lobby">Join a Lobby</button> -->
+            <input id="player-name" class="in-page__input" maxlength="40" title="Your callsign, edit at will" type="text" />
 
-            <div class="player-info">
-                <div>
-                <label for="player-name">Callsign:</label>
-                <input id="player-name" maxlength="40" type="text" />
-                </div>
-                <div>
-                <button id="player-color">Change Color</button>
-                </div>
+            <div style="display: grid;gap: .2rem;grid-template-columns: auto 1fr;">
+                <button id="makeLobby" title="Make a new lobby & generate a join code">Make War</button>
+                <input type="text" id="joinLobby" class="in-page__input" title="Copy & paste, or type your code" placeholder="Enter a war code" autocomplete="off">
             </div>
+            
+            <!-- <p id="group-label"></p> -->
 
-            <button id="make-group">Make War</button>
-            <p id="group-label"></p>
+            
 
-            <input type="text" id="groupIdInput" placeholder="Enter a war code">
-            <button id="join-group">Join War</button>
-
-            <input type="text" id="msgInput" placeholder="Write a dispatch">
-            <button id="send-msg">Send Dispatch</button>
-            <section id="chat-feed">
-
-            </section>
-
+            <input type="text" id="msgInput" class="in-page__input" title="Simple message system" placeholder="Write a dispatch" autocomplete="off">
+            
+            <section id="chat-feed"></section>
 
         </div>
 
@@ -93,8 +80,8 @@
     </section> -->
 
     <section id= 'info' class="page">
-        <h1>Info | Holder</h1>
-        <p>Everything you might need to know will be here. EVERYTHING!</p>
+        <h1>Info<span>|</span>Holder</h1>
+        <p>Everything you might need to know will be here, mostly ...</p>
     </section>
     </div>
 
@@ -108,7 +95,7 @@
     </dialog>
 
     <dialog class="dialog__prompt" id="dialog__prompt-points">
-        <input type="number" name="point-modifier" id="point-modifier" title="Edit points here" max="100">
+        <input type="number" name="point-modifier" id="point-modifier" class="in-page__input" title="Edit points here" max="100">
         <div class="dialog__butons-container" id="button-container">
             <button onclick="resolveDialog(true)">Submit</button>
             <button onclick="resolveDialog(false)">Cancel</button>
@@ -231,7 +218,7 @@
                             </fieldset>
                             <fieldset>
                                 <legend>Name</legend>
-                                <input type="text" id="editTitle" class="form__input" name="editTitle">
+                                <input type="text" id="editTitle" class="form__input" maxlength="40" name="editTitle">
                             </fieldset>
                         </div>
                     </div>
@@ -240,7 +227,7 @@
                 <div class="btn__container">
                     <div class="solid__container">
                         <div class="solid__title-bar">
-                            <button type="button" id="save-edit">Finalize</button>
+                            <button type="button" id="save-edit">Save & Close</button>
                         </div>
                         <div class="expandable__content-wrapper solid__content">
                         </div>

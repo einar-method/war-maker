@@ -15,9 +15,9 @@ function handleRouting() {
 };
 
 // Function to create a new message group
-function createMessageGroup(groupName) {
+function createLobby(lobbyCode) {
   // Generate a random string for the lobby ID
-  const lobbyId = groupName;
+  const lobbyId = lobbyCode;
 
   // Get the current user's ID
   const userId = firebase.auth().currentUser.uid;
@@ -44,46 +44,47 @@ function createMessageGroup(groupName) {
       currentLobby: lobbyId,
   })
 
-  sendMessage("Your sharable war code is: " + groupName);
+  sendMessage("Your sharable war code is: " + lobbyCode);
 };
 
- // Function to join a message group using an invite code
- function joinMessageGroup(groupId) {
-  console.log("Group code:", groupId)
+ // Join a lobby using an invite code
+ function joinLobby(lobbyId) {
+  console.log("Lobby code:", lobbyId)
   console.log("Joining player ID:", playerId)
   // Get a reference to the messageGroups node in the database
   const messageGroupsRef = firebase.database().ref('messageGroups');
 
-  // Check if the groupId exists
-  messageGroupsRef.child(groupId).once('value')
+  // Check if the lobbyId exists
+  messageGroupsRef.child(lobbyId).once('value')
   .then((snapshot) => {
       const groupData = snapshot.val();
 
-      // Check if the groupId is valid
+      // Check if the lobbyId is valid
       if (groupData) {
       // Check if the current user is already a member of the group
       //TODO: this checker has stopped working!
       if (groupData.members && groupData.members.includes(playerId)) {
-          console.log('You are already a member of this group.');
+          console.log(playerId + " was already a member of lobby: " + lobbyId);
+          alert("You are already a member of this war.");
       } else {
           // Add the current user to the group members
           const updatedMembers = (groupData.members || []).concat(playerId);
           
           // Update the database with the new members list
-          messageGroupsRef.child(groupId).child('members').set(updatedMembers);
+          messageGroupsRef.child(lobbyId).child('members').set(updatedMembers);
 
           playerRef.update({
-              currentLobby: groupId,
+              currentLobby: lobbyId,
           });
 
-          console.log("Successfully joined lobby: " + groupId);
-          sendMessage("Has joined lobby:", groupId);
+          console.log("Successfully joined lobby: " + lobbyId);
+          sendMessage("Has joined the war!");
       }
       } else {
-      console.log('Invalid group ID. Please check and try again.');
+        alert("Invalid war code. Please check and try again.");
       }
   })
   .catch((error) => {
-      console.error('Error joining group:', error);
+      console.error('Error joining lobby:', error);
   });
 };

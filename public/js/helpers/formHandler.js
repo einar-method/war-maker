@@ -21,10 +21,12 @@ function showEditForm(unit, section) {
     // Replace the original form with the cloned form
     container.replaceChild(clonedForm, originalForm);
 
+    // Prevent the default form submission behavior within all form elms
     document.querySelectorAll("form").forEach(form => {
         form.addEventListener("submit", function(event) {
-          // Prevent the default form submission behavior
-          event.preventDefault();
+            if (form.closest("#editForm")) {
+                event.preventDefault();
+            }
         });
     });
 

@@ -45,6 +45,7 @@ function sendMessage(text) {
                                     messageElement.textContent = `${senderData.name}: ${message.text}`;
                                     chatFeed.appendChild(messageElement);
                                     console.log(`User ${senderData.name} sent the message:`, message.text);
+                                    chatFeed.scrollTo(0, chatFeed.scrollHeight);
                                 }
                             });
                         }
