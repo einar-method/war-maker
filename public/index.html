@@ -6,28 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <link rel="stylesheet" href="hub-style.css">
-    <title>WAR|MAKER</title>
+    <title>WAR | MAKER</title>
 </head>
 <body>
     <nav>
-        <a href="#hub"><ion-icon name="planet"></ion-icon></a>
-        <a href="#roster"><ion-icon name="add-circle"></ion-icon></a>
-        <a href="#battle"><ion-icon name="shield-half"></ion-icon></a>
+        <a href="#hub">Home Page</a>
+        <a href="#roster">Forces Sheet</a>
+        <a href="#war">War Sheet</a>
+        <a href="#battle">Battle Map</a>
         <!-- <a href="#third"><ion-icon name="musical-notes"></ion-icon></a> -->
-        <a href="#info"><ion-icon name="information-circle"></ion-icon></a>
+        <a href="#info">Info & FAQ</a>
     </nav>
        
     <div class= 'container'> 
     <section id="hub" class="page">
         <div class="page__welcome-header">
-            <h1>WAR<span>|</span>MAKER</h1>
+            <h1>W<span class="title__text-green">A</span>R | M<span class="title__text-camo">A</span>KER</h1>
+            <img class="logo__main" src="assets/imgs/War Make- logo-clear-trimmed.webp" alt="War Maker anvil">
             <h4>Alpha v0.1: Unit Cards & War Lobbies</h4>
         </div>        
     </section>
     
     <section id="roster" class="page grid">
         <div class="page__unit-header">
-            <h1>Unit<span>|</span>Roster</h1>
+            <h1><span class="title__text-camo">FORCES</span> | <span class="title__text-green">SHEET</span></h1>
             <div id="points-display-box" class="points-display">
                 <!-- onclick="editPoints()" // used above before fb -->
                 <p>Points: <span id="points-display"></span></p>
@@ -38,14 +40,80 @@
     
     </section>
     
+    <section id= "war" class="page war-sheet__container">
+        <div class="war-sheet__title-banner">
+            <div ></div>
+            <h1>War | Sheet</h1>
+            <div ></div>
+        </div>
+
+        <div class="war-sheet__header">
+            <div class="banner__block left orange"></div>
+            <p>WAR TITLE: <span id="warTitleSpan"></span></p>
+            <div class="banner__block right orange"></div>
+        </div>
+
+        <div class="war-sheet__premise">
+            <p class="war-sheet__paragrapgh">WAR PREMISE: <span id="warPremiseSpan"></span></p>
+        </div>
+        <div class="war-sheet__players">
+            <p>PLAYER 1: <span id="warP1Span"></span></p>
+            <p>PLAYER 1 ARMY: <span id="warP1ArmySpan"></span></p>
+            <p>PLAYER 2: <span id="warP2Span"></span></p>
+            <p>PLAYER 2 ARMY: <span id="warP2ArmySpan"></span></p>
+        </div>
+
+        <section class="war-sheet__battle-card spark-card">
+            <h2>BATTLE 1</h2>
+    
+            <p class="banner__block left orange large battle-name">THE SPARK</p>
+   
+            <fieldset class="war-sheet__battle-card__victory">
+                <legend >Victory</legend>
+                <input type="radio" id="p1SparkVictory" class="radio__button" name="sparkWinner" value="p1">
+                <label for="p1SparkVictory">Player 1</label><br>
+                <input type="radio" id="p2SparkVictory" class="radio__button" name="sparkWinner" value="p2">
+                <label for="p2SparkVictory">Player 2</label>
+            </fieldset>
+
+            <div class="war-sheet__battle-card__notes">
+                <p>NOTES</p>
+            </div>
+
+
+            <div class="war-sheet__battle-card__details">
+                <p class="war-sheet__paragrapgh">STORY: <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid aspernatur pariatur maiores, sint ut animi porro reprehenderit velit similique soluta? Accusantium modi vitae laudantium adipisci non a asperiores quis.</span></p>
+                <p class="war-sheet__one-line-p">TERRAIN: <span></span></p>
+                <p class="war-sheet__one-line-p">SPECIAL: <span></span></p>
+                <p class="war-sheet__one-line-p">TO WIN: <span></span></p>
+            </div>
+
+            <div class="war-sheet__battle-card__map">
+                <p>MAP</p>
+                <img src="" alt="Upload an image">
+            </div>
+
+            
+            
+        </section>
+            
+        </div>
+
+    </section>
+
     <section id= "battle" class="page">
         <div class="page__battle-header">
-            <h1>Campaign<span>|</span>Builder</h1>
-            
+            <h1>Battle | Map</h1>
         </div>
         <div class="queue">
 
-            <input id="player-name" class="in-page__input" maxlength="40" title="Your callsign, edit at will" type="text" />
+            <div style="display: grid;gap: .2rem;grid-template-columns: auto 1fr;">
+                <div class="info__button-box">
+                    <ion-icon id="info-callsign" class="info__button-icon" name="information-circle"></ion-icon>
+                </div>
+                <input id="player-name" class="in-page__input" maxlength="40" title="Your callsign, edit at will" type="text" />
+            </div>
+ 
 
             <div style="display: grid;gap: .2rem;grid-template-columns: auto 1fr;">
                 <button id="makeLobby" title="Make a new lobby & generate a join code">Make War</button>
@@ -54,21 +122,12 @@
             
             <!-- <p id="group-label"></p> -->
 
-            
-
             <input type="text" id="msgInput" class="in-page__input" title="Simple message system" placeholder="Write a dispatch" autocomplete="off">
             
             <section id="chat-feed"></section>
 
         </div>
 
-        <!-- <div id="canvas-container">
-            <canvas id="sharedCanvas" width="100" height="100"></canvas>
-        </div> -->
-        <!-- <canvas id="sharedCanvas" width="100" height="100" style="border:1px solid #000;"></canvas> -->
-
-        
-        <!-- <p>Under construction. Thank you for your patience.</p> -->
         <div class="game-container"></div>
     </section>
 
@@ -81,7 +140,7 @@
 
     <section id= 'info' class="page">
         <div class="page__battle-header">
-            <h1>Info<span>|</span>Holder</h1>
+            <h1>Info | Holder</h1>
         </div>
         <div class="info__container">
             <h2>Notice</h2>
