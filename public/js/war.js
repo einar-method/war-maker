@@ -1,10 +1,10 @@
 class War {
-    constructor() {
-        this.warID = getRndID();
+    constructor() { 
+        this.warID = getRndID() + getHash();
         this.name //random cool stuff
         this.description //?
         this.commanders = [];
-        this.getCommanders();
+        //this.getCommanders();
         this.spark = new Battle(this.warID, 1, this.commanders[0], this.commanders[1]);
         this.retaliate = new Battle(this.warID, 2, this.commanders[0], this.commanders[1]);
         this.openWar = new Battle(this.warID, 3, this.commanders[0], this.commanders[1]);
@@ -51,6 +51,13 @@ class War {
         return { check: false, turns: bat.turns };
       } else { return { check: true, turns: bat.turns, txt: bat.txt} }
   
+    }
+
+    generateRandomWar() {
+        this.spark.getBattleDetails();
+        this.retaliate.getBattleDetails();
+        this.openWar.getBattleDetails();
+        this.finalFront.getBattleDetails();
     }
 };
   

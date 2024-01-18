@@ -102,12 +102,12 @@ class AICommander {
         // };
 
         // Pass a ref to self and assign a unit tier ex: (this, 3)
-        this.allForces.push(...Array(this.forceCount).fill().map(() => new ForceOld(this, 1, {}, { side: this.side, color: this.color})));
+        this.allForces.push(...Array(this.forceCount).fill().map(() => new Force(this, 1, {}, { side: this.side, color: this.color})));
         // for (let i = 0; i < getRndInteger(1, 3); i++) {
         //     this.allForces.push(new Force(this, 2));
         // };
-        this.allForces.push(...Array(getRndInteger(1, 3)).fill().map(() => new ForceOld(this, 2, {}, { side: this.side, color: this.color})));
-        this.allForces.push(new ForceOld(this, 3, {}, { side: this.side, color: this.color}));
+        this.allForces.push(...Array(getRndInteger(1, 3)).fill().map(() => new Force(this, 2, {}, { side: this.side, color: this.color})));
+        this.allForces.push(new Force(this, 3, {}, { side: this.side, color: this.color}));
     };
 
     assignBattleForces(auto = false) { //100% automated atm

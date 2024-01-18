@@ -37,7 +37,7 @@ function setupWar() {
 
     const hank = currentWar.commanders[1].name + " starts with " + currentWar.commanders[1].allForces.length + " total forces."
     console.log(hank)
-    return { p1: scotty, p2: hank };
+    return { p1: scotty, p2: hank }; 
 }
 
 function startBattle() {

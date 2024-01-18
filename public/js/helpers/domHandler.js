@@ -223,3 +223,12 @@ function deleteCreatedElements() {
         editOverlay.parentNode.removeChild(editOverlay);
     }
 };
+
+// Dynamically resize textarea columns -- NOT NEEDED
+function setColumns(textarea) {
+    const containerWidth = textarea?.parentNode?.offsetWidth || 0;
+    const columnsMultiplier = 0.09;
+
+    console.log("resize of text area part 3")
+    textarea.cols = Math.floor(containerWidth * columnsMultiplier);
+};

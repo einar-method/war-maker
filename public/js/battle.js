@@ -1,4 +1,4 @@
-class Battle {
+class Battle {   
     constructor(warID, stage, p1, p2) {
       this.id = warID
       this.isCustom = false; //not needed for auto gen
@@ -61,7 +61,7 @@ class Battle {
             id: 1,
             name: "SPARK",
             description: "The enemy will have the advantage with position and numbers",
-            function: this.modifyForce(5, this.player2)
+            function: "" //this.modifyForce(5, this.player2)
           },
           {
             id: 2,
@@ -316,43 +316,43 @@ class Battle {
         },
         {
           "id": 2,
-          "description": "The battlefield will be a place of peace, easily razed",
+          "description": "The battlefield will be a place of peace, easily razed.",
           "name": "FINAL FRONT",
           "function": ""
         },
         {
           "id": 3,
-          "description": "The battle will take place in a wilderness location",
+          "description": "The battle will take place in a wilderness location.",
           "name": "FINAL FRONT",
           "function": ""
         },
         {
           "id": 4,
-          "description": "Terrible weather will batter all in a wilderness fight",
+          "description": "Terrible weather will batter all in a wilderness fight.",
           "name": "FINAL FRONT",
           "function": ""
         },
         {
           "id": 5,
-          "description": "The rubble of other conflicts will host the final fight",
+          "description": "The rubble of other conflicts will host the final fight.",
           "name": "FINAL FRONT",
           "function": ""
         },
         {
           "id": 6,
-          "description": "The battle is joined in the cramped spaces of an urban location",
+          "description": "The battle is joined in the cramped spaces of an urban location.",
           "name": "FINAL FRONT",
           "function": ""
         },
         {
           "id": 7,
-          "description": "A wide open natural space will host the battle",
+          "description": "A wide open natural space will host the battle.",
           "name": "FINAL FRONT",
           "function": ""
         },
         {
           "id": 8,
-          "description": "The battle will be waged on YOUR home ground",
+          "description": "The battle will be waged on YOUR home ground.",
           "name": "FINAL FRONT",
           "function": ""
         }
@@ -360,49 +360,49 @@ class Battle {
       this.finalChance = [
         {
           "id": 1,
-          "description": "Betrayed! The OVERLORD takes 2 turns before you",
+          "description": "Betrayed! The OVERLORD takes 2 turns before you.",
           "name": "FINAL FRONT",
           "function": ""
         },
         {
           "id": 2,
-          "description": "Fight with the fog. Any ability that uses 2 PENCILS use only 1",
+          "description": "Fight with the fog. Any ability that uses 2 PENCILS use only 1.",
           "name": "FINAL FRONT",
           "function": ""
         },
         {
           "id": 3,
-          "description": "Bomb. Give any 1 FORCE the SIEGE ABILITY",
+          "description": "Bomb. Give any 1 FORCE the SIEGE ABILITY.",
           "name": "FINAL FRONT",
           "function": ""
         },
         {
           "id": 4,
-          "description": "Bomb. Give any 2 FORCES the SIEGE ABILITY",
+          "description": "Bomb. Give any 2 FORCES the SIEGE ABILITY.",
           "name": "FINAL FRONT",
           "function": ""
         },
         {
           "id": 5,
-          "description": "Mercenary! Call RESERVE on any HERO a 4th time",
+          "description": "Mercenary! Call RESERVE on any HERO a 4th time.",
           "name": "FINAL FRONT",
           "function": ""
         },
         {
           "id": 6,
-          "description": "Hidden numbers. Replenish your first injured SQUAD to full",
+          "description": "Hidden numbers. Replenish your first injured SQUAD to full.",
           "name": "FINAL FRONT",
           "function": ""
         },
         {
           "id": 7,
-          "description": "Redeemed! When your last HERO falls, replace in a safe location",
+          "description": "Redeemed! When your last HERO falls, replace in a safe location.",
           "name": "FINAL FRONT",
           "function": ""
         },
         {
           "id": 8,
-          "description": "They’ve taken the bait! Take 2 turns before the OVERLORD",
+          "description": "They’ve taken the bait! Take 2 turns before the OVERLORD.",
           "name": "FINAL FRONT",
           "function": ""
         }
@@ -428,9 +428,10 @@ class Battle {
       let a = null;
       let d = null;
 
-      for (let i = 0; i < gridArr.length; i++) {
-        gridArr[i].forceInside = [];
-      }; // clear map
+      //for grid stuff
+      // for (let i = 0; i < gridArr.length; i++) {
+      //   gridArr[i].forceInside = [];
+      // }; // clear map
       
       // Get current stage and set it up
       if (this.stage === 1) {
@@ -488,6 +489,8 @@ class Battle {
         d = p1;
       }
   
+      console.log(this.player1)
+      console.log(this.player2)
       // Now that all mods are calc, assign battle forces
       if (!this.player1.assignBattleForces(isP1Automated) || !this.player2.assignBattleForces(isP2Automated)) {
         concludeWar();   
@@ -504,6 +507,29 @@ class Battle {
   
     modifyForce(num, player) {
       player.numbersMod = num;
+    }
+
+    getBattleDetails() {
+        if (this.stage === 1) {
+            this.name = "SPARK";
+			this.description1 = randomFromArray(this.sparkPositions).description;
+			this.description2 = randomFromArray(this.sparkNumbers).description;
+        };
+        if (this.stage === 2) {
+            this.name = "RETALIATE";
+			this.description1 = randomFromArray(this.retalStatus).description;
+			this.description2 = randomFromArray(this.retalPlan).description;
+        };
+        if (this.stage === 3) {
+            this.name = "OPEN WAR";
+			this.description1 = randomFromArray(this.openObj).description;
+			this.description2 = randomFromArray(this.openTerrain).description;
+        };
+        if (this.stage === 4) {
+            this.name = "FINAL FRONT";
+			this.description1 = randomFromArray(this.finalLocal).description;
+			this.description2 = randomFromArray(this.finalChance).description;
+        };
     }
 };
   

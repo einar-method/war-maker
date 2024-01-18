@@ -194,6 +194,7 @@ document.getElementById('cardContainer').appendChild(createAddCard());
 
 // For navigation functionality
 document.addEventListener("DOMContentLoaded", function () {
+
     // Get all anchor elements within the navigation
     const navLinks = document.querySelectorAll('nav a');
 
@@ -280,3 +281,98 @@ document.addEventListener("contextmenu", function (event) {
     event.preventDefault();
 });
 
+// Accordions
+const accordian = document.getElementsByClassName("accordion");
+//const defaultTabs = document.getElementsByClassName("tab__default");
+
+for (i = 0; i < accordian.length; i++) {
+    const defaultTabs = accordian[i].nextElementSibling.getElementsByClassName("tab__link tab__default");
+
+    accordian[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        defaultTabs[0].click();
+ 
+        const panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+            panel.style.maxHeight = null;
+        } else {
+            panel.style.maxHeight = panel.scrollHeight + "px";
+        } 
+    });
+}
+
+// Tabs
+function flipTab(evt, inputId) {
+    const parentElement = document.getElementById(inputId).parentNode;
+  
+    // Hide all tab content
+    const tabContent = parentElement.getElementsByClassName("tab__content");
+    for (i = 0; i < tabContent.length; i++) {
+      tabContent[i].style.display = "none";
+    }
+  
+    // Get all elements with class="tablinks" and remove the class "active"
+    const tabLinks = parentElement.getElementsByClassName("tab__link");
+    for (i = 0; i < tabLinks.length; i++) {
+      tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+    }
+  
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(inputId).style.display = "block";
+    evt.currentTarget.className += " active";
+};
+
+
+// Testing
+let isP1Automated = true;
+let isP2Automated = true;
+let war0;
+function step1() {
+    console.log("step 1 done")
+    // document.getElementById("log1").innerHTML = "step 1 done"
+
+    war0 = new War();
+    console.log(war0);
+
+    war0.commanders.push(new AICommander(createName(), null, { side: 1, color: "green"}));
+    war0.commanders.push(new AICommander(createName(), null, { side: 2, color: "red"}));
+    
+    const commander1 = war0.commanders[0]; //.name + " starts with " + war0.commanders[0].allForces.length + " total forces."
+
+    console.log("Player 1's name: " + commander1.name)
+    console.log(commander1.name + "'s tactics | " + commander1.tacticsText)
+    console.log(commander1.name + "'s personality | " + commander1.personalityText)
+    console.log(commander1.name + " starts with " + war0.commanders[0].allForces.length + " total forces.")
+
+    const commander2 = war0.commanders[1];
+    console.log("Player 2's name: " + commander2.name)
+    console.log(commander2.name + "'s tactics | " + commander2.tacticsText)
+    console.log(commander2.name + "'s personality | " + commander2.personalityText)
+    console.log(commander2.name + " starts with " + war0.commanders[0].allForces.length + " total forces.")
+ 
+
+    war0.generateRandomWar();
+    // document.getElementById("log1").innerHTML += "<br><br>✔️ "+battle.txt;
+    // document.getElementById("log1").innerHTML += "<br>✔️ "+battle.bat;
+    // document.getElementById("log1").innerHTML += "<br>✔️ "+battle.p1;
+    // document.getElementById("log1").innerHTML += "<br>✔️ "+battle.p2;
+
+    console.log(war0.spark.description1)
+    console.log(war0.spark.description2)
+    console.log(war0.retaliate.description1)
+    console.log(war0.retaliate.description2)
+    console.log(war0.openWar.description1)
+    console.log(war0.openWar.description2)
+    console.log(war0.finalFront.description1)
+    console.log(war0.finalFront.description2)
+
+    document.getElementById("warP1Span").innerText = commander1.name;
+    document.getElementById("warP2Span").innerText = commander2.name;
+    
+    document.getElementById("sparkStorySpan").innerText = war0.spark.description1 + " " + war0.spark.description2;
+    document.getElementById("retaliationStorySpan").innerText = war0.retaliate.description1 + " " + war0.retaliate.description2;
+    document.getElementById("openWarStorySpan").innerText = war0.openWar.description1 + " " + war0.openWar.description2;
+    document.getElementById("finalFrontStorySpan").innerText = war0.finalFront.description1 + " " + war0.finalFront.description2;
+
+
+}

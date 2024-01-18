@@ -41,6 +41,7 @@
     </section>
     
     <section id= "war" class="page war-sheet__container">
+        
         <div class="war-sheet__title-banner">
             <div ></div>
             <h1>War | Sheet</h1>
@@ -48,13 +49,14 @@
         </div>
 
         <div class="war-sheet__header">
-            <div class="banner__block left orange"></div>
+            <div class="banner__block left orange"><button onclick="step1()">Generate Random War</button></div>
             <p>WAR TITLE: <span id="warTitleSpan"></span></p>
-            <div class="banner__block right orange"></div>
+            <div class="banner__block right orange"><button>Get Invite Code</button></div>
         </div>
 
         <div class="war-sheet__premise">
-            <p class="war-sheet__paragrapgh">WAR PREMISE: <span id="warPremiseSpan"></span></p>
+            <p class="war-sheet__paragrapgh"><label for="warPremise"></label>WAR PREMISE: </label></span></p>
+            <textarea id="warPremise" name="warPremise" rows="4" class="textarea__dynamic" spellcheck="false">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur eum fugiat nesciunt nobis in, explicabo modi minus? Inventore maxime quaerat aspernatur eveniet veniam cumque, aperiam culpa libero, perferendis pariatur odio!</textarea>
         </div>
         <div class="war-sheet__players">
             <p>PLAYER 1: <span id="warP1Span"></span></p>
@@ -63,37 +65,187 @@
             <p>PLAYER 2 ARMY: <span id="warP2ArmySpan"></span></p>
         </div>
 
-        <section class="war-sheet__battle-card spark-card">
-            <h2>BATTLE 1</h2>
-    
-            <p class="banner__block left orange large battle-name">THE SPARK</p>
-   
-            <fieldset class="war-sheet__battle-card__victory">
-                <legend >Victory</legend>
-                <input type="radio" id="p1SparkVictory" class="radio__button" name="sparkWinner" value="p1">
-                <label for="p1SparkVictory">Player 1</label><br>
-                <input type="radio" id="p2SparkVictory" class="radio__button" name="sparkWinner" value="p2">
-                <label for="p2SparkVictory">Player 2</label>
-            </fieldset>
+        <section class="battle__cards">
+            <button class="accordion">BATTLE 1</button>
+            <div class="accordion__panel">
+                <div class="war-sheet__battle-card spark-card">
 
-            <div class="war-sheet__battle-card__notes">
-                <p>NOTES</p>
+                    <div class="tab">
+                        <button class="tab__link tab__default" onclick="flipTab(event, 'sparkDetails')">Details</button>
+                        <button class="tab__link" onclick="flipTab(event, 'sparkNotes')">Map & Notes</button>
+                    </div>
+
+                    <!-- Tab content -->
+                    <div id="sparkDetails" class="tab__content">
+                        <div style="display: flex;justify-content: space-between;">
+                            <h3 class="battle-name">THE SPARK</h3>
+                        
+                            <fieldset class="war-sheet__battle-card__victory">
+                                <legend >Victory</legend>
+                                <input type="radio" id="p1SparkVictory" class="radio__button" name="sparkWinner" value="p1">
+                                <label for="p1SparkVictory">Player 1</label><br>
+                                <input type="radio" id="p2SparkVictory" class="radio__button" name="sparkWinner" value="p2">
+                                <label for="p2SparkVictory">Player 2</label>
+                            </fieldset>
+                        </div>
+
+                        <div class="war-sheet__battle-card__details">
+                            <p class="war-sheet__paragrapgh">STORY: <span id="sparkStorySpan">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid aspernatur pariatur maiores, sint ut animi porro reprehenderit velit similique soluta? Accusantium modi vitae laudantium adipisci non a asperiores quis.</span></p>
+                            <p class="war-sheet__one-line-p">TERRAIN: <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus doloremque delectus voluptas ipsa voluptatibus ab, a unde. Eligendi impedit tempore labore libero iste, placeat cumque voluptas doloremque fugit tempora exercitationem.</span></p>
+                            <p class="war-sheet__one-line-p">SPECIAL: <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Amet quaerat facere cumque omnis dolorem tenetur eum. Explicabo saepe tempore temporibus, quibusdam voluptas, voluptatum dolorum sequi eaque porro, rerum in atque.</span></p>
+                            <p class="war-sheet__one-line-p">TO WIN: <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis accusantium aperiam nostrum voluptas provident exercitationem natus omnis magni. Eligendi quasi sapiente veritatis odio excepturi. Saepe eveniet dignissimos sequi ipsum voluptatum?</span></p>
+                        </div>
+                        
+                    </div>
+                    
+                    <div id="sparkNotes" class="tab__content">
+                        <div class="war-sheet__battle-card__notes">
+                            <p class="war-sheet__paragrapgh"><label for="sparkNotesText"></label>Notes: </label></span></p>
+                            <textarea id="sparkNotesText" name="sparkNotesText" rows="6" class="textarea__dynamic" spellcheck="false">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur eum fugiat nesciunt nobis in, explicabo modi minus? Inventore maxime quaerat aspernatur eveniet veniam cumque, aperiam culpa libero, perferendis pariatur odio!</textarea>
+                        </div>
+
+                        <div class="war-sheet__battle-card__map">
+                            <p>MAP</p>
+                            <img src="" alt="Upload an image">
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <button class="accordion">BATTLE 2</button>
+            <div class="accordion__panel">
+                <div class="war-sheet__battle-card retaliation-card">
 
-            <div class="war-sheet__battle-card__details">
-                <p class="war-sheet__paragrapgh">STORY: <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid aspernatur pariatur maiores, sint ut animi porro reprehenderit velit similique soluta? Accusantium modi vitae laudantium adipisci non a asperiores quis.</span></p>
-                <p class="war-sheet__one-line-p">TERRAIN: <span></span></p>
-                <p class="war-sheet__one-line-p">SPECIAL: <span></span></p>
-                <p class="war-sheet__one-line-p">TO WIN: <span></span></p>
+                    <div class="tab">
+                        <button class="tab__link tab__default" onclick="flipTab(event, 'retaliationDetails')">Details</button>
+                        <button class="tab__link" onclick="flipTab(event, 'retaliationNotes')">Map & Notes</button>
+                    </div>
+
+                    <!-- Tab content -->
+                    <div id="retaliationDetails" class="tab__content">
+                        <div style="display: flex;justify-content: space-between;">
+                            <h3 class="banner__block left orange large battle-name">RETALIATION</h3>
+                        
+                            <fieldset class="war-sheet__battle-card__victory">
+                                <legend >Victory</legend>
+                                <input type="radio" id="p1RetalVictory" class="radio__button" name="retalWinner" value="p1">
+                                <label for="p1RetalVictory">Player 1</label><br>
+                                <input type="radio" id="p2RetalVictory" class="radio__button" name="retalWinner" value="p2">
+                                <label for="p2RetalVictory">Player 2</label>
+                            </fieldset>
+                        </div>
+
+                        <div class="war-sheet__battle-card__details">
+                            <p class="war-sheet__paragrapgh">STORY: <span id="retaliationStorySpan">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid aspernatur pariatur maiores, sint ut animi porro reprehenderit velit similique soluta? Accusantium modi vitae laudantium adipisci non a asperiores quis.</span></p>
+                            <p class="war-sheet__one-line-p">TERRAIN: <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus doloremque delectus voluptas ipsa voluptatibus ab, a unde. Eligendi impedit tempore labore libero iste, placeat cumque voluptas doloremque fugit tempora exercitationem.</span></p>
+                            <p class="war-sheet__one-line-p">SPECIAL: <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Amet quaerat facere cumque omnis dolorem tenetur eum. Explicabo saepe tempore temporibus, quibusdam voluptas, voluptatum dolorum sequi eaque porro, rerum in atque.</span></p>
+                            <p class="war-sheet__one-line-p">TO WIN: <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis accusantium aperiam nostrum voluptas provident exercitationem natus omnis magni. Eligendi quasi sapiente veritatis odio excepturi. Saepe eveniet dignissimos sequi ipsum voluptatum?</span></p>
+                        </div>
+                        
+                    </div>
+                    
+                    <div id="retaliationNotes" class="tab__content">
+                        <div class="war-sheet__battle-card__notes">
+                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id repudiandae expedita blanditiis qui voluptas impedit earum voluptates aliquam dolores unde est enim porro ex accusantium, illum quas temporibus dignissimos laborum.</p>
+                        </div>
+
+                        <div class="war-sheet__battle-card__map">
+                            <p>MAP</p>
+                            <img src="" alt="Upload an image">
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="war-sheet__battle-card__map">
-                <p>MAP</p>
-                <img src="" alt="Upload an image">
-            </div>
-
             
+            <button class="accordion">BATTLE 3</button>
+            <div class="accordion__panel">
+                <div class="war-sheet__battle-card openWar-card">
+
+                    <div class="tab">
+                        <button class="tab__link tab__default" onclick="flipTab(event, 'openWarDetails')">Details</button>
+                        <button class="tab__link" onclick="flipTab(event, 'openWarNotes')">Map & Notes</button>
+                    </div>
+
+                    <!-- Tab content -->
+                    <div id="openWarDetails" class="tab__content">
+                        <div style="display: flex;justify-content: space-between;">
+                            <h3 class="banner__block left orange large battle-name">OPEN WAR</h3>
+                        
+                            <fieldset class="war-sheet__battle-card__victory">
+                                <legend >Victory</legend>
+                                <input type="radio" id="p1OpenWarVictory" class="radio__button" name="openWarWinner" value="p1">
+                                <label for="p1OpenWarVictory">Player 1</label><br>
+                                <input type="radio" id="p2OpenWarVictory" class="radio__button" name="openWarWinner" value="p2">
+                                <label for="p2OpenWarVictory">Player 2</label>
+                            </fieldset>
+                        </div>
+
+                        <div class="war-sheet__battle-card__details">
+                            <p class="war-sheet__paragrapgh">STORY: <span id="openWarStorySpan">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid aspernatur pariatur maiores, sint ut animi porro reprehenderit velit similique soluta? Accusantium modi vitae laudantium adipisci non a asperiores quis.</span></p>
+                            <p class="war-sheet__one-line-p">TERRAIN: <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus doloremque delectus voluptas ipsa voluptatibus ab, a unde. Eligendi impedit tempore labore libero iste, placeat cumque voluptas doloremque fugit tempora exercitationem.</span></p>
+                            <p class="war-sheet__one-line-p">SPECIAL: <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Amet quaerat facere cumque omnis dolorem tenetur eum. Explicabo saepe tempore temporibus, quibusdam voluptas, voluptatum dolorum sequi eaque porro, rerum in atque.</span></p>
+                            <p class="war-sheet__one-line-p">TO WIN: <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis accusantium aperiam nostrum voluptas provident exercitationem natus omnis magni. Eligendi quasi sapiente veritatis odio excepturi. Saepe eveniet dignissimos sequi ipsum voluptatum?</span></p>
+                        </div>
+                        
+                    </div>
+                    
+                    <div id="openWarNotes" class="tab__content">
+                        <div class="war-sheet__battle-card__notes">
+                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id repudiandae expedita blanditiis qui voluptas impedit earum voluptates aliquam dolores unde est enim porro ex accusantium, illum quas temporibus dignissimos laborum.</p>
+                        </div>
+
+                        <div class="war-sheet__battle-card__map">
+                            <p>MAP</p>
+                            <img src="" alt="Upload an image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="accordion">BATTLE 4</button>
+            <div class="accordion__panel">
+                <div class="war-sheet__battle-card finalFront-card">
+
+                    <div class="tab">
+                        <button class="tab__link tab__default" onclick="flipTab(event, 'finalFrontDetails')">Details</button>
+                        <button class="tab__link" onclick="flipTab(event, 'finalFrontNotes')">Map & Notes</button>
+                    </div>
+
+                    <!-- Tab content -->
+                    <div id="finalFrontDetails" class="tab__content">
+                        <div style="display: flex;justify-content: space-between;">
+                            <h3 class="banner__block left orange large battle-name">FINAL FRONT</h3>
+                        
+                            <fieldset class="war-sheet__battle-card__victory">
+                                <legend >Victory</legend>
+                                <input type="radio" id="p1FinalFrontVictory" class="radio__button" name="finalFrontWinner" value="p1">
+                                <label for="p1FinalFrontVictory">Player 1</label><br>
+                                <input type="radio" id="p2FinalFrontVictory" class="radio__button" name="finalFrontWinner" value="p2">
+                                <label for="p2FinalFrontVictory">Player 2</label>
+                            </fieldset>
+                        </div>
+
+                        <div class="war-sheet__battle-card__details">
+                            <p class="war-sheet__paragrapgh">STORY: <span id="finalFrontStorySpan">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae aliquid aspernatur pariatur maiores, sint ut animi porro reprehenderit velit similique soluta? Accusantium modi vitae laudantium adipisci non a asperiores quis.</span></p>
+                            <p class="war-sheet__one-line-p">TERRAIN: <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus doloremque delectus voluptas ipsa voluptatibus ab, a unde. Eligendi impedit tempore labore libero iste, placeat cumque voluptas doloremque fugit tempora exercitationem.</span></p>
+                            <p class="war-sheet__one-line-p">SPECIAL: <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Amet quaerat facere cumque omnis dolorem tenetur eum. Explicabo saepe tempore temporibus, quibusdam voluptas, voluptatum dolorum sequi eaque porro, rerum in atque.</span></p>
+                            <p class="war-sheet__one-line-p">TO WIN: <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis accusantium aperiam nostrum voluptas provident exercitationem natus omnis magni. Eligendi quasi sapiente veritatis odio excepturi. Saepe eveniet dignissimos sequi ipsum voluptatum?</span></p>
+                        </div>
+                        
+                    </div>
+                    
+                    <div id="finalFrontNotes" class="tab__content">
+                        <div class="war-sheet__battle-card__notes">
+                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Id repudiandae expedita blanditiis qui voluptas impedit earum voluptates aliquam dolores unde est enim porro ex accusantium, illum quas temporibus dignissimos laborum.</p>
+                        </div>
+
+                        <div class="war-sheet__battle-card__map">
+                            <p>MAP</p>
+                            <img src="" alt="Upload an image">
+                        </div>
+                    </div>
+                </div>
+            </div>
             
         </section>
             
@@ -139,11 +291,16 @@
     </section> -->
 
     <section id= 'info' class="page">
-        <div class="page__battle-header">
+        <div class="page__info-header">
             <h1>Info | Holder</h1>
         </div>
         <div class="info__container">
             <h2>Notice</h2>
+            <hr class="page__divider_small">
+            <p>ANNOUNCEMENT: per Runehammer's request, fonts and colors are being reformatted to align with the War | Maker game. Please excuse the mess while I reformat the color scheme.</p>
+            <hr class="page__divider_small">
+            <p>IN PROGRESS: increasing accessibility and reducing the "brutalistic" nature of the former design. The war sheet and forces sheet are currently be reworked to be more similar to the book.</p>
+            <hr class="page__divider_small">
             <p>This web app is a WIP by E•M (maker of the EZ Tools app). It has been optimized for desktop browsers, but does have some mobile support. In no way is this a finished project, nor does its creator have vast experience with web development.</p>
             <p>All information sent to the database is deleted when you refresh or close the browser, however, please do not send any private information. Stay safe friends. Speaking of, if you see trackers on this site, it's because it uses the Firebase realtime database (a Google service). In no way am I collecting analytics or any other data.</p>
             <p>Visit the <a href="https://github.com/einar-method/war-maker" target="_blank">GitHub page</a> if you'd like to check out my spaghetti code, <a href="https://github.com/einar-method/war-maker/issues" target="_blank">log an issue</a>, or <a href="https://github.com/einar-method/war-maker/discussions" target="_blank">start a discussion</a>.</p>
@@ -369,6 +526,10 @@
     <script src="./js/helpers/network.js"></script>
     <script src="./js/helpers/imageHandler.js"></script>
     <script src="./js/math/utils.js"></script>
+    <script src="./js/war.js"></script>
+    <script src="./js/battle.js"></script>
+    <script src="./js/combat.js"></script>
+    <script src="./js/commander.js"></script>
     <script src="./js/unit.js"></script>
     <script src="./app.js"></script>
     

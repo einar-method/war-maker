@@ -87,6 +87,7 @@ color: var(--primary-color);
 font-size: var(--font-size-title-scaled);
 font-family: 'destroy_earth_bb';
 text-decoration-line: none;
+white-space: nowrap;
 /* text-transform: uppercase; */
 }
 
@@ -139,6 +140,10 @@ input {
 
 } */
 
+label {
+    white-space: nowrap;
+}
+
 .radio__button {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -155,7 +160,24 @@ background-color: var(--orange-med);
 outline: var(--primary-color) solid 2px;
 }
 
+.textarea__dynamic {
+    background-color: transparent;
+    resize: none;
+    width: 100%;
+    /* border: var(--orange-light);
+    border-width: 2px;
+    border-style: solid; */
+    border-radius: 1px;
+    border: none;
+    padding: .2rem;
+    outline: 2px solid var(--primary-color);
+    transition: .3s all ease-in-out;
+}
 
+.textarea__dynamic:focus {
+    outline: 2px dashed var(--brown-color);
+    background-color: var(--gray);
+}
 
 /******************************/
 /* Nav Stuff */
@@ -289,13 +311,17 @@ align-items: center; */
 #info {
 background:var(--primary-color);
 display: grid;
-grid-template-rows: 5rem 1fr;
+grid-template-rows: 2rem 1fr;
 columns: 1fr;
 text-align: left;
 /* display: flex;
 flex-direction: column;
 justify-content: center;
 align-items: center; */
+}
+
+#info h2, #info h3 {
+    color: whitesmoke;
 }
 
 /**********************************************/
@@ -916,6 +942,18 @@ transform: translateY(-1rem) scale(1.05);
     padding-left: 1rem;
 }
 
+.page__info-header{
+    display: flex;
+    align-items: center;
+    max-height: 2rem;
+
+}
+.page__info-header h1{
+    color: var(--orange-med);
+    text-align: center;
+    width: 100%;
+}
+
 /* .player-info {
     position: relative;
     top: 0;
@@ -980,7 +1018,6 @@ transform: translateY(-1rem) scale(1.05);
     border-color: var(--tan-color);
     box-shadow: none;
 }
-
 
 /* ******************** */
 /* Edit Form */
@@ -1167,8 +1204,8 @@ input[type="number"] {
 /******************************/
 #war {
     background: var(--green-med);
-    padding-left: 2.5rem;
-    padding-right: 2rem;
+    padding-left: 1.3rem;
+    padding-right: .7rem;
     text-align: left;
     font-family: var(--font-header);
     font-weight: lighter;
@@ -1179,36 +1216,49 @@ input[type="number"] {
         "prm prm prm"
         "pla pla pla"
         "bt1 bt1 bt1"
-        "bt2 bt2 bt2"
-        "bt3 bt3 bt3"
-        "bt4 bt4 bt4";
+        "bt1 bt1 bt1"
+        "bt1 bt1 bt1"
+        "bt1 bt1 bt1"
+        ;
+    grid-template-rows: 1fr 1fr 1fr 1fr 8fr;
+    overflow-y: auto;
     
 }
 
 .war-sheet__title-banner {
     grid-area: tup;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
     place-content: center;
     background-color: black;
     color: whitesmoke;
     font-family: var(--font-header);
+    /* outline: #000 solid 1.3rem; */
 }
 .war-sheet__title-banner h1 {
     color: whitesmoke;
+    text-align: center;
 }
 
 .war-sheet__header {
     grid-area: tle;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 4fr 1fr;
     place-content: center;
     border-bottom: var(--gray) dashed 2px;
 }
 .banner__block {
-    width: 18vmin;
-    border-top: var(--green-med) dashed 2px;
-    border-bottom: var(--green-med) dashed 2px;
+width: 18vmin;
+border-top: var(--green-med) dashed 2px;
+border-bottom: var(--green-med) dashed 2px;
+display: flex;
+align-items: center;
+/* width: 100%; */
+}
+.war-sheet__header button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 }
 .orange {
     background-color: var(--orange-med);
@@ -1219,8 +1269,9 @@ input[type="number"] {
     text-align: left;
 }
 
-.spark-card {
+.battle__cards {
     grid-area: bt1;
+    /* grid-column: span 3; */
 }
 
 .war-sheet__players {
@@ -1250,15 +1301,24 @@ input[type="number"] {
 }
 
 .war-sheet__battle-card {
-    display: grid;
-    grid-template-areas: 
+    /* padding-left: .5rem;
+    padding-right: .5rem; */
+    /* display: grid;
+    grid-column: 1fr;
+    grid-template-rows: 1fr 2fr; */
+    /* grid-template-areas: 
         "bn bn bn"
         "des vic not"
         "det det img"
-        ;
+    ; */
+    /* gap: .3rem; */
 }
 
-.war-sheet__battle-card :nth-child(1) {
+.war-sheet__battle-card__notes p {
+    font-family: var(--font-main);
+}
+
+/* .war-sheet__battle-card :nth-child(1) {
     grid-area: bn;
 }
 .war-sheet__battle-card :nth-child(2) {
@@ -1277,7 +1337,7 @@ input[type="number"] {
 .war-sheet__battle-card :nth-child(6) {
     grid-area: img;
     
-}
+} */
 
 .war-sheet__battle-card__victory {
     padding-left: .2rem;
@@ -1290,11 +1350,14 @@ input[type="number"] {
 
 .war-sheet__battle-card__details p {
     border-bottom: var(--gray) dashed 2px;
+    padding-top: .3rem;
+    padding-bottom: .3rem;
     font-size: smaller;
+    color: var(--primary-color);
 }
 .war-sheet__battle-card__details span {
     font-family: var(--font-main);
-    font-size: smaller;
+    font-size: 1rem;
     font-weight: lighter;
 }
 
@@ -1302,6 +1365,92 @@ input[type="number"] {
     border: var(--gray) solid 1px;
     border-radius: 3px;
 }
+
+/******************************/
+/* Accordions */
+/******************************/
+.accordion {
+    background-color: var(--camo-color);
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 1rem 1rem .8rem 1rem;
+    text-align: left;
+    font-family: var(--font-header);
+    color: var(--primary-color);
+    display:block;
+    width: 100%;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+}
+
+.active, .accordion:hover {
+    background-color: var(--brown-light);
+}
+
+.accordion::after {
+    content: '\002B'; /* Unicode character for "plus" sign (+) */
+    font-size: 1rem;
+    /* color: red; */
+    float: right;
+    margin-left: 5px;
+}
+  
+.active::after {
+    content: "\2212"; /* Unicode character for "minus" sign (-) */
+}
+
+.accordion__panel {
+    /* padding: 0 18px; */
+    background-color: transparent;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+/******************************/
+/* Tabs */
+/******************************/
+ /* Style the tab */
+.tab {
+overflow: hidden;
+/* border: 1px solid var(--gray); */
+background-color: var(--camo-color);
+display: flex;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    font-family: var(--font-main);
+    font-weight: 600;
+    color: var(--primary-color);
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    width: 100%;
+    padding: .5rem;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+background-color: var(--orange-med);
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+background-color: var(--brown-light);
+}
+
+/* Style the tab content */
+.tab__content {
+display: none;
+padding: .5rem;
+border: 1px solid var(--gray);
+border-top: none;
+} 
  
 /* ******************** */
 /* Game Board */
@@ -1566,18 +1715,26 @@ to {
         height: min-content;
         width: 100%;
         border-right: none;
-        border-top: #482D1B double 5px;
+        border-top: none;
     }
 
     nav a {
-        font-size: 2.5rem;
+        font-size: 1rem;
         text-decoration: none;
-        padding: .3rem;
+        padding: .2rem;
         text-align: center;
         display: flex;
         justify-content: center;
         align-items: center; 
         align-items: center;
+
+        border-bottom: transparent dashed 2px;
+        border-top: transparent dashed 2px;
+    }
+
+    nav a:hover {
+        border-bottom: var(--orange-med) dashed 2px;
+        border-top: var(--orange-med) dashed 2px;
     }
 
     .page:target {
