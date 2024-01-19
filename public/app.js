@@ -142,7 +142,7 @@ messageInput.addEventListener('keydown', function (event) {
 const database = firebase.database();
 
 firebase.auth().onAuthStateChanged((user) => {
-    console.log(user)
+    //console.log(user)
     // need to add a try or check here for when null
     if (user) {
     //User logged in
@@ -213,11 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
             sections.forEach(function (section) {
                 // Check if the section matches the target ID
                 if (section.id === targetSectionId) {
-                    if (section.id === "roster" || section.id === "war" || section.id === "battle" || section.id === "info") {
-                        section.style.display = "grid";
-                    } else {
-                        section.style.display = "flex";
-                    } // TODO: we prob only need grid here, except for welcome page
+                    section.style.display = "grid";
                 } else {
                     section.style.display = 'none';
                 }
@@ -259,7 +255,6 @@ document.body.addEventListener("click", (evt) => {
 });
 
 window.onload = function() {
-    console.log("Window loaded");
 
     window.scrollTo({
         top: 0,
@@ -274,6 +269,34 @@ window.onload = function() {
     }
 
     handleRouting();
+
+    // Prevent autocomplete and spellcheck on all user inputs
+    const forms = document.querySelectorAll('form');
+    const textareas = document.querySelectorAll('textarea');
+    const inputs = document.querySelectorAll('input');
+
+    // Do something with the selected elements, for example, set autocomplete attribute
+    forms.forEach(function(form) {
+        form.setAttribute('autocomplete', 'off');
+        form.setAttribute('spellcheck', 'false');
+        //console.log(form)
+    });
+
+    textareas.forEach(function(textarea) {
+        textarea.setAttribute('autocomplete', 'off');
+        textarea.setAttribute('spellcheck', 'false');
+        textarea.value = "";
+        //console.log(textarea)
+    });
+
+    inputs.forEach(function(input) {
+        input.setAttribute('autocomplete', 'off');
+        input.setAttribute('spellcheck', 'false');
+        //console.log(input)
+    });
+
+    // Open welocme page login default tab
+    document.getElementById("tiredOfIds").click();
 }; // We might want to wrap all function on this page here
 
 // Disable Right Click
@@ -308,20 +331,19 @@ function flipTab(evt, inputId) {
     // Hide all tab content
     const tabContent = parentElement.getElementsByClassName("tab__content");
     for (i = 0; i < tabContent.length; i++) {
-      tabContent[i].style.display = "none";
+        tabContent[i].style.display = "none";
     }
   
     // Get all elements with class="tablinks" and remove the class "active"
     const tabLinks = parentElement.getElementsByClassName("tab__link");
     for (i = 0; i < tabLinks.length; i++) {
-      tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+        tabLinks[i].className = tabLinks[i].className.replace(" active", "");
     }
   
     // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(inputId).style.display = "block";
     evt.currentTarget.className += " active";
 };
-
 
 // Testing
 let isP1Automated = true;
@@ -366,13 +388,13 @@ function step1() {
     console.log(war0.finalFront.description1)
     console.log(war0.finalFront.description2)
 
-    document.getElementById("warP1Span").innerText = commander1.name;
-    document.getElementById("warP2Span").innerText = commander2.name;
+    document.getElementById("warP1Span").value = commander1.name;
+    document.getElementById("warP2Span").value = commander2.name;
     
-    document.getElementById("sparkStorySpan").innerText = war0.spark.description1 + " " + war0.spark.description2;
-    document.getElementById("retaliationStorySpan").innerText = war0.retaliate.description1 + " " + war0.retaliate.description2;
-    document.getElementById("openWarStorySpan").innerText = war0.openWar.description1 + " " + war0.openWar.description2;
-    document.getElementById("finalFrontStorySpan").innerText = war0.finalFront.description1 + " " + war0.finalFront.description2;
+    document.getElementById("sparkStorySpan").value = war0.spark.description1 + " " + war0.spark.description2;
+    document.getElementById("retaliationStorySpan").value = war0.retaliate.description1 + " " + war0.retaliate.description2;
+    document.getElementById("openWarStorySpan").value = war0.openWar.description1 + " " + war0.openWar.description2;
+    document.getElementById("finalFrontStorySpan").value = war0.finalFront.description1 + " " + war0.finalFront.description2;
 
 
 }

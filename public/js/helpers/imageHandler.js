@@ -49,3 +49,30 @@ function handleImageUpload(input, unit, target) {
         }
     }
 };
+
+function showImage(uploadId, displayId) {
+    const preview = document.getElementById(displayId);
+    preview.src = "";
+    //const file = document.querySelector("input[type=file]").files[0];
+    const file = document.getElementById(uploadId).files[0];
+    const reader = new FileReader();
+  
+    reader.addEventListener(
+      "load",
+      () => {
+        // convert image file to base64 string
+        preview.src = reader.result;
+      },
+      false,
+    );
+  
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+
+    URL.revokeObjectURL(file)
+};
+
+function removeImage(id) {
+    document.getElementById(id).src = "";
+}

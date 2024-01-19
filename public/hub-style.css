@@ -179,6 +179,21 @@ outline: var(--primary-color) solid 2px;
     background-color: var(--gray);
 }
 
+.image__input {
+    display: none;
+}
+
+.file__input {
+    cursor: pointer;
+}
+
+.file__label-text {
+    max-width: 50vmin;
+    overflow: auto;
+    white-space: nowrap; 
+    text-overflow: ellipsis;
+}
+
 /******************************/
 /* Nav Stuff */
 /******************************/
@@ -278,11 +293,72 @@ animation: fadeOut 0.5s forwards;
 #hub {
 /* background:var(--primary-color); */
 background: url("assets/imgs/wmbg.webp") center/cover repeat;
-display: flex;
+/* display: flex;
 flex-direction: column;
 justify-content: center;
-align-items: center;
+align-items: center; */
+display: grid;
+grid-template-columns: 1fr;
+grid-template-rows: 8fr 8rem;
 }
+
+.page__welcome-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.page__welcome-header h1 {
+    font-size: 10vw; 
+    text-align: center;
+    
+}
+/* #welcomeTab {
+    background-color: var(--camo-color);
+    color: var(--primary-color);
+    width: 100%;
+} */
+/* .welcome__login {
+    display: grid;
+    width: 100%;
+} */
+#makeLobbyTab {
+    color: var(--primary-color);
+    text-align: left;
+    padding: .3rem;
+    padding-left: 1.3rem;
+}
+#makeLobbyTab div{
+    display: flex;
+    gap: .3rem;
+    padding-bottom: .3rem;
+}
+#makeLobbyTab div button {
+    background-color: var(--orange-med);
+    font-family: var(--font-header);
+    padding: .2rem;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+#joinLobbyTab {
+    color: var(--primary-color);
+    width: 100%;
+    text-align: left;
+    padding: .3rem;
+    padding-left: 1.3rem;
+}
+#joinLobbyTab div{
+    display: flex;
+    gap: .3rem;
+    padding-bottom: .3rem;
+}
+
+/* #joinLobbyTab input {
+    padding-bottom: .3rem;
+} */
 
 #roster {
 /* background: var(--primary-color); */
@@ -328,7 +404,7 @@ align-items: center; */
 /* General Page Stuff */
 /**********************************************/
 .logo__main {
-    max-width: 175px;
+    width: 35vw;
 }
 .in-page__input {
     outline: 2px solid var(--brown-color);
@@ -384,10 +460,10 @@ color: var(--tan-color);
     font-weight: 300;
 }
 
-#makeLobby {
+/* #makeLobby {
     font-weight: normal;
     font-family: 'distrobold', sans-serif;
-}
+} */
 
 .info__container {
     /* position: relative;
@@ -896,11 +972,7 @@ transform: translateY(-1rem) scale(1.05);
     text-align: left;
 } */
 
-.page__welcome-header h1 {
-    font-size: 10vw; 
-    text-align: center;
-    width: 100%
-}
+
 /* .page__welcome-header h1 span {
     font-size: 10vw;
 } */
@@ -1133,6 +1205,8 @@ transform: translateY(-1rem) scale(1.05);
     display: none;
 }
 
+
+
 label.loader, .expandable__content-btn-holder button {
     padding: .3rem;
     font-weight: normal;
@@ -1210,7 +1284,7 @@ input[type="number"] {
     font-family: var(--font-header);
     font-weight: lighter;
     display: grid;
-    grid-template-areas: 
+    /* grid-template-areas: 
         "tup tup tup"
         "tle tle tle"
         "prm prm prm"
@@ -1219,21 +1293,25 @@ input[type="number"] {
         "bt1 bt1 bt1"
         "bt1 bt1 bt1"
         "bt1 bt1 bt1"
-        ;
+        ; */
+    grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 8fr;
+    gap: .5rem;
     overflow-y: auto;
     
 }
 
 .war-sheet__title-banner {
-    grid-area: tup;
+    /* grid-area: tup; */
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     place-content: center;
     background-color: black;
     color: whitesmoke;
     font-family: var(--font-header);
-    /* outline: #000 solid 1.3rem; */
+    padding: 1.3rem;
+    padding-bottom: 0;
+    outline: #000 solid 1.3rem;
 }
 .war-sheet__title-banner h1 {
     color: whitesmoke;
@@ -1241,9 +1319,11 @@ input[type="number"] {
 }
 
 .war-sheet__header {
-    grid-area: tle;
+    /* grid-area: tle; */
     display: grid;
     grid-template-columns: 1fr 4fr 1fr;
+    gap: .3rem;
+    padding-top: 1rem;
     place-content: center;
     border-bottom: var(--gray) dashed 2px;
 }
@@ -1265,39 +1345,48 @@ align-items: center;
 }
 
 .war-sheet__premise {
-    grid-area: prm;
+    /* grid-area: prm; */
     text-align: left;
 }
 
-.battle__cards {
-    grid-area: bt1;
-    /* grid-column: span 3; */
+.map-btns {
+    background-color: #000;
 }
 
 .war-sheet__players {
-    grid-area: pla;
-    display: grid;
-    grid-template-areas: 
-        "p1n p1a p1a"
-        "p2n p2a p2a"
-        ;
-        align-items: center;
+    /* grid-area: pla; */
+    display: flex;
+    flex-wrap: wrap;
+    gap: .3rem;
+    align-items: flex-start;
 }
 .war-sheet__players :nth-child(1) {
-    grid-area: p1n;
-    border-bottom: var(--gray) dashed 2px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    /* border-bottom: var(--gray) dashed 2px; */
 }
 .war-sheet__players :nth-child(2) {
-    grid-area: p1a;
-    border-bottom: var(--gray) dashed 2px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    /* border-bottom: var(--gray) dashed 2px; */
 }
 .war-sheet__players :nth-child(3) {
-    grid-area: p2n;
-    border-bottom: var(--gray) dashed 2px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    /* border-bottom: var(--gray) dashed 2px; */
 }
 .war-sheet__players :nth-child(4) {
-    grid-area: p2a;
-    border-bottom: var(--gray) dashed 2px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    /* border-bottom: var(--gray) dashed 2px; */
 }
 
 .war-sheet__battle-card {
@@ -1313,9 +1402,17 @@ align-items: center;
     ; */
     /* gap: .3rem; */
 }
-
-.war-sheet__battle-card__notes p {
-    font-family: var(--font-main);
+.war-sheet__battle-card__notes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /* flex-direction: column; */
+    gap: .3rem;
+}
+.war-sheet__paragrapgh {
+    font-family: var(--font-header);
+    color: var(--primary-color);
+    /* width: 100%; */
 }
 
 /* .war-sheet__battle-card :nth-child(1) {
@@ -1362,7 +1459,17 @@ align-items: center;
 }
 
 .war-sheet__battle-card__map {
-    border: var(--gray) solid 1px;
+    /* border: var(--gray) solid 1px; */
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 3px;
+}
+.war-sheet__battle-card__map img {
+    width: 100%;
+    height: 100%;
+    /* border: var(--primary-color) solid 2px; */
+    font-family: var(--font-main);
+    font-size: .8rem;
     border-radius: 3px;
 }
 

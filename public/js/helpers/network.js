@@ -45,6 +45,7 @@ function createLobby(lobbyCode) {
   })
 
   sendMessage("Your sharable war code is: " + lobbyCode);
+  document.getElementById("createLobbyStatus").innerHTML = `Your sharable war code is: <span style="font-weight: bold;">${lobbyCode}</span>`;
 };
 
  // Join a lobby using an invite code
@@ -64,24 +65,27 @@ function createLobby(lobbyCode) {
       // Check if the current user is already a member of the group
       //TODO: this checker has stopped working!
       if (groupData.members && groupData.members.includes(playerId)) {
-          console.log(playerId + " was already a member of lobby: " + lobbyId);
-          alert("You are already a member of this war.");
+			console.log(playerId + " was already a member of lobby: " + lobbyId);
+			alert("You are already a member of this war.");
+			document.getElementById("joinLobbyStatus").innerHTML = "You are already a member of this war.";
       } else {
-          // Add the current user to the group members
-          const updatedMembers = (groupData.members || []).concat(playerId);
-          
-          // Update the database with the new members list
-          messageGroupsRef.child(lobbyId).child('members').set(updatedMembers);
+			// Add the current user to the group members
+			const updatedMembers = (groupData.members || []).concat(playerId);
+			
+			// Update the database with the new members list
+			messageGroupsRef.child(lobbyId).child('members').set(updatedMembers);
 
-          playerRef.update({
-              currentLobby: lobbyId,
-          });
+			playerRef.update({
+				currentLobby: lobbyId,
+			});
 
-          console.log("Successfully joined lobby: " + lobbyId);
-          sendMessage("Has joined the war!");
+			console.log("Successfully joined lobby: " + lobbyId);
+			sendMessage("Has joined the war!");
+			document.getElementById("joinLobbyStatus").innerHTML = `You have joined a war loby with code: <span style="font-weight: bold;">${lobbyId}</span>`;
       }
       } else {
         alert("Invalid war code. Please check and try again.");
+		document.getElementById("joinLobbyStatus").innerHTML = "Invalid war code. Please check and try again.";
       }
   })
   .catch((error) => {
