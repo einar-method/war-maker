@@ -232,3 +232,29 @@ function setColumns(textarea) {
     console.log("resize of text area part 3")
     textarea.cols = Math.floor(containerWidth * columnsMultiplier);
 };
+
+function toggleAbilitySheet(elm, checker, parentClass) {
+    //console.log(elm)
+    parentId = findParentByClass(elm, parentClass).id;
+    
+    if(checker == true) {
+        document.body.style.overflow = "hidden";
+        const abilitySheet = document.getElementById("abilitySheet"+parentId);
+        //console.log(abilitySheet);
+        abilitySheet.style.display = "flex";
+        const editContainer = document.querySelector('.edit-container');
+        editContainer.style.overflow = "auto";
+        editContainer.scrollTop = 0;
+    } else if (checker == false) {
+        document.body.style.overflow = "unset";
+        const thisSheet = document.getElementById(parentId);
+        //console.log(thisSheet);
+        thisSheet.style.display = "none";
+    } else { console.error("Issue retrieving ability sheet") }
+
+    // document.getElementById("edit-container").style.overflow = "auto";
+    // const editContainer = document.querySelector('.edit-container');
+    // editContainer.style.overflow = "auto";
+    // editContainer.scrollTop = 0;
+};
+

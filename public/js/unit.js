@@ -476,7 +476,7 @@ class Force {
         this.imageSrc = defaultImages[Math.floor(Math.random() * defaultImages.length)];
     };
 
-    createCard() {
+    createCard() { 
         const section = document.createElement('section');
         section.className = 'card';
         section.id = `card-${this.unitID}`;

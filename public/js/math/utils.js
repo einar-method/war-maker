@@ -353,3 +353,22 @@ function limitMove(current, start, range) {
         };
     }
 };
+
+// Not effienct but works for the overlay toggles
+function findParentByClass(child, parentClass) {
+    let currentElement = child;
+
+    // Search through the DOM for a parent with the given class
+    while (currentElement !== null && !currentElement.classList.contains(parentClass)) {
+        currentElement = currentElement.parentNode;
+    }
+
+    // Check if we found an element with the matching class
+    if (currentElement !== null && currentElement.classList.contains(parentClass)) {
+        //console.log("Found parent with matching class:", currentElement);
+        return currentElement;
+    } else {
+        console.error("No parent with matching class found.");
+        return null;
+    }
+};

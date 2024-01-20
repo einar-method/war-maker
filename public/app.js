@@ -296,7 +296,7 @@ window.onload = function() {
     });
 
     // Open welocme page login default tab
-    document.getElementById("tiredOfIds").click();
+    //document.getElementById("tiredOfIds").click();
 }; // We might want to wrap all function on this page here
 
 // Disable Right Click
