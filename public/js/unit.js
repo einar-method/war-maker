@@ -190,13 +190,13 @@ class Force {
         this.freeRerolls = 10;
         this.types = [
             {
-                name: "TROOP",
-                isType: true,
+                name: "REGULAR",
+                isType: false,
                 typeCost: 3,
                 description: "REGULAR forces have 6 members, 1 ability, roll dice equal to current members, and lose 1 member per hit taken."
             },
             {
-                name: "HERO",
+                name: "HEROIC",
                 isType: false,
                 typeCost: 6,
                 description: "HEROIC forces have 1 member, 2 abilities, roll 3 dice, and take 3 hits to kill."
@@ -229,7 +229,7 @@ class Force {
     };
 
     calculatePoints() {
-        console.log(`${players[playerId].name}'s current points are: ${players[playerId].currentPoints}.`)
+        //console.log(`${players[playerId].name}'s current points are: ${players[playerId].currentPoints}.`)
  
         let condition = null;
         let checker;
@@ -241,7 +241,7 @@ class Force {
         const abilityPoints = tempAbility.map(abil => abil.cost).reduce((acc, cost) => acc + cost, 0);
 
         this.currentCost = abilityPoints + typePoints;
-        console.log("Current unit cost:", this.currentCost);
+        //console.log("Current unit cost:", this.currentCost);
      
         if (this.pastCost < this.currentCost) {
             checker = players[playerId].currentPoints -= this.currentCost - this.pastCost;
@@ -252,7 +252,7 @@ class Force {
 
         if (checker < 0) {
             //gtfo
-            console.log("too much")
+            //console.log("too much")
             condition = false;
             //return
         } else if (checker >= 0) {
@@ -265,7 +265,7 @@ class Force {
             })
 
             this.pastCost = this.currentCost;
-            console.log("Points were deducted. User's current point(s):", players[playerId].currentPoints)
+            //console.log("Points were deducted. User's current point(s):", players[playerId].currentPoints)
         }
         displayPoints(players[playerId].currentPoints);
         return condition; // give a bool to caller
@@ -279,19 +279,24 @@ class Force {
         this.isCovered = Math.random() < 0.5 ? false : true;
         this.reserveCount = Math.floor(Math.random() * 4);
         this.isSlowed = Math.random() < 0.5 ? false : true;
-        this.name = this.getCurrentType().name;
+        //this.name = this.getCurrentType().name;
         //this.attackRange = 0; Math.random() < 0.5 ? "🏹" : "⚔️";
     };
 
     calcStats() {
+        console.log("whole list before:", this.types)
         const type = this.types.filter(type => type.isType)[0];
         const matching = this.abilities.filter(ability => ability.hasAbility);
 
-        if (type.name === "TROOP") {
+        console.log("whats here:", type)
+        console.log(type.isType)
+
+        console.log("and the whole list after:", this.types)
+        if (type.name === "REGULAR") {
             console.log(`Unit ${this.unitID} is of type: ${type.name}`)
             this.maxAbilities = 1;
             this.unitDice = 6;
-        } else if (type.name === "HERO") {
+        } else if (type.name === "HEROIC") {
             this.maxAbilities = 2;
             this.unitDice = 3;
         } else if (type.name === "ELITE") {
@@ -315,10 +320,12 @@ class Force {
         }
 
         this.calculatePoints();
-        populateAbilityUI(this);
-        console.log(`Unit ${this.unitID} is of type: ${type.name}.`);
-        console.log(`Unit ${this.unitID}'s max abilitiy count is now ${this.maxAbilities}.`);
-        console.log(`Unit ${this.unitID}'s current ability list:`, this.abilities.filter(ability => ability.hasAbility))
+        //populateAbilityUI(this);
+        //updateCard(this);
+
+        //console.log(`Unit ${this.unitID} is of type: ${type.name}.`);
+        //console.log(`Unit ${this.unitID}'s max abilitiy count is now ${this.maxAbilities}.`);
+        //console.log(`Unit ${this.unitID}'s current ability list:`, this.abilities.filter(ability => ability.hasAbility))
     };
 
     getAbil() {
@@ -476,6 +483,476 @@ class Force {
         this.imageSrc = defaultImages[Math.floor(Math.random() * defaultImages.length)];
     };
 
+    createForceCard() {
+        const self = this;
+        const section = document.createElement('section');
+        section.classList.add('force__card');
+        section.id = `card-${this.unitID}`;
+
+        section.innerHTML = `
+        <div class="force__card__labeled-textareas">
+            <p class="war-sheet__paragrapgh">FORCE NAME: </p>
+            <textarea id="forceCardName" name="forceCardName" rows="1" class="textarea__dynamic" title="Change Force Name" placeholder="Name your force, or leave blank."></textarea>
+        </div>
+        <div class="force__card__inner">
+            <div class="force__card__radio-fieldset" id="forceRadioSet-${this.unitID}">
+                <div>
+                    <input type="radio" id="isRegularForce-${this.unitID}" class="radio__button" name="forceTypeRadio-${this.unitID}" value="regular">
+                    <label for="isRegularForce-${this.unitID}">REGULAR</label><br>
+                </div>
+                <div>
+                    <input type="radio" id="isHeroicForce-${this.unitID}" class="radio__button" name="forceTypeRadio-${this.unitID}" value="heroic">
+                    <label for="isHeroicForce-${this.unitID}">HEROIC</label>
+                </div>
+                <div>
+                    <input type="radio" id="isEliteForce-${this.unitID}" class="radio__button" name="forceTypeRadio-${this.unitID}" value="elite">
+                    <label for="isEliteForce-${this.unitID}" class="force__card__label">ELITE</label>
+                </div>
+            </div>
+            <div class="force__card__abilities">
+                <div class="force__card__labeled-textareas">
+                    <p class="war-sheet__paragrapgh">ABILITY 1: </p>
+                    <p class="force__card__ability-display"><span id="abil1Display" onclick="toggleAbilitySheet(this, true, 'force__card')">Click to open Ability Sheet.</span></p>
+                </div>
+                <div class="force__card__labeled-textareas">
+                    <p class="war-sheet__paragrapgh">ABILITY 2: </p>
+                    <p class="force__card__ability-display"><span id="abil2Display" onclick="toggleAbilitySheet(this, true, 'force__card')">Click to open Ability Sheet.</span></p>
+                </div>
+                <div class="force__card__labeled-textareas">
+                    <p class="war-sheet__paragrapgh">ABILITY 3: </p>
+                    <p class="force__card__ability-display"><span id="abil3Display" onclick="toggleAbilitySheet(this, true, 'force__card')">Click to open Ability Sheet.</span></p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <p class="war-sheet__paragrapgh">NOTES: </p>
+            <textarea id="forceCardNotes" name="forceCardNotes" rows="3" class="textarea__dynamic" title="Extra Force Notes" placeholder="Additional notes for this force."></textarea>
+        </div>
+        <fieldset class="force__card__stats__container">
+            <legend class="force__card__title-bar">STATS:</legend>
+                <fieldset>
+                    <legend>Attack Zone</legend>
+                    <label for="range">0 Melee | 1-5 Ranged</label>
+                    <input type="number" id="range" class="form__input" name="range" min="0" max="5" step="1" value="0">
+                </fieldset>
+                <fieldset>
+                    <legend>Unit Dice</legend>
+                    <label for="unitDice-${this.unitID}">Or # of members</label>
+                    <input type="number" id="unitDice-${this.unitID}" class="form__input" name="unitDice-${this.unitID}" min="0" max="6" step="1" value="6">
+                </fieldset>
+                <fieldset class="force__card__radio-fieldset">
+                    <legend>Condition</legend>
+                    <div>
+                        <input type="radio" id="notDead" class="radio__button" name="healthStatus" value="alive">
+                        <label for="notDead">Alive</label><br>
+                    </div>
+                    <div>
+                        <input type="radio" id="isDead" class="radio__button" name="healthStatus" value="dead">
+                        <label for="isDead">Dead</label>
+                    </div>
+                </fieldset>
+                <fieldset class="force__card__radio-fieldset">
+                    <legend>Activation</legend>
+                    <div >
+                        <input type="radio" id="notTurn" class="radio__button" name="turnStatus" value="inactive">
+                        <label for="notTurn">Inactive</label><br>
+                    </div>
+                    <div >
+                        <input type="radio" id="yesTurn" class="radio__button" name="turnStatus" value="active">
+                        <label for="yesTurn">Active</label>
+                    </div>
+                </fieldset>
+                <fieldset class="force__card__radio-fieldset">
+                    <legend>Cover</legend>
+                    <div>
+                        <input type="radio" id="hasCover" class="radio__button" name="coverStatus" value="cover">
+                        <label for="hasCover">Has Cover</label><br>
+                    </div>
+                    <div>
+                        <input type="radio" id="noCover" class="radio__button" name="coverStatus" value="noCover">
+                        <label for="noCover">No Cover</label>
+                    </div>
+                </fieldset>
+                <fieldset class="force__card__radio-fieldset">
+                    <legend>Movement</legend>
+                    <div>
+                        <input type="radio" id="normalSpeed" class="radio__button" name="speedStatus" value="noSlow">
+                        <label for="normalSpeed">Normal</label><br>
+                    </div>
+                    <div>
+                        <input type="radio" id="slowSpeed" class="radio__button" name="speedStatus" value="yesSlow">
+                        <label for="slowSpeed">Slowed</label>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Reserve Count</legend>
+                    <input type="number" id="editReserves" class="form__input" name="reserveCount" min="0" max="6" step="1" value="0">
+                </fieldset>
+                <fieldset>
+                    <legend>Free Rerolls</legend>
+                    <input type="number" id="freeRerolls" class="form__input" name="freeRerolls" min="0" max="10" step="1" value="0">
+                </fieldset>
+                <fieldset>
+                    <legend>Max Abilities</legend>
+                    <input type="number" id="maxAbilities-${this.unitID}" class="form__input" name="maxAbilities-${this.unitID}" min="1" max="5" step="1" value="1">
+                </fieldset>
+        </fieldset>
+        `;
+
+        // document.getElementById("forceRadioSet-"+self.unitID).addEventListener('change', function(event) {
+        //     const selectedValue = event.target.value;
+        //     console.log(selectedValue)
+        //     console.log(event)
+        //     console.error(self)
+        //     if (selectedValue === 'regular') {
+        //       // Do something for REGULAR option
+        //       console.log('Regular option selected');
+        //     } else if (selectedValue === 'heroic') {
+        //       // Do something for HEROIC option
+        //       console.log('Heroic option selected');
+        //     } else if (selectedValue === 'elite') {
+        //       // Do something for ELITE option
+        //       console.log('Elite option selected');
+        //     }
+    
+        //     if (self.getCurrentType().name == selectedValue.toUpperCase()) { console.log("works"); return; }
+    
+        //     //document.getElementById("forceRadioSet-"+self.unitID).querySelector(`.radio__button[value="${selectedValue}"]`).checked = true;
+        //     const newType = self.types.find(type => type.name == selectedValue.toUpperCase());
+    
+        //     console.log("type test:", self.types.find(type => type.name == selectedValue))
+        //     console.log(newType)
+    
+        //     changeType(newType, self);
+            
+        //     setTimeout(() => {
+        //         document.getElementById("selfDice-"+self.unitID).value = self.unitDice;
+        //         document.getElementById("maxAbilities-"+self.unitID).value = self.maxAbilities;
+        //     }, 100); 
+        // });
+
+        // document.getElementById("forceRadioSet-"+this.unitID).addEventListener('change', function(event) {
+        //     const selectedValue = event.target.value;
+
+        //     if (selectedValue === 'regular') {
+        //       // Do something for REGULAR option
+        //       console.log('Regular option selected');
+        //     } else if (selectedValue === 'heroic') {
+        //       // Do something for HEROIC option
+        //       console.log('Heroic option selected');
+        //     } else if (selectedValue === 'elite') {
+        //       // Do something for ELITE option
+        //       console.log('Elite option selected');
+        //     }
+        // });
+
+        // self.types.forEach(type => {
+        //     const typeLI = document.createElement('li');
+        //     typeLI.textContent = type.name;
+    
+        //     //typeLI.onclick = (evt) => clickType(evt, type, self, false);
+    
+        //     const tapEvent = new Hammer(typeLI);
+    
+        //     tapEvent.on("tap", event => {
+        //         if (event.tapCount >= 2) { // Double tap
+        //             if (type.isType) { return }
+    
+        //             changeType(type, self);
+                    
+        //             setTimeout(() => { // We need a small delay before updating the dom
+        //                 document.getElementById("unitDice").value = self.unitDice;
+        //                 document.getElementById("maxAbilities").value = self.maxAbilities;
+        //             }, 100); 
+        //         } else { // Single tap
+        //             showDescription(type, defaultText, el);
+        //         }
+        //     });
+    
+        //     currentTypeDisplay.appendChild(typeLI);
+            
+        //     if (type.isType) {
+        //         typeLI.classList.add('selected');
+        //         showDescription(type, defaultText, el)
+        //     };
+        // });
+
+        return section;
+    }
+
+    createForce() {
+        // Create the main section element with class "force__card" and id "exampleId"
+        const section = document.createElement('section');
+        section.classList.add('force__card');
+        section.id = `card-${this.unitID}`;
+    
+        // Create the div for labeled textareas with FORCE NAME
+        const labeledTextareasDiv = document.createElement('div');
+        labeledTextareasDiv.classList.add('force__card__labeled-textareas');
+    
+        const forceNameParagraph = document.createElement('p');
+        forceNameParagraph.classList.add('war-sheet__paragrapgh');
+        forceNameParagraph.textContent = 'FORCE NAME: ';
+    
+        const forceNameTextarea = document.createElement('textarea');
+        forceNameTextarea.id = 'forceCardName';
+        forceNameTextarea.name = 'forceCardName';
+        forceNameTextarea.rows = 1;
+        forceNameTextarea.classList.add('textarea__dynamic');
+        forceNameTextarea.title = 'Change Force Name';
+        forceNameTextarea.placeholder = 'Name your force, or leave blank.';
+    
+        labeledTextareasDiv.appendChild(forceNameParagraph);
+        labeledTextareasDiv.appendChild(forceNameTextarea);
+    
+        const forceCardInner = document.createElement("div");
+        forceCardInner.classList.add("force__card__inner");
+
+
+        // Create the div for radio buttons with force type
+        const radioFieldsetDiv = document.createElement('div');
+        radioFieldsetDiv.classList.add('force__card__radio-fieldset');
+    
+        const forceTypes = ['regular', 'heroic', 'elite'];
+    
+        forceTypes.forEach(type => {
+            const radioDiv = document.createElement('div');
+            const radioInput = document.createElement('input');
+            radioInput.type = 'radio';
+            radioInput.id = `is${type.charAt(0).toUpperCase() + type.slice(1)}Force`;
+            radioInput.classList.add('radio__button');
+            radioInput.name = 'forceTypeRadio';
+            radioInput.value = type;
+    
+            const radioLabel = document.createElement('label');
+            radioLabel.htmlFor = `is${type.charAt(0).toUpperCase() + type.slice(1)}Force`;
+            radioLabel.textContent = type.toUpperCase();
+    
+            radioDiv.appendChild(radioInput);
+            radioDiv.appendChild(radioLabel);
+    
+            radioFieldsetDiv.appendChild(radioDiv);
+        });
+    
+        // Create the div for abilities
+        const abilitiesDiv = document.createElement('div');
+        abilitiesDiv.classList.add('force__card__abilities');
+    
+        for (let i = 1; i <= 3; i++) {
+            const abilityLabeledTextareasDiv = document.createElement('div');
+            abilityLabeledTextareasDiv.classList.add('force__card__labeled-textareas');
+    
+            const abilityParagraph = document.createElement('p');
+            abilityParagraph.classList.add('war-sheet__paragrapgh');
+            abilityParagraph.textContent = `ABILITY ${i}: `;
+    
+            const abilityDisplay = document.createElement('p');
+            abilityDisplay.classList.add('force__card__ability-display');
+    
+            const abilitySpan = document.createElement('span');
+            abilitySpan.id = `abil${i}Display`;
+            abilitySpan.onclick = function () {
+                toggleAbilitySheet(this, true, 'force__card');
+            };
+            abilitySpan.textContent = 'Click to open Ability Sheet.';
+    
+            abilityDisplay.appendChild(abilitySpan);
+            abilityLabeledTextareasDiv.appendChild(abilityParagraph);
+            abilityLabeledTextareasDiv.appendChild(abilityDisplay);
+            abilitiesDiv.appendChild(abilityLabeledTextareasDiv);
+        }
+
+        // Add force type and ability area to inner div
+        forceCardInner.appendChild(radioFieldsetDiv);
+        forceCardInner.appendChild(abilitiesDiv);
+    
+        // Create the div for NOTES
+        const notesDiv = document.createElement('div');
+        const notesParagraph = document.createElement('p');
+        notesParagraph.classList.add('war-sheet__paragrapgh');
+        notesParagraph.textContent = 'NOTES: ';
+    
+        const notesTextarea = document.createElement('textarea');
+        notesTextarea.id = 'forceCardNotes';
+        notesTextarea.name = 'forceCardNotes';
+        notesTextarea.rows = 3;
+        notesTextarea.classList.add('textarea__dynamic');
+        notesTextarea.title = 'Extra Force Notes';
+        notesTextarea.placeholder = 'Additional notes for this force.';
+    
+        notesDiv.appendChild(notesParagraph);
+        notesDiv.appendChild(notesTextarea);
+    
+        // Create the fieldset for stats
+        const statsFieldset = document.createElement('fieldset');
+        statsFieldset.classList.add('force__card__stats__container');
+    
+        const statsLegend = document.createElement('legend');
+        statsLegend.classList.add('force__card__title-bar');
+        statsLegend.textContent = 'STATS:';
+    
+    
+        // Create fieldsets for various stats
+        const statsFieldsets = [
+            { legend: 'Attack Zone', label: '0 Melee | 1-5 Ranged', id: 'range', min: 0, max: 5, step: 1, value: 0 },
+            { legend: 'Unit Dice', label: 'Or # of members', id: 'unitDice', min: 0, max: 6, step: 1, value: 6 },
+            { legend: 'Condition', radios: ['Alive', 'Dead'], names: ['healthStatus'], values: ['alive', 'dead'] },
+            { legend: 'Activation', radios: ['Inactive', 'Active'], names: ['turnStatus'], values: ['inactive', 'active'] },
+            { legend: 'Cover', radios: ['Has Cover', 'No Cover'], names: ['coverStatus'], values: ['cover', 'noCover'] },
+            { legend: 'Movement', radios: ['Normal', 'Slowed'], names: ['speedStatus'], values: ['noSlow', 'yesSlow'] },
+            { legend: 'Reserve Count', label: '', id: 'editReserves', min: 0, max: 6, step: 1, value: 0 },
+            { legend: 'Free Rerolls', label: '', id: 'freeRerolls', min: 0, max: 10, step: 1, value: 0 },
+            { legend: 'Max Abilities', label: '', id: 'maxAbilities', min: 1, max: 5, step: 1, value: 1 },
+        ];
+        
+        statsFieldsets.forEach(fieldsetInfo => {
+            const innerField = document.createElement('fieldset');
+            innerField.innerHTML = `<legend>${fieldsetInfo.legend}</legend>`;
+        
+            if (fieldsetInfo.radios) {
+                for (let i = 0; i < fieldsetInfo.radios.length; i++) {
+                    const radioDiv = document.createElement('div');
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.id = fieldsetInfo.radios[i].toLowerCase();
+                    radioInput.classList.add('radio__button');
+                    radioInput.name = fieldsetInfo.names[0];
+                    radioInput.value = fieldsetInfo.values[i];
+        
+                    const radioLabel = document.createElement('label');
+                    radioLabel.htmlFor = fieldsetInfo.radios[i].toLowerCase();
+                    radioLabel.textContent = fieldsetInfo.radios[i];
+        
+                    radioDiv.appendChild(radioInput);
+                    radioDiv.appendChild(radioLabel);
+                    innerField.appendChild(radioDiv);
+                    innerField.classList.add("force__card__radio-fieldset")
+                }
+            } else {
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.id = fieldsetInfo.id;
+                input.classList.add('form__input');
+                input.name = fieldsetInfo.id;
+                input.min = fieldsetInfo.min;
+        
+                if (fieldsetInfo.max) {
+                    input.max = fieldsetInfo.max;
+                }
+        
+                if (fieldsetInfo.step) {
+                    input.step = fieldsetInfo.step;
+                }
+        
+                if (fieldsetInfo.value !== undefined) {
+                    input.value = fieldsetInfo.value;
+                }
+        
+                const label = document.createElement('label');
+                label.htmlFor = fieldsetInfo.id;
+                label.textContent = fieldsetInfo.label;
+        
+                innerField.appendChild(label);
+                innerField.appendChild(input);
+            }
+        
+            statsFieldset.appendChild(statsLegend);
+            statsFieldset.appendChild(innerField);
+        });
+    
+        // Append all created elements to the main section
+        section.appendChild(labeledTextareasDiv);
+        section.appendChild(forceCardInner);
+        section.appendChild(notesDiv);
+        section.appendChild(statsFieldset);
+    
+        // Return the entire section
+        return section;
+    }
+
+    buildAbilitySheet() {
+        const self = this;
+        const overlay = document.createElement("div");
+        overlay.classList.add("edit-overlay");
+        overlay.id = "abilitySheet"+this.unitID;
+
+        const container = document.createElement("div");
+        container.classList.add("edit-container");
+
+        // Header elements
+        const header = document.createElement("div");
+        header.classList.add("ability__sheet__header-footer");
+
+        header.innerHTML = `
+            <div class="orange"></div>
+            <h1><span class="title__text-green">ABILITY</span> <span class="title__text-camo">SHEET</span></h1> 
+            <div class="orange"></div>  
+        `;
+
+        // Footer elements
+        const footer = document.createElement("div");
+        footer.classList.add("ability__sheet__header-footer");
+        footer.innerHTML = `
+            <div class="orange"></div>
+            <button type="button" onclick="toggleAbilitySheet(this, false, 'edit-overlay')"><h1><span class="title__text-green">Save</span> & <span class="title__text-camo">Close</span></h1></button>
+            <div class="orange"></div>
+        `;
+
+        const main = document.createElement("div");
+        const list = document.createElement("ul");
+        list.classList.add("ability__sheet__list");
+   
+        //const currentAbilityDisplay = document.getElementById("currentAbilityDisplay");
+        //const defaultText = "Tap ability for desrciption.\nDouble tap an ability to add it.\nPress and hold to remove an ability."
+        //const el = document.getElementById("showAbilityDescription");
+
+        // Clear existing abilities in the UI
+        //list.innerHTML = '';
+        //currentAbilityDisplay.innerHTML = '';
+        document.body.appendChild(overlay);
+        overlay.appendChild(container);
+        container.appendChild(header);
+        container.appendChild(main);
+        main.appendChild(list);
+        container.appendChild(footer);
+
+        this.abilities.forEach(ability => {
+            const inner = document.createElement("div");
+            inner.innerHTML = `
+            <label class="switch">
+                <input type="checkbox" id="abilityToggle${ability.abilityID}" autocomplete="off">
+                <span class="slider"></span>
+            </label>
+            <li>${ability.name}: ${ability.description}</li>
+            `;
+
+            list.appendChild(inner);
+            
+            const toggle = document.getElementById("abilityToggle"+ability.abilityID);
+
+            if (ability.hasAbility) {
+                // toggle slider
+                toggle.checked = true;
+            } else { toggle.checked = false }
+
+            toggle.addEventListener('change', function() {
+                const isChecked = toggle.checked;
+                console.log(`Ability ${ability.name} is now ${isChecked ? 'checked' : 'unchecked'}`);
+                if (isChecked == true) {
+                    addAbility(ability, self);
+                    return;
+                }
+                if (isChecked == false) {
+                    promptRemoveAbility(inner, ability, self, toggle);
+                }
+            });
+
+            
+        });
+
+        
+    }
+    
     createCard() { 
         const section = document.createElement('section');
         section.className = 'card';

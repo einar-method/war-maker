@@ -59,7 +59,7 @@ function saveEdit(unit, target) {
         unit.name = newTitle;
         target.querySelector('.card-title').innerHTML = unit.name;
     };
-    if (newTitle === "" || newTitle === null || newTitle === "TROOP" || newTitle === "HERO" || newTitle === "ELITE") {
+    if (newTitle === "" || newTitle === null || newTitle === "REGULAR" || newTitle === "HEROIC" || newTitle === "ELITE") {
         unit.name = unit.getCurrentType().name;
         target.querySelector('.card-title').innerHTML = unit.name;
     };
@@ -217,44 +217,51 @@ function addAbility(ability, unit) {
     
     if (condition1 && condition2) {
         ability.hasAbility = true;
-        populateAbilityUI(unit);
+        //populateAbilityUI(unit);
     } else { conolse.error("No"); return bool;}
     
-    if (!unit.calculatePoints()) {
+    if (!calcPointCost(unit)) {
         ability.hasAbility = false;
-        unit.calculatePoints();
+        calcPointCost(unit);
         console.log("ability " + ability.name + " is",  ability.hasAbility);
-        populateAbilityUI(unit);
+        //populateAbilityUI(unit);
     }
+
+    updateUnitOnServer(unit);
+    setTimeout(() => {
+        updateForceCard(units[unit.unitID]);
+    }, 100); 
 };
 
-function changeType(type, unit) {
-    const state = unit.types.map(obj => ({ ...obj }));
+// function changeType(type, unit) {
+//     const state = unit.types.map(obj => ({ ...obj }));
 
-    unit.types.forEach(function(element) {
-        if (element != type) {
-            element.isType = false;
-            console.log("Changed " + element.name + " to:", element.isType);
-        } else { 
-            type.isType = true;
-            console.log("Changed " + element.name + " to:", element.isType);
-        }
-    });
+//     //console.log("type check:", type)
+//     unit.types.forEach(function(element) {
+//         if (element != type) {
+//             element.isType = false;
+//             //console.log("Changed " + element.name + " to:", element.isType);
+//         } else { 
+//             type.isType = true;
+//             //console.log("Changed " + element.name + " to:", element.isType);
+//         }
+//     });
 
-    if (unit.calculatePoints()) {
-        //console.log("There were enough points for calculation")
-    } else if (!unit.calculatePoints()) {
-        unit.types.forEach(function(element, index) {
-            element.isType = state[index].isType;
-            console.log("Reverted " + element.name + " to:", state[index].isType);
-        });
-        unit.calculatePoints();
-        alert("Not enough points to upgrade unit type.")
-    }
-    
-    unit.calcStats();
-    populateTypeUI(unit);
-};
+//     if (unit.calculatePoints()) {
+//         //console.log("There were enough points for calculation")
+//     } else if (!unit.calculatePoints()) {
+//         unit.types.forEach(function(element, index) {
+//             element.isType = state[index].isType;
+//             //console.log("Reverted " + element.name + " to:", state[index].isType);
+//         });
+//         unit.calculatePoints();
+//         alert("Not enough points to upgrade unit type.")
+//     }
+//     //updateUnitOnServer(unit);
+//     unit.calcStats();
+//     console.log("finished chainging type")
+//     //populateTypeUI(unit);
+// };
 
 function clickType(event, type, unit, mobile) { // mobile refers to checks to ensure it was a mobile double tap
     const userInput = event.button;
@@ -293,11 +300,18 @@ function showDescription(input, text, el) {
     
 };
 
-function promptRemoveAbility(event, ability, unit) {
+function promptRemoveAbility(elm, ability, unit, toggle) { //elm for positioning
+
+    const screenH = window.innerHeight + window.scrollY;
+    let position = elm.getBoundingClientRect().bottom + window.scrollY + 5;
+    if ((position + 100) > screenH) {
+        position = elm.getBoundingClientRect().top + window.scrollY - 101; // I think the dialog is 96px tall
+    }
 
     if (unit.abilities.filter(obj => obj.hasAbility).includes(ability)) {
-        
-        document.getElementById('dialog__prompt').style.top = event.center.y - document.getElementById('dialog__prompt').clientHeight - 100 + "px";
+
+        document.getElementById('dialog__prompt').style.top = position + "px";
+
         document.getElementById('dialog__prompt').show();
 
         // Set dialog message
@@ -315,10 +329,17 @@ function promptRemoveAbility(event, ability, unit) {
 
             if (result) {
                 ability.hasAbility = false;
-                unit.calculatePoints();
-                populateAbilityUI(unit);
-            } else { console.log("Dialog closed without removing ability.") }
+                calcPointCost(unit);
+                //populateAbilityUI(unit);
+            } else { 
+                toggle.checked = true;
+                console.log("Dialog closed without removing ability.") 
+            }
             };
+            updateUnitOnServer(unit);
+            setTimeout(() => {
+                updateForceCard(units[unit.unitID]);
+            }, 100); 
         });
     } // else do nothing
 };

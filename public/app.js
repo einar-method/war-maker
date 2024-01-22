@@ -24,6 +24,9 @@ let playerId;
 let playerRef;
 let players = {};
 let playerElements = {};
+let unitRef;
+let units = {};
+let unitElements = {};
 
 const gameContainer = document.querySelector(".game-container");
 const playerNameInput = document.querySelector("#player-name");
@@ -55,7 +58,7 @@ function initGame() {
             const top = 16 * characterState.y - 4 + "px";
             el.style.transform = `translate3d(${left}, ${top}, 0)`;
         })
-    })
+    });
     allPlayersRef.on("child_added", (snapshot) => {
         //Fires whenever a new player is added to the tree
         const addedPlayer = snapshot.val();
@@ -83,7 +86,7 @@ function initGame() {
         characterElement.style.transform = `translate3d(${left}, ${top}, 0)`;
         gameContainer.appendChild(characterElement);
         
-    })
+    });
 
     //Remove character DOM element after they leave
     allPlayersRef.on("child_removed", (snapshot) => {
@@ -91,7 +94,7 @@ function initGame() {
 
         gameContainer.removeChild(playerElements[removedKey]);
         delete playerElements[removedKey];
-    })
+    });
 
     //Updates player name with text input
     playerNameInput.addEventListener("change", (e) => {
@@ -100,7 +103,7 @@ function initGame() {
         playerRef.update({
             name: newName
         })
-    })
+    });
 
     const intervalId = setInterval(() => {
         if (players[playerId] && players[playerId].currentPoints) {
@@ -110,6 +113,124 @@ function initGame() {
             console.log("Waiting for currentPoints. Retrying in 3 seconds...");
         }
     }, 3000);
+
+    // UNITS
+    allUnitsRef.on("value", (snapshot) => {
+        //Fires whenever a change occurs
+        units = snapshot.val() || {};
+        Object.keys(units).forEach((key) => {
+            console.log(units[key]) //NOTE: unit is being passed correctly
+/*             const characterState = units[key];
+            let el = playerElements[key];
+            // Now update the DOM
+            el.querySelector(".Character_name").innerText = characterState.name;
+            // el.querySelector(".Character_coins").innerText = characterState.coins;
+            el.setAttribute("data-color", characterState.color);
+            el.setAttribute("data-direction", characterState.direction);
+            const left = 16 * characterState.x + "px";
+            const top = 16 * characterState.y - 4 + "px";
+            el.style.transform = `translate3d(${left}, ${top}, 0)`; */
+        })
+    });
+
+    allUnitsRef.on("child_added", (snapshot) => {
+        //Fires whenever a new force is added to the tree
+        const addedForce = snapshot.val();
+
+        //console.log(addedForce) //NOTE: unit is being passed correctly
+        //const unit = new Force();
+        //console.log("Created unit with ID:", unit.unitID);
+
+        const forceElm = createForceCard(addedForce);
+        cardContainer.insertBefore(forceElm, cardContainer.lastElementChild); 
+        unitElements[addedForce.unitID] = forceElm;
+        //console.log(unitElements)  
+
+        const newType = addedForce.types.find(type => type.name === "REGULAR");
+        changeType(newType, addedForce);
+
+        //const currentVal = getCurrentType(addedForce).name.toLowerCase();
+        //console.log(currentVal)
+        //unitElements[addedForce.unitID].querySelector(`.radio__button[value="${currentVal}"]`).checked = true;
+        
+        const typeRadios = unitElements[addedForce.unitID].querySelector(`.force__type-set`);
+        
+        setTimeout(() => {
+            updateForceCard(addedForce);
+        }, 100); 
+        
+
+
+        typeRadios.addEventListener('change', function(event) {
+            const selectedValue = event.target.value;
+            // console.log(selectedValue)
+            // const upper = selectedValue.toUpperCase();
+            // console.log(upper)
+            // console.log("during this stage:", addedForce.types)
+            const newType = addedForce.types.find(type => type.name === selectedValue.toUpperCase());
+            console.log("New type", newType)
+            console.log("Added force:", addedForce)
+            changeType(newType, addedForce);
+        })
+/* 
+        const forceElm = addedForce.createForceCard();
+ 
+        unitElements[addedForce.unitID] = forceElm;
+
+        //Fill in some initial state
+        
+        // forceElm.querySelector(".Character_name").innerText = addedForce.name;
+        // forceElm.setAttribute("data-color", addedForce.color);
+        // forceElm.setAttribute("data-direction", addedForce.direction);
+        // const left = 16 * addedForce.x + "px";
+        // const top = 16 * addedForce.y - 4 + "px";
+        // forceElm.style.transform = `translate3d(${left}, ${top}, 0)`;
+        cardContainer.insertBefore(forceElm, cardContainer.lastElementChild); 
+
+        const currentVal = addedForce.getCurrentType().name.toLowerCase();
+        document.getElementById("forceRadioSet-"+addedForce.unitID).querySelector(`.radio__button[value="${currentVal}"]`).checked = true;
+
+
+        document.getElementById("forceRadioSet-"+addedForce.unitID).addEventListener('change', function(event) {
+            const selectedValue = event.target.value;
+            //console.log(selectedValue)
+            //console.log(event)
+            //console.error(unit)
+    
+            if (selectedValue === 'regular') {
+              // Do something for REGULAR option
+              addedForce.types[0].isType = true;
+              console.log('Regular option selected');
+            } else if (selectedValue === 'heroic') {
+              // Do something for HEROIC option
+              addedForce.types[1].isType = true;
+              console.log('Heroic option selected');
+            } else if (selectedValue === 'elite') {
+              // Do something for ELITE option
+              addedForce.types[2].isType = true;
+              console.log('Elite option selected');
+            }
+    
+            if (addedForce.getCurrentType().name == selectedValue.toUpperCase()) { console.log("works"); return; }
+    
+            //document.getElementById("forceRadioSet-"+unit.unitID).querySelector(`.radio__button[value="${selectedValue}"]`).checked = true;
+            const newType = addedForce.types.find(type => type.name == selectedValue.toUpperCase());
+    
+            //console.log("type test:", unit.types.find(type => type.name == selectedValue))
+            
+            console.error(unit)
+    
+            changeType(newType, unit);
+            // Update unit on server
+            //updateUnitOnServer(unit);
+            
+            setTimeout(() => {
+                document.getElementById("unitDice-"+addedForce.unitID).value = addedForce.unitDice;
+                document.getElementById("maxAbilities-"+addedForce.unitID).value = addedForce.maxAbilities;
+            }, 100); 
+        }); */
+        
+    });
 };
 
 // Create Lobby button
@@ -186,7 +307,7 @@ firebase.auth().signInAnonymously().catch((error) => {
     console.log(errorCode, errorMessage);
 });
 
-const scrollTop = document.getElementById("top");
+//const scrollTop2 = document.getElementById("top");
 
 // Make the Add Unit interactive card for users
 const cardContainer = document.getElementById('cardContainer');
@@ -275,7 +396,6 @@ window.onload = function() {
     const textareas = document.querySelectorAll('textarea');
     const inputs = document.querySelectorAll('input');
 
-    // Do something with the selected elements, for example, set autocomplete attribute
     forms.forEach(function(form) {
         form.setAttribute('autocomplete', 'off');
         form.setAttribute('spellcheck', 'false');

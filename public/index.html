@@ -27,9 +27,9 @@
         </div> 
         
         <section class="welcome__login">
-            <div class="tab" id="welcomeTab">
+            <div class="tab homepage" id="welcomeTab">
                 <button class="tab__link" onclick="flipTab(event, 'makeLobbyTab')" id="tiredOfIds">Create Lobby</button>
-                <button class="tab__link" onclick="flipTab(event, 'joinLobbyTab')">Join Lobby</button>
+                <button class="tab__link center" onclick="flipTab(event, 'joinLobbyTab')">Join Lobby</button>
                 <button class="tab__link" onclick="flipTab(event, 'loginTab')">Login</button>
             </div>
 
@@ -51,12 +51,15 @@
                 <p>TIP: enter a code from a friend to join their lobby. Or, if you'd prefer to create a lobby, tap the "Create Lobby" tab instead.</p>
             </div>
             <div id="loginTab" class="tab__content">
-                <!-- <div>
-                    <input type="text" id="joinLobby" class="in-page__input" title="Copy & paste, or type your code" placeholder="Enter a war code" autocomplete="off">
-                    <p>Status: <span id="joinLobbyStatus">no code entered yet.</span></p>
+                <br>
+                <div>
+                    <button>Email</button>
+                    <button>Google</button>
+                    <button>Discord</button>
+                    <button>Patreon</button>
                 </div>
-                
-                <hr> -->
+                <br>
+                <hr>
                 <p>Under construction, please check back soon.</p>
             </div>
         </section>
@@ -69,139 +72,137 @@
                 <!-- onclick="editPoints()" // used above before fb -->
                 <p>Points: <span id="points-display"></span></p>
             </div>
+            <!-- <button onclick="beginForceCreation()">test</button> -->
         </div>
         
         <div class="card-container" id="cardContainer">
-            <section class="force__card" id="exmpleId">
-                <div class="force__card__labeled-textareas">
-                    <p class="war-sheet__paragrapgh">FORCE NAME: </p>
-                    <textarea id="forceCardName" name="forceCardName" rows="1" class="textarea__dynamic" title="Change Force Name" placeholder="Name your force, or leave blank."></textarea>
-                </div>
-                
-                    
-                <div class="force__card__inner">
-                    <div class="force__card__radio-fieldset">
-                        <div>
-                            <input type="radio" id="isRegularForce" class="radio__button" name="forceTypeRadio" value="regular">
-                            <label for="isRegularForce">REGULAR</label><br>
-                        </div>
-                        <div>
-                            <input type="radio" id="isHeroicFOrce" class="radio__button" name="forceTypeRadio" value="heroic">
-                            <label for="isHeroicFOrce">HEROIC</label>
-                        </div>
-                        <div>
-                            <input type="radio" id="isEliteForce" class="radio__button" name="forceTypeRadio" value="elite">
-                            <label for="isEliteForce" class="force__card__label">ELITE</label>
-                        </div>
-                        
-                    </div>
-                    <div class="force__card__abilities">
-                        <div class="force__card__labeled-textareas">
-                            <p class="war-sheet__paragrapgh">ABILITY 1: </p>
-                            <!-- <textarea id="forceCardAbility1" name="forceCardAbility1" rows="1" class="textarea__dynamic" title="Change Ability 1" placeholder="Click '+' to open Ability Sheet."></textarea> -->
-                            <p class="force__card__ability-display"><span id="abil1Display" onclick="toggleAbilitySheet(this, true, 'force__card')">Click to open Ability Sheet.</span></p>
-                        </div>
-                        <div class="force__card__labeled-textareas">
-                            <p class="war-sheet__paragrapgh">ABILITY 2: </p>
-                            <p class="force__card__ability-display"><span id="abil2Display" onclick="toggleAbilitySheet(this, true, 'force__card')">Click to open Ability Sheet.</span></p>
-                        </div>
-                        <div class="force__card__labeled-textareas">
-                            <p class="war-sheet__paragrapgh">ABILITY 3: </p>
-                            <p class="force__card__ability-display"><span id="abil3Display" onclick="toggleAbilitySheet(this, true, 'force__card')">Click to open Ability Sheet.</span></p>
-                        </div>
 
-                    </div>
-                </div>
+<!-- <section class="force__card" id="exmpleId">
+<div class="force__card__labeled-textareas">
+    <p class="war-sheet__paragrapgh">FORCE NAME: </p>
+    <textarea id="forceCardName" name="forceCardName" rows="1" class="textarea__dynamic" title="Change Force Name" placeholder="Name your force, or leave blank."></textarea>
+</div>
 
+    
+<div class="force__card__inner">
+    <div class="force__card__radio-fieldset">
+        <div>
+            <input type="radio" id="isRegularForce" class="radio__button" name="forceTypeRadio" value="regular">
+            <label for="isRegularForce">REGULAR</label><br>
+        </div>
+        <div>
+            <input type="radio" id="isHeroicFOrce" class="radio__button" name="forceTypeRadio" value="heroic">
+            <label for="isHeroicFOrce">HEROIC</label>
+        </div>
+        <div>
+            <input type="radio" id="isEliteForce" class="radio__button" name="forceTypeRadio" value="elite">
+            <label for="isEliteForce" class="force__card__label">ELITE</label>
+        </div>
+        
+    </div>
+    <div class="force__card__abilities">
+        <div class="force__card__labeled-textareas">
+            <p class="war-sheet__paragrapgh">ABILITY 1: </p>
+           
+            <p class="force__card__ability-display"><span id="abil1Display" onclick="toggleAbilitySheet(this, true, 'force__card')">Click to open Ability Sheet.</span></p>
+        </div>
+        <div class="force__card__labeled-textareas">
+            <p class="war-sheet__paragrapgh">ABILITY 2: </p>
+            <p class="force__card__ability-display"><span id="abil2Display" onclick="toggleAbilitySheet(this, true, 'force__card')">Click to open Ability Sheet.</span></p>
+        </div>
+        <div class="force__card__labeled-textareas">
+            <p class="war-sheet__paragrapgh">ABILITY 3: </p>
+            <p class="force__card__ability-display"><span id="abil3Display" onclick="toggleAbilitySheet(this, true, 'force__card')">Click to open Ability Sheet.</span></p>
+        </div>
+
+    </div>
+</div>
+
+<div>
+    <p class="war-sheet__paragrapgh">NOTES: </p>
+    <textarea id="forceCardNotes" name="forceCardNotes" rows="3" class="textarea__dynamic" title="Extra Force Notes" placeholder="Additional notes for this force."></textarea>
+</div>
+
+<fieldset class="force__card__stats__container">
+
+        <legend class="force__card__title-bar">STATS:</legend>
+
+            <fieldset>
+                <legend>Attack Zone</legend>
+                <label for="range">0 Melee | 1-5 Ranged</label>
+                <input type="number" id="range" class="form__input" name="range" min="0" max="5" step="1" value="0">
+            </fieldset>
+            <fieldset>
+                <legend>Unit Dice</legend>
+                <label for="unitDice">Or # of members</label>
+                <input type="number" id="unitDice" class="form__input" name="unitDice" min="0" max="6" step="1" value="6">
+            </fieldset>
+            <fieldset class="force__card__radio-fieldset">
+                <legend>Condition</legend>
                 <div>
-                    <p class="war-sheet__paragrapgh">NOTES: </p>
-                    <textarea id="forceCardNotes" name="forceCardNotes" rows="3" class="textarea__dynamic" title="Extra Force Notes" placeholder="Additional notes for this force."></textarea>
+                    <input type="radio" id="notDead" class="radio__button" name="healthStatus" value="alive">
+                    <label for="notDead">Alive</label><br>
                 </div>
+                <div>
+                    <input type="radio" id="isDead" class="radio__button" name="healthStatus" value="dead">
+                    <label for="isDead">Dead</label>
+                </div>
+            </fieldset>
+            <fieldset class="force__card__radio-fieldset">
+                <legend>Activation</legend>
+                <div >
+                    <input type="radio" id="notTurn" class="radio__button" name="turnStatus" value="inactive">
+                    <label for="notTurn">Inactive</label><br>
+                </div>
+                <div >
+                    <input type="radio" id="yesTurn" class="radio__button" name="turnStatus" value="active">
+                    <label for="yesTurn">Active</label>
+                </div>
+            </fieldset>
+            <fieldset class="force__card__radio-fieldset">
+                <legend>Cover</legend>
+                <div>
+                    <input type="radio" id="hasCover" class="radio__button" name="coverStatus" value="cover">
+                    <label for="hasCover">Has Cover</label><br>
+                </div>
+                <div>
+                    <input type="radio" id="noCover" class="radio__button" name="coverStatus" value="noCover">
+                    <label for="noCover">No Cover</label>
+                </div>
+            </fieldset>
+            <fieldset class="force__card__radio-fieldset">
+                <legend>Movement</legend>
+                <div>
+                    <input type="radio" id="normalSpeed" class="radio__button" name="speedStatus" value="noSlow">
+                    <label for="normalSpeed">Normal</label><br>
+                </div>
+                <div>
+                    <input type="radio" id="slowSpeed" class="radio__button" name="speedStatus" value="yesSlow">
+                    <label for="slowSpeed">Slowed</label>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Reserve Count</legend>
+                <input type="number" id="editReserves" class="form__input" name="reserveCount" min="0" max="6" step="1" value="0">
+            </fieldset>
+            <fieldset>
+                <legend>Free Rerolls</legend>
+                <input type="number" id="freeRerolls" class="form__input" name="freeRerolls" min="0" max="10" step="1" value="0">
+            </fieldset>
+            <fieldset>
+                <legend>Max Abilities</legend>
+                <input type="number" id="maxAbilities" class="form__input" name="maxAbilities" min="1" max="5" step="1" value="1">
+            </fieldset>
 
-                <fieldset class="force__card__stats__container">
-                
-                        <legend class="force__card__title-bar">STATS:</legend>
-            
-                        <!-- <div class="force__card__fieldsets"> -->
-                            <fieldset>
-                                <legend>Attack Zone</legend>
-                                <label for="range">0 Melee | 1-5 Ranged</label>
-                                <input type="number" id="range" class="form__input" name="range" min="0" max="5" step="1" value="0">
-                            </fieldset>
-                            <fieldset>
-                                <legend>Unit Dice</legend>
-                                <label for="unitDice">Or # of members</label>
-                                <input type="number" id="unitDice" class="form__input" name="unitDice" min="0" max="6" step="1" value="6">
-                            </fieldset>
-                            <fieldset class="force__card__radio-fieldset">
-                                <legend>Condition</legend>
-                                <div>
-                                    <input type="radio" id="notDead" class="radio__button" name="healthStatus" value="alive">
-                                    <label for="notDead">Alive</label><br>
-                                </div>
-                                <div>
-                                    <input type="radio" id="isDead" class="radio__button" name="healthStatus" value="dead">
-                                    <label for="isDead">Dead</label>
-                                </div>
-                            </fieldset>
-                            <fieldset class="force__card__radio-fieldset">
-                                <legend>Activation</legend>
-                                <div >
-                                    <input type="radio" id="notTurn" class="radio__button" name="turnStatus" value="inactive">
-                                    <label for="notTurn">Inactive</label><br>
-                                </div>
-                                <div >
-                                    <input type="radio" id="yesTurn" class="radio__button" name="turnStatus" value="active">
-                                    <label for="yesTurn">Active</label>
-                                </div>
-                            </fieldset>
-                            <fieldset class="force__card__radio-fieldset">
-                                <legend>Cover</legend>
-                                <div>
-                                    <input type="radio" id="hasCover" class="radio__button" name="coverStatus" value="cover">
-                                    <label for="hasCover">Has Cover</label><br>
-                                </div>
-                                <div>
-                                    <input type="radio" id="noCover" class="radio__button" name="coverStatus" value="noCover">
-                                    <label for="noCover">No Cover</label>
-                                </div>
-                            </fieldset>
-                            <fieldset class="force__card__radio-fieldset">
-                                <legend>Movement</legend>
-                                <div>
-                                    <input type="radio" id="normalSpeed" class="radio__button" name="speedStatus" value="noSlow">
-                                    <label for="normalSpeed">Normal</label><br>
-                                </div>
-                                <div>
-                                    <input type="radio" id="slowSpeed" class="radio__button" name="speedStatus" value="yesSlow">
-                                    <label for="slowSpeed">Slowed</label>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <legend>Reserve Count</legend>
-                                <input type="number" id="editReserves" class="form__input" name="reserveCount" min="0" max="6" step="1" value="0">
-                            </fieldset>
-                            <fieldset>
-                                <legend>Free Rerolls</legend>
-                                <input type="number" id="freeRerolls" class="form__input" name="freeRerolls" min="0" max="10" step="1" value="0">
-                            </fieldset>
-                            <fieldset>
-                                <legend>Max Abilities</legend>
-                                <input type="number" id="maxAbilities" class="form__input" name="maxAbilities" min="1" max="5" step="1" value="1">
-                            </fieldset>
-                        <!-- </div> -->
- 
-                </fieldset>
-            </section>
-
-
+</fieldset>
+</section> -->
 
         </div>
     
     </section>
     
-    <div class="edit-overlay" id="abilitySheetexmpleId">
-        <div class="edit-container" id="edit-container">
+    <!-- <div class="edit-overlay" id="abilitySheetexmpleId">
+        <div class="edit-container">
             <div class="ability__sheet__header-footer">
                 <div class="orange"></div>
                 <h1><span class="title__text-green">ABILITY</span> <span class="title__text-camo">SHEET</span></h1> 
@@ -209,109 +210,6 @@
             </div>
 
             <div >
-                <!-- <div class="ability__sheet__toggles">
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                    <label class="switch">
-                        <input type="checkbox">
-                        <span class="slider"></span>
-                    </label>
-                </div> -->
-
                 <ul class="ability__sheet__list" >
                     <div>
                         <label class="switch">
@@ -480,7 +378,7 @@
             </dialog>
  
         </div>
-    </div>
+    </div> -->
     
     <section id= "war" class="page war-sheet__container">
         
@@ -827,6 +725,16 @@
     </section>
     </div>
 
+    <dialog class="dialog__prompt" id="dialog__prompt">
+        <p id="dialog-message"></p>
+        <div id="button-container">
+            <button onclick="resolveDialog(true)">Yes</button>
+            <button onclick="resolveDialog(false)">Cancel</button>
+        </div>
+    </dialog>
+    <dialog class="description-dialog" >
+        <p></p>
+    </dialog>
 
     <dialog class="dialog__prompt" id="dialog__prompt-main">
         <p id="dialog__message-main"></p>
@@ -846,7 +754,7 @@
       
 
 
-    <div class="edit-overlay" id="editOverlay">
+    <!-- <div class="edit-overlay" id="editOverlay">
         <div class="edit-container" id="edit-container">
             <form id="editForm" autocomplete="off">
                 
@@ -865,7 +773,6 @@
                         <legend class="solid__title-bar">Current Abilities</legend>
                         <div class="expandable__content-wrapper solid__content">
                             <ul class="short-list" id="currentAbilityDisplay"></ul>
-                            <!-- <h2>Ability</h2> -->
                             <p id="showAbilityDescription">Tap ability for desrciption.<br>Double tap an ability to add it.<br>Press and hold to remove an ability.</p>
                         </div>
                     </div>
@@ -882,7 +789,6 @@
                         </div>
                     </div>
                 </fieldset> 
-                <!-- end ability container -->
 
                 <fieldset class="image__container">
                     <div class="expandable">
@@ -988,7 +894,7 @@
                 </dialog>
             </form>
         </div>
-    </div>
+    </div> -->
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
