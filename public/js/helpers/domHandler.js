@@ -6,127 +6,6 @@ function isTouchSupported() {
     return 'ontouchstart' in window;
 };
 
-// My attempt at mobile support, listen for double tap
-// const addDoubleTapListener = (element, callback, input1, input2) => {
-//     let lastTapTime = 0;
-  
-//     element.addEventListener('touchend', function(event) {
-//       const currentTime = new Date().getTime();
-//       const tapDuration = currentTime - lastTapTime;
-  
-//       if (tapDuration < 300) { // Adjust the time threshold as needed
-//         callback(event, input1, input2, true);
-//         return true; // Double tap occurred
-//       }
-  
-//       lastTapTime = currentTime;
-//       return false; // Single tap
-//     });
-// };
-
-
-// function populateAbilityUI(unit) {
-//     const fullAbilityList = document.getElementById("fullAbilityList");
-//     const currentAbilityDisplay = document.getElementById("currentAbilityDisplay");
-//     const defaultText = "Tap ability for desrciption.\nDouble tap an ability to add it.\nPress and hold to remove an ability."
-//     const el = document.getElementById("showAbilityDescription");
-
-//     // Clear existing abilities in the UI
-//     fullAbilityList.innerHTML = '';
-//     currentAbilityDisplay.innerHTML = '';
-
-//     unit.abilities.forEach(ability => {
-//         const mainAbility = document.createElement('li');
-//         mainAbility.textContent = ability.name;
-
-//         const pressEvent = new Hammer(mainAbility, {
-//             recognizers: [
-//                 [Hammer.Press, { time: 1200, threshold: 10 }]
-//             ]
-//         });
-        
-//         pressEvent.on("press", event => {
-//             promptRemoveAbility(event, ability, unit);
-//         });
-
-//         const tapEvent = new Hammer(mainAbility);
-
-//         tapEvent.on("tap", event => {
-//             if (event.tapCount >= 2) {
-//                 addAbility(ability, unit);
-//             } else {
-//                 showDescription(ability, defaultText, el);
-//             }
-//         });
-
-//         fullAbilityList.appendChild(mainAbility);
-        
-//         if (ability.hasAbility) {
-//             const displayedAbility = document.createElement('li');
-//             displayedAbility.textContent = ability.name;
-
-//             const pressEvent = new Hammer(displayedAbility, {
-//                 recognizers: [
-//                     [Hammer.Press, { time: 1200, threshold: 10 }]
-//                 ]
-//             });
-            
-//             pressEvent.on("press", event => {
-//                 promptRemoveAbility(event, ability, unit);
-//             });
-    
-//             const tapEvent = new Hammer(displayedAbility);
-    
-//             tapEvent.on("tap", () => {
-//                 showDescription(ability, defaultText, el);
-//             });
-
-//             currentAbilityDisplay.appendChild(displayedAbility);
-//             displayedAbility.classList.add('selected');
-//             mainAbility.classList.add('selected');
-//         }
-//     });
-// };
-
-// function populateTypeUI(unit) {
-//     const defaultText = "Tap to see unit type description.\nDouble tap to change unit type."
-//     const el = document.getElementById("showTypeDescription");
-
-//     // Clear existing abilities in the UI
-//     currentTypeDisplay.innerHTML = "";
-
-//     unit.types.forEach(type => {
-//         const typeLI = document.createElement('li');
-//         typeLI.textContent = type.name;
-
-//         //typeLI.onclick = (evt) => clickType(evt, type, unit, false);
-
-//         const tapEvent = new Hammer(typeLI);
-
-//         tapEvent.on("tap", event => {
-//             if (event.tapCount >= 2) { // Double tap
-//                 if (type.isType) { return }
-
-//                 changeType(type, unit);
-                
-//                 setTimeout(() => { // We need a small delay before updating the dom
-//                     document.getElementById("unitDice").value = unit.unitDice;
-//                     document.getElementById("maxAbilities").value = unit.maxAbilities;
-//                 }, 100); 
-//             } else { // Single tap
-//                 showDescription(type, defaultText, el);
-//             }
-//         });
-
-//         currentTypeDisplay.appendChild(typeLI);
-        
-//         if (type.isType) {
-//             typeLI.classList.add('selected');
-//             showDescription(type, defaultText, el)
-//         };
-//     });
-// };
-
 function createAddCard() {
     const lastCard = document.createElement('section');
     lastCard.className = 'card addTo';
@@ -148,72 +27,6 @@ function createAddCard() {
     return lastCard;
 };
 
-// function populateEditForm(unit, target) {
-//     if (unit.isIntializing === true) {
-//         console.log("First time unit here");
-//         changeType(unit.getCurrentType(), unit);
-//         unit.name = unit.getCurrentType().name;
-//     }
-
-//     document.getElementById("unit-image-display").src = unit.imageSrc;
-
-//     document.getElementById("uploadImage").addEventListener('change', function () {
-//         const fileName = this.files[0] ? this.files[0].name : 'Choose File';
-//         document.getElementById("fileLabel").textContent = fileName;
-        
-//         handleImageUpload(document.getElementById("uploadImage"), unit, target);
-        
-//         setTimeout(() => {
-//             document.getElementById("unit-image-display").src = unit.imageSrc;
-//         }, 10);
-//         // Without the timer, the image does not update
-//     });
-
-//     document.getElementById("save-edit").addEventListener("click", function() {
-//         saveEdit(unit, target);
-//     });
-
-//     document.getElementById("removeImage").addEventListener("click", function() {
-//         removeImage(unit, target);
-//     });
-
-//     document.getElementById("fileLabel").innerHTML = "";
-//     document.getElementById("uploadImage").value = "";
-
-
-//     document.getElementById("range").value = unit.attackRange;
-
-//     document.getElementById("unitDice").value = unit.unitDice;
-
-//     unit.isDead
-//         ? document.getElementById("isDead").checked = true
-//         : document.getElementById("notDead").checked = true;
-//     // set condition radio
-//     unit.isTurn
-//         ? document.getElementById("yesTurn").checked = true 
-//         : document.getElementById("notTurn").checked = true;
-//     // set turn radio
-//     unit.isCovered
-//         ? document.getElementById("hasCover").checked = true
-//         : document.getElementById("noCover").checked = true;
-//     // set cover radio
-//     unit.isSlowed
-//         ? document.getElementById("slowSpeed").checked = true
-//         : document.getElementById("normalSpeed").checked = true;
-//     // set movement radio
-
-//     document.getElementById("editReserves").value = unit.reserveCount;
-
-//     document.getElementById("maxAbilities").value = unit.maxAbilities;
-    
-//     document.getElementById("freeRerolls").value = unit.freeRerolls;
-
-//     document.getElementById("editTitle").value = unit.name;
-
-//     populateAbilityUI(unit);
-//     populateTypeUI(unit);
-// };
-
 function deleteCreatedElements() {
     // Get references to the top-level containers
     const editOverlay = document.getElementById('editOverlay');
@@ -224,48 +37,6 @@ function deleteCreatedElements() {
         editOverlay.parentNode.removeChild(editOverlay);
     }
 };
-
-// // Dynamically resize textarea columns -- NOT NEEDED
-// function setColumns(textarea) {
-//     const containerWidth = textarea?.parentNode?.offsetWidth || 0;
-//     const columnsMultiplier = 0.09;
-
-//     console.log("resize of text area part 3")
-//     textarea.cols = Math.floor(containerWidth * columnsMultiplier);
-// };
-
-function toggleAbilitySheet(elm, checker, parentClass) {
-    //console.log(elm)
-    const fullId = findParentByClass(elm, parentClass).id;
-    //console.log(fullId)
-    
-    //const parentId = fullId.slice("card-".length);
-    const parentId = fullId[0] === "a" ? fullId.slice("abilitySheet-".length) : fullId.slice("card-".length);
-    //console.log(parentId)
-    //console.log(units[parentId])
-
-    if(checker == true) {
-        document.body.style.overflow = "hidden";
-
-        buildAbilitySheet(units[parentId]);
-
-        document.getElementById("abilitySheet-"+parentId).style.display = 'flex';
-
-        const editContainer = document.querySelector('.edit-container');
-        editContainer.style.overflow = "auto";
-        //console.log("Before scroll:", editContainer.scrollTop);
-        editContainer.scrollTop = 0;
-        //console.log("After scroll:", editContainer.scrollTop);
-
-        document.querySelector('.edit-overlay').style.display = 'flex';
-        editContainer.style.display = 'block';
-
-    } else if (checker == false) {
-        document.body.style.overflow = "unset"; // Is this needed?
-        document.querySelector('.edit-overlay')?.remove();
-    } else { console.error("Issue retrieving ability sheet") }
-};
-
 
 function createForceCard(unit) {
     //const self = this;
@@ -383,84 +154,6 @@ function createForceCard(unit) {
     </fieldset>
     `;
 
-    // document.getElementById("forceRadioSet-"+self.unitID).addEventListener('change', function(event) {
-    //     const selectedValue = event.target.value;
-    //     console.log(selectedValue)
-    //     console.log(event)
-    //     console.error(self)
-    //     if (selectedValue === 'regular') {
-    //       // Do something for REGULAR option
-    //       console.log('Regular option selected');
-    //     } else if (selectedValue === 'heroic') {
-    //       // Do something for HEROIC option
-    //       console.log('Heroic option selected');
-    //     } else if (selectedValue === 'elite') {
-    //       // Do something for ELITE option
-    //       console.log('Elite option selected');
-    //     }
-
-    //     if (self.getCurrentType().name == selectedValue.toUpperCase()) { console.log("works"); return; }
-
-    //     //document.getElementById("forceRadioSet-"+self.unitID).querySelector(`.radio__button[value="${selectedValue}"]`).checked = true;
-    //     const newType = self.types.find(type => type.name == selectedValue.toUpperCase());
-
-    //     console.log("type test:", self.types.find(type => type.name == selectedValue))
-    //     console.log(newType)
-
-    //     changeType(newType, self);
-        
-    //     setTimeout(() => {
-    //         document.getElementById("selfDice-"+self.unitID).value = self.unitDice;
-    //         document.getElementById("maxAbilities-"+self.unitID).value = self.maxAbilities;
-    //     }, 100); 
-    // });
-
-    // document.getElementById("forceRadioSet-"+this.unitID).addEventListener('change', function(event) {
-    //     const selectedValue = event.target.value;
-
-    //     if (selectedValue === 'regular') {
-    //       // Do something for REGULAR option
-    //       console.log('Regular option selected');
-    //     } else if (selectedValue === 'heroic') {
-    //       // Do something for HEROIC option
-    //       console.log('Heroic option selected');
-    //     } else if (selectedValue === 'elite') {
-    //       // Do something for ELITE option
-    //       console.log('Elite option selected');
-    //     }
-    // });
-
-    // self.types.forEach(type => {
-    //     const typeLI = document.createElement('li');
-    //     typeLI.textContent = type.name;
-
-    //     //typeLI.onclick = (evt) => clickType(evt, type, self, false);
-
-    //     const tapEvent = new Hammer(typeLI);
-
-    //     tapEvent.on("tap", event => {
-    //         if (event.tapCount >= 2) { // Double tap
-    //             if (type.isType) { return }
-
-    //             changeType(type, self);
-                
-    //             setTimeout(() => { // We need a small delay before updating the dom
-    //                 document.getElementById("unitDice").value = self.unitDice;
-    //                 document.getElementById("maxAbilities").value = self.maxAbilities;
-    //             }, 100); 
-    //         } else { // Single tap
-    //             showDescription(type, defaultText, el);
-    //         }
-    //     });
-
-    //     currentTypeDisplay.appendChild(typeLI);
-        
-    //     if (type.isType) {
-    //         typeLI.classList.add('selected');
-    //         showDescription(type, defaultText, el)
-    //     };
-    // });
-
     return section;
 };
 
@@ -517,55 +210,103 @@ function updateForceCard(unit) {
     card.querySelector(`#maxAbilities-${unit.unitID}`).value = unit.maxAbilities;
 };
 
-// function updateForceCard(unit) {
-//     document.getElementById("unitDice-"+unit.unitID).value = unit.unitDice;
-//     document.getElementById("maxAbilities-"+unit.unitID).value = unit.maxAbilities;
-// }
+function buildAbilitySheet(unit) {
+    const self = unit;
+    const overlay = document.createElement("div");
+    overlay.classList.add("edit-overlay");
+    overlay.id = "abilitySheet-"+unit.unitID;
 
-// function updateForceCard(unit) {
-//     const card = document.getElementById("card-"+unit.unitID)
-//     // Update FORCE NAME
-//     document.getElementById("forceCardName").value = unit.name;
+    const container = document.createElement("div");
+    container.classList.add("edit-container");
 
-//     // Update FORCE TYPE
-//     const forceType = unit.isHeroic ? "isHeroicForce" : (unit.isElite ? "isEliteForce" : "isRegularForce");
-//     document.getElementById(forceType + "-" + unit.unitID).checked = true;
+    // Header elements
+    const header = document.createElement("div");
+    header.classList.add("ability__sheet__header-footer");
 
-//     // Update ABILITIES
-//     document.getElementById("abil1Display").textContent = unit.ability1;
-//     document.getElementById("abil2Display").textContent = unit.ability2;
-//     document.getElementById("abil3Display").textContent = unit.ability3;
+    header.innerHTML = `
+        <div class="orange"></div>
+        <h1><span class="title__text-green">ABILITY</span> <span class="title__text-camo">SHEET</span></h1> 
+        <div class="orange"></div>  
+    `;
 
-//     // Update NOTES
-//     document.getElementById("forceCardNotes").value = unit.notes;
+    // Footer elements
+    const footer = document.createElement("div");
+    footer.classList.add("ability__sheet__header-footer");
+    footer.innerHTML = `
+        <div class="orange"></div>
+        <button type="button" onclick="toggleAbilitySheet(this, false, 'edit-overlay')"><h1><span class="title__text-green">Save</span> & <span class="title__text-camo">Close</span></h1></button>
+        <div class="orange"></div>
+    `;
 
-//     // Update STATS
-//     document.getElementById("range").value = unit.attackRange;
-//     document.getElementById("unitDice-" + unit.unitID).value = unit.unitDice;
+    const main = document.createElement("div");
+    const list = document.createElement("ul");
+    list.classList.add("ability__sheet__list");
 
-//     // Update HEALTH STATUS
-//     const healthStatus = unit.isDead ? "isDead" : "notDead";
-//     document.getElementById(healthStatus).checked = true;
+    document.body.appendChild(overlay);
+    overlay.appendChild(container);
+    container.appendChild(header);
+    container.appendChild(main);
+    main.appendChild(list);
+    container.appendChild(footer);
 
-//     // Update TURN STATUS
-//     const turnStatus = unit.isTurn ? "yesTurn" : "notTurn";
-//     document.getElementById(turnStatus).checked = true;
+    unit.abilities.forEach(ability => {
+        const inner = document.createElement("div");
+        inner.innerHTML = `
+        <label class="switch">
+            <input type="checkbox" id="abilityToggle${ability.abilityID}" autocomplete="off">
+            <span class="slider"></span>
+        </label>
+        <li>${ability.name}: ${ability.description}</li>
+        `;
 
-//     // Update COVER STATUS
-//     const coverStatus = unit.isCovered ? "hasCover" : "noCover";
-//     document.getElementById(coverStatus).checked = true;
+        list.appendChild(inner);
+        
+        const toggle = document.getElementById("abilityToggle"+ability.abilityID);
 
-//     // Update SPEED STATUS
-//     const speedStatus = unit.isSlowed ? "slowSpeed" : "normalSpeed";
-//     document.getElementById(speedStatus).checked = true;
+        if (ability.hasAbility) {
+            // toggle slider
+            toggle.checked = true;
+        } else { toggle.checked = false }
 
-//     // Update RESERVE COUNT
-//     document.getElementById("editReserves").value = unit.reserveCount;
+        toggle.addEventListener('change', function() {
+            const isChecked = toggle.checked;
+            console.log(`Ability ${ability.name} is now ${isChecked ? 'checked' : 'unchecked'}`);
+            if (isChecked == true) {
+                if (!addAbility(ability, self)) {
+                    toggle.checked = false;
+                } else { toggle.checked = true; return; }
+                
+            }
+            if (isChecked == false) {
+                promptRemoveAbility(inner, ability, self, toggle);
+            }
+        });
+    });
+};
 
-//     // Update FREE REROLLS
-//     document.getElementById("freeRerolls").value = unit.freeRerolls;
+function toggleAbilitySheet(elm, checker, parentClass) {
+    const fullId = findParentByClass(elm, parentClass).id;
 
-//     // Update MAX ABILITIES
-//     document.getElementById("maxAbilities-" + unit.unitID).value = unit.maxAbilities;
-// }
+    const parentId = fullId[0] === "a" ? fullId.slice("abilitySheet-".length) : fullId.slice("card-".length);
 
+    if(checker == true) {
+        document.body.style.overflow = "hidden";
+
+        buildAbilitySheet(units[parentId]);
+
+        document.getElementById("abilitySheet-"+parentId).style.display = 'flex';
+
+        const editContainer = document.querySelector('.edit-container');
+        editContainer.style.overflow = "auto";
+        //console.log("Before scroll:", editContainer.scrollTop);
+        editContainer.scrollTop = 0;
+        //console.log("After scroll:", editContainer.scrollTop);
+
+        document.querySelector('.edit-overlay').style.display = 'flex';
+        editContainer.style.display = 'block';
+
+    } else if (checker == false) {
+        document.body.style.overflow = "unset"; // Is this needed?
+        document.querySelector('.edit-overlay')?.remove();
+    } else { console.error("Issue retrieving ability sheet") }
+};
