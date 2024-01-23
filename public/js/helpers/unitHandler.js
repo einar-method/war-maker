@@ -3,7 +3,7 @@ function addUnitForDatabase (unit) {
     return database.ref('units/' + unit.unitID).set(unit);
 };
 
-const unitsList = []; // ONLY for testing
+//const unitsList = []; // ONLY for testing
 function beginForceCreation() {
 
     //console.log("Attempting to create a unit");
@@ -93,10 +93,10 @@ if (players[playerId].currentPoints >= 3) { // Previously p1.currentPoints
             //     unit.name = unit.getCurrentType().name;
             // }
 
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            // window.scrollTo({
+            //     top: 0,
+            //     behavior: 'smooth'
+            // }); // was usefull before, now annoying
     
         } else { 
             alert("Not enough points to create a unit. Points remaining: " + players[playerId].currentPoints)
@@ -105,58 +105,58 @@ if (players[playerId].currentPoints >= 3) { // Previously p1.currentPoints
         } 
 }
 
-function addUnit() {
-    console.log("Attempting to create a unit");
-    console.log("Available Points:", players[playerId].currentPoints);
+// function addUnit() {
+//     console.log("Attempting to create a unit");
+//     console.log("Available Points:", players[playerId].currentPoints);
 
-    if (players[playerId].currentPoints >= 3) { // Previously p1.currentPoints 
-        //p1.currentPoints -= 3;
+//     if (players[playerId].currentPoints >= 3) { // Previously p1.currentPoints 
+//         //p1.currentPoints -= 3;
 
-        const unit = new Force();
-        console.log("Created unit with ID:", unit.unitID);
+//         const unit = new Force();
+//         console.log("Created unit with ID:", unit.unitID);
 
-        //update below with battleForces array
-        // p1.allUnits.push(unit);
-        // unit.owner = p1
-        // console.log(unit.owner);
-        // console.log(p1.allUnits);
+//         //update below with battleForces array
+//         // p1.allUnits.push(unit);
+//         // unit.owner = p1
+//         // console.log(unit.owner);
+//         // console.log(p1.allUnits);
 
-        // Get random image before making card
-        unit.rndDefaultImg();
+//         // Get random image before making card
+//         unit.rndDefaultImg();
 
-        // Make a crad for the unit
-        const card = unit.createCard();
+//         // Make a crad for the unit
+//         const card = unit.createCard();
 
-        // Insert before the last child (Add Unit)
-        cardContainer.insertBefore(card, cardContainer.lastElementChild); 
+//         // Insert before the last child (Add Unit)
+//         cardContainer.insertBefore(card, cardContainer.lastElementChild); 
         
-        // Firebase
-        unit.owner = playerId; // Assign the user ID
-        addUnitForDatabase(unit)
-            .then(() => {
-                console.log('Force added successfully');
+//         // Firebase
+//         unit.owner = playerId; // Assign the user ID
+//         addUnitForDatabase(unit)
+//             .then(() => {
+//                 console.log('Force added successfully');
 
-                // Set up onDisconnect for the new unit
-                const unitRef = firebase.database().ref(`units/${unit.unitID}`);
-                unitRef.onDisconnect().remove(); // Remove unit when the user disconnects
+//                 // Set up onDisconnect for the new unit
+//                 const unitRef = firebase.database().ref(`units/${unit.unitID}`);
+//                 unitRef.onDisconnect().remove(); // Remove unit when the user disconnects
             
-            })
-            .catch(error => {
-                console.error('Error adding force:', error);
-            });
+//             })
+//             .catch(error => {
+//                 console.error('Error adding force:', error);
+//             });
 
-        showEditForm(unit, card)
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+//         showEditForm(unit, card)
+//         window.scrollTo({
+//             top: 0,
+//             behavior: 'smooth'
+//         });
 
-    } else { 
-        alert("Not enough points to create a unit. Points remaining: " + players[playerId].currentPoints)
-        console.log("Unit creation failed");
-        console.log("Points remaining:", players[playerId].currentPoints);
-    } 
-};
+//     } else { 
+//         alert("Not enough points to create a unit. Points remaining: " + players[playerId].currentPoints)
+//         console.log("Unit creation failed");
+//         console.log("Points remaining:", players[playerId].currentPoints);
+//     } 
+// };
 
 // Remove a given unit
 function removeUnitFromDatabase(unitId) {
@@ -206,6 +206,7 @@ function updateUnitOnServer(unit) {
         maxAbilities: unit.maxAbilities,
         pastCost: unit.pastCost,
         currentCost: unit.currentCost,
+        notes: unit.notes,
     })
     .then(() => {
         console.log(`Unit ${unit.unitID} updated on the server successfully`);
@@ -244,7 +245,6 @@ function getCurrentAbilities(unit) {
 
     // Take the first three matching abilities
     const temp = matching.slice(0, 3);
-    console.log(temp)
     const a = temp[0] ? temp[0] : { name: "" };
     const b = temp[1] ? temp[1] : { name: "" };
     const c = temp[2] ? temp[2] : { name: "" };
@@ -264,9 +264,10 @@ function changeType(type, unit) {
             console.log("Changed " + obj.name + " to:", obj.isType);
         }
     });
-
+    
     if (calcPointCost(unit)) {
         console.log("There were enough points for calculation.")
+        
         //updateUnitOnServer(unit);
     } else if (!calcPointCost(unit)) {
         unit.types.forEach(function(obj, index) {
@@ -294,7 +295,7 @@ function calcPointCost(unit) {
 
     const tempType = unit.types.filter(type => type.isType);
     const typePoints = tempType.map(type => type.typeCost).reduce((acc, cost) => acc + cost, 0);
-
+    
     const tempAbility = unit.abilities.filter(ability => ability.hasAbility);
     const abilityPoints = tempAbility.map(abil => abil.cost).reduce((acc, cost) => acc + cost, 0);
 
@@ -303,11 +304,9 @@ function calcPointCost(unit) {
  
     if (unit.pastCost < unit.currentCost) {
         checker = players[playerId].currentPoints -= unit.currentCost - unit.pastCost;
-        console.log("math1:", unit.currentCost - unit.pastCost)
     }
     if (unit.pastCost > unit.currentCost) {
         checker = players[playerId].currentPoints += unit.pastCost - unit.currentCost;
-        console.log("math2:", unit.currentCost - unit.pastCost)
     }
 
     if (checker < 0) {
@@ -371,6 +370,57 @@ function calcStats(unit) {
     console.log(`Unit ${unit.unitID} is of type: ${type.name}.`);
     console.log(`Unit ${unit.unitID}'s max abilitiy count is now ${unit.maxAbilities}.`);
     console.log(`Unit ${unit.unitID}'s current ability list:`, unit.abilities.filter(ability => ability.hasAbility))
+};
+
+function checkRadios(id, unit) {
+    if (id === `isDead-${unit.unitID}`) {
+        unit.isDead = true;
+    }
+    if (id === `notDead-${unit.unitID}`) {
+        unit.isDead = false;
+    }
+    if (id === `yesTurn-${unit.unitID}`) {
+        unit.isTurn = true;
+    }
+    if (id === `notTurn-${unit.unitID}`) {
+        unit.isTurn = false;
+    }
+    if (id === `hasCover-${unit.unitID}`) {
+        unit.isCovered = true;
+    }
+    if (id === `noCover-${unit.unitID}`) {
+        unit.isCovered = false;
+    }
+    if (id === `slowSpeed-${unit.unitID}`) {
+        unit.isSlowed = true;
+    }
+    if (id === `normalSpeed-${unit.unitID}`) {
+        unit.isSlowed = false;
+    }
+};
+
+function checkInputChange(target, unit) {
+    if (target.id === `forceCardNotes-${unit.unitID}`) {
+        unit.notes = target.value;
+    }
+    if (target.id === `forceCardName-${unit.unitID}`) {
+        unit.name = target.value;
+    }
+    if (target.id === `editReserves-${unit.unitID}`) {
+        unit.reserveCount = target.value;
+    }
+    if (target.id === `freeRerolls-${unit.unitID}`) {
+        unit.freeRerolls = target.value;
+    }
+    if (target.id === `range-${unit.unitID}`) {
+        unit.attackRange = target.value;
+    }
+    if (target.id === `unitDice-${unit.unitID}`) {
+        unit.unitDice = target.value;
+    }
+    if (target.id === `maxAbilities-${unit.unitID}`) {
+        unit.maxAbilities = target.value;
+    }
 };
 
 function buildAbilitySheet(unit) {
@@ -442,12 +492,94 @@ function buildAbilitySheet(unit) {
             const isChecked = toggle.checked;
             console.log(`Ability ${ability.name} is now ${isChecked ? 'checked' : 'unchecked'}`);
             if (isChecked == true) {
-                addAbility(ability, self);
-                return;
+                if (!addAbility(ability, self)) {
+                    toggle.checked = false;
+                } else { toggle.checked = true; return; }
+                
             }
             if (isChecked == false) {
                 promptRemoveAbility(inner, ability, self, toggle);
             }
         });
     });
+};
+
+function addAbility(ability, unit) {
+    let bool = false;
+    if (ability.hasAbility) { return bool; }
+
+    const condition1 = unit.abilities.filter(obj => obj.hasAbility).length < unit.maxAbilities;
+    if (!condition1) { 
+        alert(`This unit's max ability count is ${unit.maxAbilities}.`);
+        return bool; 
+    };
+
+    const condition2 = ability.cost <= players[playerId].currentPoints;
+    if (!condition2) { 
+        alert(`Not enough points to purchase ability. Points remaining: ${players[playerId].currentPoints}`);
+        return bool;
+    };
+    
+    if (condition1 && condition2) {
+        ability.hasAbility = true;
+        //populateAbilityUI(unit);
+        bool = true;
+    } else { conolse.error("No"); return bool;}
+    
+    if (!calcPointCost(unit)) {
+        ability.hasAbility = false;
+        calcPointCost(unit);
+        console.log("ability " + ability.name + " is",  ability.hasAbility);
+        //populateAbilityUI(unit);
+    }
+
+    updateUnitOnServer(unit);
+    return bool;
+    // setTimeout(() => {
+    //     updateForceCard(units[unit.unitID]);
+    // }, 100); // maybe this is handled in the unit change?
+};
+
+function promptRemoveAbility(elm, ability, unit, toggle) { //elm for positioning
+
+    const screenH = window.innerHeight + window.scrollY;
+    let position = elm.getBoundingClientRect().bottom + window.scrollY + 5;
+    if ((position + 100) > screenH) {
+        position = elm.getBoundingClientRect().top + window.scrollY - 101; // I think the dialog is 96px tall
+    }
+
+    if (unit.abilities.filter(obj => obj.hasAbility).includes(ability)) {
+
+        document.getElementById('dialog__prompt').style.top = position + "px";
+
+        document.getElementById('dialog__prompt').show();
+
+        // Set dialog message
+        document.getElementById('dialog-message').innerText = `Are you sure you want to remove the ability "${ability.name}"?`;
+
+        // Create a promise and resolve it when the user confirms
+        return new Promise(resolve => {
+            // Define resolveDialog in the global scope
+            window.resolveDialog = function(result) {
+            // Hide overlay and custom dialog
+            document.getElementById('dialog__prompt').close();
+
+            // Resolve the promise with the user's choice
+            resolve(result);
+
+            if (result) {
+                ability.hasAbility = false;
+                calcPointCost(unit);
+                //populateAbilityUI(unit);
+            } else { 
+                toggle.checked = true;
+                console.log("Dialog closed without removing ability.") 
+            }
+            };
+            updateUnitOnServer(unit);
+            // setTimeout(() => {
+            //     updateForceCard(units[unit.unitID]);
+            // }, 100); 
+        });
+    } // else do nothing
 };

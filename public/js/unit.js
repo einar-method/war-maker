@@ -215,6 +215,7 @@ class Force {
         this.maxAbilities = 1;
         this.pastCost = 0;
         this.currentCost = 0;
+        this.notes = "";
         this.setupTesting();
     };
 

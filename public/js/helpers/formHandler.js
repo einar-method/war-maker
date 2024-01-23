@@ -199,39 +199,7 @@ function removeImage(unit, target) {
     }
 };
 
-function addAbility(ability, unit) {
-    let bool = false;
-    if (ability.hasAbility) { return bool; }
 
-    const condition1 = unit.abilities.filter(obj => obj.hasAbility).length < unit.maxAbilities;
-    if (!condition1) { 
-        alert(`This unit's max ability count is ${unit.maxAbilities}.`);
-        return bool; 
-    };
-
-    const condition2 = ability.cost <= players[playerId].currentPoints;
-    if (!condition2) { 
-        alert(`Not enough points to purchase ability. Points remaining: ${players[playerId].currentPoints}`);
-        return bool;
-    };
-    
-    if (condition1 && condition2) {
-        ability.hasAbility = true;
-        //populateAbilityUI(unit);
-    } else { conolse.error("No"); return bool;}
-    
-    if (!calcPointCost(unit)) {
-        ability.hasAbility = false;
-        calcPointCost(unit);
-        console.log("ability " + ability.name + " is",  ability.hasAbility);
-        //populateAbilityUI(unit);
-    }
-
-    updateUnitOnServer(unit);
-    setTimeout(() => {
-        updateForceCard(units[unit.unitID]);
-    }, 100); 
-};
 
 // function changeType(type, unit) {
 //     const state = unit.types.map(obj => ({ ...obj }));
@@ -300,46 +268,3 @@ function showDescription(input, text, el) {
     
 };
 
-function promptRemoveAbility(elm, ability, unit, toggle) { //elm for positioning
-
-    const screenH = window.innerHeight + window.scrollY;
-    let position = elm.getBoundingClientRect().bottom + window.scrollY + 5;
-    if ((position + 100) > screenH) {
-        position = elm.getBoundingClientRect().top + window.scrollY - 101; // I think the dialog is 96px tall
-    }
-
-    if (unit.abilities.filter(obj => obj.hasAbility).includes(ability)) {
-
-        document.getElementById('dialog__prompt').style.top = position + "px";
-
-        document.getElementById('dialog__prompt').show();
-
-        // Set dialog message
-        document.getElementById('dialog-message').innerText = `Are you sure you want to remove the ability "${ability.name}"?`;
-
-        // Create a promise and resolve it when the user confirms
-        return new Promise(resolve => {
-            // Define resolveDialog in the global scope
-            window.resolveDialog = function(result) {
-            // Hide overlay and custom dialog
-            document.getElementById('dialog__prompt').close();
-
-            // Resolve the promise with the user's choice
-            resolve(result);
-
-            if (result) {
-                ability.hasAbility = false;
-                calcPointCost(unit);
-                //populateAbilityUI(unit);
-            } else { 
-                toggle.checked = true;
-                console.log("Dialog closed without removing ability.") 
-            }
-            };
-            updateUnitOnServer(unit);
-            setTimeout(() => {
-                updateForceCard(units[unit.unitID]);
-            }, 100); 
-        });
-    } // else do nothing
-};

@@ -120,6 +120,11 @@ function initGame() {
         units = snapshot.val() || {};
         Object.keys(units).forEach((key) => {
             console.log(units[key]) //NOTE: unit is being passed correctly
+            //console.log(unitElements[units[key].unitID]) //NOTE: unit is being passed correctly
+            setTimeout(() => {
+                updateForceCard(units[key]);
+            }, 100); 
+            
 /*             const characterState = units[key];
             let el = playerElements[key];
             // Now update the DOM
@@ -154,13 +159,6 @@ function initGame() {
         //unitElements[addedForce.unitID].querySelector(`.radio__button[value="${currentVal}"]`).checked = true;
         
         const typeRadios = unitElements[addedForce.unitID].querySelector(`.force__type-set`);
-        
-        setTimeout(() => {
-            updateForceCard(addedForce);
-        }, 100); 
-        
-
-
         typeRadios.addEventListener('change', function(event) {
             const selectedValue = event.target.value;
             // console.log(selectedValue)
@@ -168,10 +166,36 @@ function initGame() {
             // console.log(upper)
             // console.log("during this stage:", addedForce.types)
             const newType = addedForce.types.find(type => type.name === selectedValue.toUpperCase());
-            console.log("New type", newType)
-            console.log("Added force:", addedForce)
-            changeType(newType, addedForce);
-        })
+ 
+            changeType(newType, units[addedForce.unitID]);
+        });
+
+        const boolRadios = unitElements[addedForce.unitID].querySelectorAll(`.force__bool-set`);
+        boolRadios.forEach((item) => {
+            item.addEventListener('change', function(event) {     
+                checkRadios(event.target.id, units[addedForce.unitID]);
+                updateUnitOnServer(units[addedForce.unitID]);
+            });
+        });
+
+        const textAreas = unitElements[addedForce.unitID].querySelectorAll(`.textarea__dynamic`);
+        textAreas.forEach((item) => {
+            item.addEventListener('blur', function (event) {
+                checkInputChange(event.target, units[addedForce.unitID]);
+                updateUnitOnServer(units[addedForce.unitID]);
+            });
+        });
+
+        const numberInputs = unitElements[addedForce.unitID].querySelectorAll(`.force__number-set`);
+        numberInputs.forEach((item) => {
+            item.addEventListener('input', function (event) {
+                checkInputChange(event.target, units[addedForce.unitID]);
+                updateUnitOnServer(units[addedForce.unitID]);
+            });
+        });
+        
+        
+
 /* 
         const forceElm = addedForce.createForceCard();
  
@@ -391,7 +415,8 @@ window.onload = function() {
 
     handleRouting();
 
-    // Prevent autocomplete and spellcheck on all user inputs
+/*   // Prevent autocomplete and spellcheck on all user inputs
+    // Still useful but we no longer have these elements created when the window first loads
     const forms = document.querySelectorAll('form');
     const textareas = document.querySelectorAll('textarea');
     const inputs = document.querySelectorAll('input');
@@ -413,7 +438,7 @@ window.onload = function() {
         input.setAttribute('autocomplete', 'off');
         input.setAttribute('spellcheck', 'false');
         //console.log(input)
-    });
+    }); */
 
     // Open welocme page login default tab
     //document.getElementById("tiredOfIds").click();

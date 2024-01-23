@@ -235,14 +235,14 @@ function deleteCreatedElements() {
 // };
 
 function toggleAbilitySheet(elm, checker, parentClass) {
-    console.log(elm)
+    //console.log(elm)
     const fullId = findParentByClass(elm, parentClass).id;
-    console.log(fullId)
+    //console.log(fullId)
     
     //const parentId = fullId.slice("card-".length);
     const parentId = fullId[0] === "a" ? fullId.slice("abilitySheet-".length) : fullId.slice("card-".length);
-    console.log(parentId)
-    console.log(units[parentId])
+    //console.log(parentId)
+    //console.log(units[parentId])
 
     if(checker == true) {
         document.body.style.overflow = "hidden";
@@ -276,7 +276,7 @@ function createForceCard(unit) {
     section.innerHTML = `
     <div class="force__card__labeled-textareas">
         <p class="war-sheet__paragrapgh">FORCE NAME: </p>
-        <textarea id="forceCardName" name="forceCardName" rows="1" class="textarea__dynamic" title="Change Force Name" placeholder="Name your force, or leave blank."></textarea>
+        <textarea id="forceCardName-${unit.unitID}" name="forceCardName-${unit.unitID}" rows="1" class="textarea__dynamic" title="Change Force Name" placeholder="Name your force, or leave blank."></textarea>
     </div>
     <div class="force__card__inner">
         <div class="force__card__radio-fieldset force__type-set" id="forceRadioSet-${unit.unitID}">
@@ -304,79 +304,79 @@ function createForceCard(unit) {
             </div>
             <div class="force__card__labeled-textareas">
                 <p class="war-sheet__paragrapgh">ABILITY 3: </p>
-                <p class="force__card__ability-display"><span id="abil3Display" onclick="toggleAbilitySheet(this, true, 'force__card')">Click to open Ability Sheet.</span></p>
+                <p class="force__card__ability-display" onclick="toggleAbilitySheet(this, true, 'force__card')"><span id="abil3Display">Click to open Ability Sheet.</span></p>
             </div>
         </div>
     </div>
     <div>
         <p class="war-sheet__paragrapgh">NOTES: </p>
-        <textarea id="forceCardNotes" name="forceCardNotes" rows="3" class="textarea__dynamic" title="Extra Force Notes" placeholder="Additional notes for this force."></textarea>
+        <textarea id="forceCardNotes-${unit.unitID}" name="forceCardNotes-${unit.unitID}" rows="3" class="textarea__dynamic" spellcheck="false" title="Extra Force Notes" placeholder="Additional notes for this force."></textarea>
     </div>
     <fieldset class="force__card__stats__container">
         <legend class="force__card__title-bar">STATS:</legend>
-            <fieldset>
+            <fieldset class="force__number-set">
                 <legend>Attack Zone</legend>
-                <label for="range">0 Melee | 1-5 Ranged</label>
-                <input type="number" id="range" class="form__input" name="range" min="0" max="5" step="1" value="0">
+                <label for="range-${unit.unitID}">0 Melee | 1-5 Ranged</label>
+                <input type="number" id="range-${unit.unitID}" class="form__input" name="range-${unit.unitID}" min="0" max="5" step="1" value="0">
             </fieldset>
-            <fieldset>
+            <fieldset class="force__number-set">
                 <legend>Unit Dice</legend>
                 <label for="unitDice-${unit.unitID}">Or # of members</label>
                 <input type="number" id="unitDice-${unit.unitID}" class="form__input" name="unitDice-${unit.unitID}" min="0" max="6" step="1" value="6">
             </fieldset>
-            <fieldset class="force__card__radio-fieldset">
+            <fieldset class="force__card__radio-fieldset force__bool-set">
                 <legend>Condition</legend>
                 <div>
-                    <input type="radio" id="notDead" class="radio__button" name="healthStatus" value="alive">
-                    <label for="notDead">Alive</label><br>
+                    <input type="radio" id="notDead-${unit.unitID}" class="radio__button" name="healthStatus-${unit.unitID}" value="alive">
+                    <label for="notDead-${unit.unitID}">Alive</label><br>
                 </div>
                 <div>
-                    <input type="radio" id="isDead" class="radio__button" name="healthStatus" value="dead">
-                    <label for="isDead">Dead</label>
+                    <input type="radio" id="isDead-${unit.unitID}" class="radio__button" name="healthStatus-${unit.unitID}" value="dead">
+                    <label for="isDead-${unit.unitID}">Dead</label>
                 </div>
             </fieldset>
-            <fieldset class="force__card__radio-fieldset">
+            <fieldset class="force__card__radio-fieldset force__bool-set">
                 <legend>Activation</legend>
                 <div >
-                    <input type="radio" id="notTurn" class="radio__button" name="turnStatus" value="inactive">
-                    <label for="notTurn">Inactive</label><br>
+                    <input type="radio" id="notTurn-${unit.unitID}" class="radio__button" name="turnStatus-${unit.unitID}" value="inactive">
+                    <label for="notTurn-${unit.unitID}">Inactive</label><br>
                 </div>
                 <div >
-                    <input type="radio" id="yesTurn" class="radio__button" name="turnStatus" value="active">
-                    <label for="yesTurn">Active</label>
+                    <input type="radio" id="yesTurn-${unit.unitID}" class="radio__button" name="turnStatus-${unit.unitID}" value="active">
+                    <label for="yesTurn-${unit.unitID}">Active</label>
                 </div>
             </fieldset>
-            <fieldset class="force__card__radio-fieldset">
+            <fieldset class="force__card__radio-fieldset force__bool-set">
                 <legend>Cover</legend>
                 <div>
-                    <input type="radio" id="hasCover" class="radio__button" name="coverStatus" value="cover">
-                    <label for="hasCover">Has Cover</label><br>
+                    <input type="radio" id="hasCover-${unit.unitID}" class="radio__button" name="coverStatus-${unit.unitID}" value="cover">
+                    <label for="hasCover-${unit.unitID}">Has Cover</label><br>
                 </div>
                 <div>
-                    <input type="radio" id="noCover" class="radio__button" name="coverStatus" value="noCover">
-                    <label for="noCover">No Cover</label>
+                    <input type="radio" id="noCover-${unit.unitID}" class="radio__button" name="coverStatus-${unit.unitID}" value="noCover">
+                    <label for="noCover-${unit.unitID}">No Cover</label>
                 </div>
             </fieldset>
-            <fieldset class="force__card__radio-fieldset">
+            <fieldset class="force__card__radio-fieldset force__bool-set">
                 <legend>Movement</legend>
                 <div>
-                    <input type="radio" id="normalSpeed" class="radio__button" name="speedStatus" value="noSlow">
-                    <label for="normalSpeed">Normal</label><br>
+                    <input type="radio" id="normalSpeed-${unit.unitID}" class="radio__button" name="speedStatus-${unit.unitID}" value="noSlow">
+                    <label for="normalSpeed-${unit.unitID}">Normal</label><br>
                 </div>
                 <div>
-                    <input type="radio" id="slowSpeed" class="radio__button" name="speedStatus" value="yesSlow">
-                    <label for="slowSpeed">Slowed</label>
+                    <input type="radio" id="slowSpeed-${unit.unitID}" class="radio__button" name="speedStatus-${unit.unitID}" value="yesSlow">
+                    <label for="slowSpeed-${unit.unitID}">Slowed</label>
                 </div>
             </fieldset>
-            <fieldset>
+            <fieldset class="force__number-set">
                 <legend>Reserve Count</legend>
-                <input type="number" id="editReserves" class="form__input" name="reserveCount" min="0" max="6" step="1" value="0">
+                <input type="number" id="editReserves-${unit.unitID}" class="form__input" name="reserveCount-${unit.unitID}" min="0" max="6" step="1" value="0">
             </fieldset>
-            <fieldset>
+            <fieldset class="force__number-set">
                 <legend>Free Rerolls</legend>
-                <input type="number" id="freeRerolls" class="form__input" name="freeRerolls" min="0" max="10" step="1" value="0">
+                <input type="number" id="freeRerolls-${unit.unitID}" class="form__input" name="freeRerolls-${unit.unitID}" min="0" max="10" step="1" value="0">
             </fieldset>
-            <fieldset>
+            <fieldset class="force__number-set">
                 <legend>Max Abilities</legend>
                 <input type="number" id="maxAbilities-${unit.unitID}" class="form__input" name="maxAbilities-${unit.unitID}" min="1" max="5" step="1" value="1">
             </fieldset>
@@ -468,7 +468,7 @@ function updateForceCard(unit) {
     const card = document.getElementById("card-" + unit.unitID);
 
     // Update FORCE NAME
-    card.querySelector("#forceCardName").value = unit.name;
+    card.querySelector(`#forceCardName-${unit.unitID}`).value = unit.name;
 
     // Update FORCE TYPE
     const currentVal = getCurrentType(unit).name.toLowerCase();
@@ -476,46 +476,42 @@ function updateForceCard(unit) {
     
     // Update ABILITIES
     const temp = getCurrentAbilities(unit);
-    // console.log(temp)
     const a = temp[0].name === "" ? "Click to open Ability Sheet." : temp[0].name;
     const b = temp[1].name === "" ? "Click to open Ability Sheet." : temp[1].name;
     const c = temp[2].name === "" ? "Click to open Ability Sheet." : temp[2].name;
-
-    console.log(a)
-    console.log(b)
 
     card.querySelector("#abil1Display").textContent = a;
     card.querySelector("#abil2Display").textContent = b;
     card.querySelector("#abil3Display").textContent = c;
 
     // Update NOTES
-    card.querySelector("#forceCardNotes").value = unit.notes;
+    card.querySelector(`#forceCardNotes-${unit.unitID}`).value = unit.notes; // === "" ? "" : unit.notes;
 
     // Update STATS
-    card.querySelector("#range").value = unit.attackRange;
+    card.querySelector(`#range-${unit.unitID}`).value = unit.attackRange;
     card.querySelector(`#unitDice-${unit.unitID}`).value = unit.unitDice;
 
     // Update HEALTH STATUS
-    const healthStatus = unit.isDead ? "isDead" : "notDead";
+    const healthStatus = unit.isDead ? `isDead-${unit.unitID}` : `notDead-${unit.unitID}`;
     card.querySelector(`#${healthStatus}`).checked = true;
 
     // Update TURN STATUS
-    const turnStatus = unit.isTurn ? "yesTurn" : "notTurn";
+    const turnStatus = unit.isTurn ? `yesTurn-${unit.unitID}` : `notTurn-${unit.unitID}`;
     card.querySelector(`#${turnStatus}`).checked = true;
 
     // Update COVER STATUS
-    const coverStatus = unit.isCovered ? "hasCover" : "noCover";
+    const coverStatus = unit.isCovered ? `hasCover-${unit.unitID}` : `noCover-${unit.unitID}`;
     card.querySelector(`#${coverStatus}`).checked = true;
 
     // Update SPEED STATUS
-    const speedStatus = unit.isSlowed ? "slowSpeed" : "normalSpeed";
+    const speedStatus = unit.isSlowed ? `slowSpeed-${unit.unitID}` : `normalSpeed-${unit.unitID}`;
     card.querySelector(`#${speedStatus}`).checked = true;
 
     // Update RESERVE COUNT
-    card.querySelector("#editReserves").value = unit.reserveCount;
+    card.querySelector(`#editReserves-${unit.unitID}`).value = unit.reserveCount;
 
     // Update FREE REROLLS
-    card.querySelector("#freeRerolls").value = unit.freeRerolls;
+    card.querySelector(`#freeRerolls-${unit.unitID}`).value = unit.freeRerolls;
 
     // Update MAX ABILITIES
     card.querySelector(`#maxAbilities-${unit.unitID}`).value = unit.maxAbilities;

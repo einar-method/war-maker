@@ -377,7 +377,8 @@ grid-template-rows: 8fr 8rem;
 background: url("assets/imgs/wmbg.webp") center/cover repeat;
 display: grid;
 grid-template-rows: 5rem 1fr;
-columns: 1fr;
+grid-template-columns: 1fr;
+overflow-y: auto;
 }
 
 #roster h1 {
