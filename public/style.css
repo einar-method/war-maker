@@ -490,6 +490,10 @@ color: var(--tan-color);
     overflow-y: scroll;
 }
 
+.info__container p {
+    color: whitesmoke;
+}
+
 .page__divider_big {
     border-top: .3rem dashed var(--orange-med);
     color: transparent;
@@ -499,6 +503,44 @@ color: var(--tan-color);
     border-top: 2px dashed var(--orange-med);
     color: transparent;
     /* border-top-right-radius: .3rem; */
+}
+
+/**********************************************/
+/* External Elements */
+/**********************************************/
+.utterances-frame {
+    /* color-scheme: github-dark; */
+    /* position: absolute;
+    left: 0;
+    right: 0; */
+    position: relative;
+    box-sizing: border-box;
+    width: 200px;
+    min-width: 100%;
+    max-width: 100%;
+    /* min-height: 100%; */
+    /* min-height: 3000rem; */
+    border: 0;
+    /* height: 600rem; */
+    height: 400rem;
+    
+}
+
+
+.utterances {
+    background-color: transparent;
+    position: relative;
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    /* height: fit-content; */
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+    /* height: auto; */
+    /* background-color: red; */
+    /* min-height: 100%; */
+    /* overflow-y: scroll; */
 }
 
 /**********************************************/
