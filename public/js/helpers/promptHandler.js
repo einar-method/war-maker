@@ -2,8 +2,10 @@
 /*         All our dialog prompts and user alerts.          */
 /************************************************************/
 
-function promptRemoveUnit(section, unit) {
+function promptRemoveUnit(section, forceId) {
 
+    const unit = units[forceId];
+    console.log(unit)
     const popUp = document.getElementById("dialog__prompt-main");
     
     popUp.style.top = getCenterScreen(popUp.id);
@@ -24,7 +26,7 @@ function promptRemoveUnit(section, unit) {
 
         if (result) {
             // Determine cost of unit and refund to owner
-            unit.calculatePoints();
+            calcPointCost(unit);
             players[playerId].currentPoints += unit.currentCost;
             displayPoints(players[playerId].currentPoints);
             console.log(`${unit.currentCost} points were refunded to ${players[playerId].name}.`);
@@ -47,8 +49,8 @@ function promptRemoveUnit(section, unit) {
                 });
 
             // Finally, remove visible card and set unit to null
-            document.getElementById(section.id).remove();
-            unit = null;
+            document.getElementById(section).remove();
+            //unit = null; // TODO: Do we need this? We had it working before the big card changes
         } else { console.log("Dialog closed without removing unit.") }
         };
     });

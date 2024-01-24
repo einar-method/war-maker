@@ -45,9 +45,18 @@ function createForceCard(unit) {
     section.id = `card-${unit.unitID}`;
 
     section.innerHTML = `
-    <div class="force__card__labeled-textareas">
+    <div class="force__card__labeled-textareas force-name">
         <p class="war-sheet__paragrapgh">FORCE NAME: </p>
         <textarea id="forceCardName-${unit.unitID}" name="forceCardName-${unit.unitID}" rows="1" class="textarea__dynamic" title="Change Force Name" placeholder="Name your force, or leave blank."></textarea>
+        <div class="dropdown">
+        <span class="dropbtn force__card__menu-btn">&#9865;</span>
+        <div class="dropdown-content">
+          <a href="#">Clone</a>
+          <a onclick="promptRemoveUnit('card-${unit.unitID}', '${unit.unitID}')">Delete</a>
+          <a href="#">Metadata</a>
+          <a href="#">Token</a>
+        </div>
+      </div> 
     </div>
     <div class="force__card__inner">
         <div class="force__card__radio-fieldset force__type-set" id="forceRadioSet-${unit.unitID}">

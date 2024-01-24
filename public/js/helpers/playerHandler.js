@@ -2,6 +2,7 @@ function editPoints() {
 
     const popUp = document.getElementById("dialog__prompt-points");
 
+    // TODO: Rename the below
     const popUpDetails = getElementDetails("points-display-box");
 
     const input = document.getElementById("point-modifier");

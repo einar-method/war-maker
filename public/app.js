@@ -31,7 +31,9 @@ let unitElements = {};
 const gameContainer = document.querySelector(".game-container");
 const playerNameInput = document.querySelector("#player-name");
 //const playerColorButton = document.querySelector("#player-color");
-document.getElementById("points-display-box").onclick = editPoints; // Function in playerHandler.js
+
+// TODO: Rename the below id
+//document.getElementById("points-display-box").onclick = editPoints; // Function in playerHandler.js
 
 function initGame() {
 
@@ -249,7 +251,7 @@ firebase.auth().signInAnonymously().catch((error) => {
 
 // Make the Add Unit interactive card for users
 const cardContainer = document.getElementById('cardContainer');
-document.getElementById('cardContainer').appendChild(createAddCard());
+//document.getElementById('cardContainer').appendChild(createAddCard());
 
 // For navigation functionality
 document.addEventListener("DOMContentLoaded", function () {

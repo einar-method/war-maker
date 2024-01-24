@@ -1,4 +1,4 @@
-// Simple add unit function. WIP: need to handle errors 
+// Simple add unit function. TODO: need to handle errors 
 function addUnitForDatabase (unit) {
     return database.ref('units/' + unit.unitID).set(unit);
 };

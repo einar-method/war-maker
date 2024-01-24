@@ -159,8 +159,8 @@ function getRandomSafeSpot() {
         ]);
 };
     
-function displayPoints(ref) {
-    document.getElementById("points-display").innerHTML = ref;
+function displayPoints(ref) { //TODO: ID should not be hard coded
+    document.getElementById("playerMaxPointsDisplay").innerHTML = ref;
 };
 
 function getCenterScreen(elementId) {

@@ -67,14 +67,22 @@
     <section id="roster" class="page grid">
         <div class="page__unit-header">
             <h1><span class="title__text-camo">FORCES</span> | <span class="title__text-green">SHEET</span></h1>
-            <div id="points-display-box" class="points-display">
-                <!-- onclick="editPoints()" // used above before fb -->
-                <p>Points: <span id="points-display"></span></p>
+            
+            
+        </div>
+        <div class="page__force-tools">
+            <div class="addTo" onclick="beginForceCreation()">
+                <div >
+                    <ion-icon name="add-circle"></ion-icon>
+                    <p>add FORCE</p>
+                </div>
             </div>
-            <!-- <button onclick="beginForceCreation()">test</button> -->
+            <p class="force__sheet__points__display">Points: <span id="playerCurrentPointsDisplay" class="force__sheet__point-span">0</span><span> used out of </span><span id="playerMaxPointsDisplay" class="force__sheet__point-span"></span> max.</p>
         </div>
         
         <div class="card-container" id="cardContainer"></div>
+
+        <p class="tip__text">TIP: click on the "+" symbol to add a FORCE. Click "&#9865;" on a FORCE card to access its menu. You can edit your points on the War Sheet.</p>
     
     </section>
     
@@ -106,12 +114,27 @@
                 <textarea id="warP1ArmySpan" name="warP1ArmySpan" rows="2" class="textarea__dynamic" title="Player 1's Army Description" placeholder="Army description, change as needed."></textarea>
             </div>
             <div>
+                <!-- onclick="editPoints()" // used above before fb -->
+                <p class="war-sheet__paragrapgh">PLAYER 1 POINTS: </p>
+                <div>
+                    <p>Max: <span id="p1PointsDisplayMax"></span></p>
+                    <p>Used: <span id="p1PointsDisplayUsed"></span></p>
+                </div>
+            </div>
+            <div>
                 <p class="war-sheet__paragrapgh">PLAYER 2: </p>
                 <textarea id="warP2Span" name="warP2Span" rows="1" class="textarea__dynamic" title="Change Player 2's Name" placeholder="Change your name at will."></textarea>
             </div>
             <div>
                 <p class="war-sheet__paragrapgh">PLAYER 2 ARMY: </p>
                 <textarea id="warP2ArmySpan" name="warP2ArmySpan" rows="2" class="textarea__dynamic" title="Player 2's Army Description" placeholder="Army description, change as needed."></textarea>
+            </div>
+            <div>
+                <p class="war-sheet__paragrapgh">PLAYER 2 POINTS: </p>
+                <div>
+                    <p>Max: <span id="p2PointsDisplayMax"></span></p>
+                    <p>Used: <span id="p2PointsDisplayUsed"></span></p>
+                </div>
             </div>
         </div>
 
