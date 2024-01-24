@@ -63,7 +63,7 @@ function createLobby(lobbyCode) {
       // Check if the lobbyId is valid
       if (groupData) {
       // Check if the current user is already a member of the group
-      //TODO: this checker has stopped working!
+      //TODO: this checker has stopped working! 
       if (groupData.members && groupData.members.includes(playerId)) {
 			console.log(playerId + " was already a member of lobby: " + lobbyId);
 			alert("You are already a member of this war.");

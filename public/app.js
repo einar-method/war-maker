@@ -123,15 +123,34 @@ function initGame() {
         Object.keys(units).forEach((key) => {
             console.log(units[key]) //NOTE: unit is being passed correctly
             //console.log(unitElements[units[key].unitID]) //NOTE: unit is being passed correctly
-            setTimeout(() => {
-                updateForceCard(units[key]);
-            }, 100); 
+            if (units[key].owner === playerId) {
+                setTimeout(() => {
+                    updateForceCard(units[key]);
+                }, 100); 
+            } else { console.log("this was not my update") }
         })
     });
 
     allUnitsRef.on("child_added", (snapshot) => {
         //Fires whenever a new force is added to the tree
+        console.log(playerId)
+        // const playerOwner = snapshot.val();
+        // if (playerOwner.owner === playerId) {
+        //     console.log("I own this!")
+        // } else { console.error("I DONT own this!") }
+
+
+    //     const currentUser = firebase.auth().currentUser;
+    //     console.log(currentUser)
+    //     console.log(currentUser.uid)
+    //     const userLobbyRef = firebase.database().ref(`players/${currentUser.uid}`);
+    //     console.log(userLobbyRef.id)
+
+    // if (currentUser) {
         const addedForce = snapshot.val();
+        if (addedForce.owner === playerId) {
+            console.log("I own this!")
+        
 
         const forceElm = createForceCard(addedForce);
         cardContainer.insertBefore(forceElm, cardContainer.lastElementChild); 
@@ -172,6 +191,8 @@ function initGame() {
                 updateUnitOnServer(units[addedForce.unitID]);
             });
         });
+    //}
+    } else { console.log("I DONT own this!") }
     });
 };
 
@@ -456,6 +477,89 @@ function step1() {
     document.getElementById("retaliationStorySpan").value = war0.retaliate.description1 + " " + war0.retaliate.description2;
     document.getElementById("openWarStorySpan").value = war0.openWar.description1 + " " + war0.openWar.description2;
     document.getElementById("finalFrontStorySpan").value = war0.finalFront.description1 + " " + war0.finalFront.description2;
+};
 
 
+
+function removeAll() {
+    graph.dispose();
+    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    graph.draw(ctx);
+}
+function removeRndPoint() {
+    if (graph.points.length == 0) {
+        console.log("no points")
+        return;
+    }
+    const index = Math.floor(Math.random() * graph.points.length);
+    graph.removePoint(graph.points[index]);
+    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    graph.draw(ctx);
+    //console.log(success);
+};
+
+function removeRndSegment() {
+    if (graph.segments.length == 0) {
+        console.log("no segments")
+        return;
+    }
+    const index = Math.floor(Math.random() * graph.segments.length);
+    graph.removeSegment(graph.segments[index]);
+    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    graph.draw(ctx);
+    //console.log(success);
+};
+
+function addRandomSegment() {
+    const index1 = Math.floor(Math.random() * graph.points.length);
+    const index2 = Math.floor(Math.random() * graph.points.length);
+    const success = graph.tryAddSegment(
+        new Segment2(graph.points[index1], graph.points[index2])
+    );
+    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    graph.draw(ctx);
+    console.log(success);
+};
+
+function addRandomPoint() {
+    const success = graph.tryAddPoint(
+        new Point2(
+            Math.random() * myCanvas.width,
+            Math.random() * myCanvas.height
+        )
+    );
+    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    graph.draw(ctx);
+    console.log(success);
+};
+const GRID_SIZE = 45;
+const myCanvas = document.getElementById("myCanvas")
+myCanvas.width = 400;
+myCanvas.height = 400;
+
+const ctx = myCanvas.getContext("2d");
+
+const p1 = new Point2(50, 50);
+const p2 = new Point2(100, 50);
+const p3 = new Point2(150, 50);
+const p4 = new Point2(200, 50);
+// const p5 = new Point(50, 100);
+// const p6 = new Point(100, 100);
+// const p7 = new Point(150, 100);
+// const p8 = new Point(200, 100);
+
+const s1 = new Segment2(p1, p2);
+const s2 = new Segment2(p1, p3);
+const s3 = new Segment2(p1, p4);
+const s4 = new Segment2(p2, p3);
+
+const graph = new Graph2([p1, p2, p3, p4], [s1, s2, s3, s4]);
+const graphEditor = new GraphEditor2(myCanvas, graph);
+
+animate();
+
+function animate() {
+    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    graphEditor.display();
+    requestAnimationFrame(animate);
 }

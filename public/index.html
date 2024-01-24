@@ -379,6 +379,15 @@
             <section id="chat-feed"></section>
 
         </div>
+        <div id="controls">
+            <button onclick="addRandomPoint()">Add Point</button>
+            <button onclick="addRandomSegment()">Add Segment</button>
+            <button onclick="removeRndSegment()">Remove Segment</button>
+            <button onclick="removeRndPoint()">Remove Point</button>
+            <button onclick="removeAll()">Remove All</button>
+        </div>
+
+        <canvas id="myCanvas"></canvas>
 
         <div class="game-container"></div>
     </section>
@@ -496,6 +505,14 @@
     <script src="./js/combat.js"></script>
     <script src="./js/commander.js"></script>
     <script src="./js/unit.js"></script>
+    
+
+    <script src="./js/graphEditorTest.js"></script>
+    <script src="./js/math/graph2.js"></script>
+    
+    <script src="./js/primitives/point2.js"></script>
+    <script src="./js/primitives/segment2.js"></script>
+
     <script src="./app.js"></script>
     
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
