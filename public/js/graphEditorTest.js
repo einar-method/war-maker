@@ -37,27 +37,58 @@ class GraphEditor2 {
         } */ // we need this for battle setup, not play
         if (evt.button == 0) { // left mouse click
 
-            if (this.selected) {
-                console.log(this.selected)
-                this.dragging = false;
-                this.selected = null;
-                this.hovered = null;
-                //this.#removePoint(this.dragStart);
-                this.dragStart = null;
+            // TODO: We also need to handle turn order and move actions first
 
-                this.canHover = true;
-                return;
+
+            // if (this.selected.owner === playerId || this.hovered.owner === playerId) {
+            //     console.error("YES, this is your point!")
+            // } else { console.error("NO, this is not your point!")}
+            
+
+            if (this.selected) {
+                //console.log(this.selected)
+
+                if (this.selected.owner === this.graph.ownerId) {
+                    console.log("YES, this is your point!")
+
+                    this.dragging = false;
+                    this.selected = null;
+                    this.hovered = null;
+                    //this.#removePoint(this.dragStart);
+                    this.dragStart = null;
+
+                    this.canHover = true;
+
+                    // is this the right place for the reurn now?
+                    return;
+                } else { 
+                    // TODO: Could we handle enemy targetting here?
+                    console.log("NO, this is not your point!") 
+                }
             };
 
             if (this.hovered) {
-                this.#select(this.hovered);
-                this.dragging = true;
-                
-                this.dragStart = new Point2(this.selected.x, this.selected.y);
-                return;
+
+                if (this.hovered.owner === this.graph.ownerId) {
+                    console.log("YES, this is your point!")
+
+                    this.#select(this.hovered);
+                    this.dragging = true;
+                    
+                    this.dragStart = new Point2(this.selected.x, this.selected.y);
+                    
+                    return;
+                } else { console.log("NO, this is not your point!")}
             };
 
-            this.graph.addPoint(this.mouse);
+            // this needs to update a point not add one
+            // Or add a network point!
+            //this.graph.addPoint(this.mouse);
+            // console.log("MOUSE before add point", this.mouse)
+            // console.log("X before add point", this.mouse.x)
+            // console.log("Y before add point", this.mouse.y)
+            beginPointCreation(this.mouse)
+
         }
     }
 
@@ -89,13 +120,16 @@ class GraphEditor2 {
             // Update the selected point
             this.selected.x = this.mouse.x;
             this.selected.y = this.mouse.y;
+
+            // Update to server?
+            graph.updatePointOnServer();
         }
     };
 
     #select(point) {
-        if (this.selected) {
-            this.graph.tryAddSegment(new Segment(this.selected, point));
-        }
+        // if (this.selected) {
+        //     this.graph.tryAddSegment(new Segment(this.selected, point));
+        // }
         this.selected = point;
     }
 
@@ -108,6 +142,7 @@ class GraphEditor2 {
     }
 
     display() {
+        //graph.updatePointOnServer();
         this.graph.draw(this.ctx);
         if (this.hovered) {
             this.hovered.draw(this.ctx, { fill: true });
@@ -123,7 +158,7 @@ class GraphEditor2 {
             this.dragStart.draw(this.ctx, { outline: true, color: "gray" });
         }
         // Create a new extended segment
-        console.log(intent)
+        //console.log(intent)
         const extendedSegment = new Segment2(this.dragStart, intent);
 
         // Draw the extended segment with a dashed line

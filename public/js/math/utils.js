@@ -1,12 +1,12 @@
 function isSolid(x,y) {
 
-    const blockedNextSpace = mapData.blockedSpaces[getKeyString(x, y)];
+    const blockedNextSpace = mapDataOld.blockedSpaces[getKeyString(x, y)];
     return (
         blockedNextSpace ||
-        x >= mapData.maxX ||
-        x < mapData.minX ||
-        y >= mapData.maxY ||
-        y < mapData.minY
+        x >= mapDataOld.maxX ||
+        x < mapDataOld.minX ||
+        y >= mapDataOld.maxY ||
+        y < mapDataOld.minY
     )
 };
 
@@ -187,7 +187,7 @@ function getElementDetails(elm) {
     };
 };
 
-const mapData = {
+const mapDataOld = {
     minX: 1,
     maxX: 14,
     minY: 4,

@@ -360,17 +360,17 @@
         <div class="queue">
 
             <div style="display: grid;gap: .2rem;grid-template-columns: auto 1fr;">
-                <div class="info__button-box">
+                <!-- <div class="info__button-box">
                     <ion-icon id="info-callsign" class="info__button-icon" name="information-circle"></ion-icon>
-                </div>
+                </div> -->
                 <input id="player-name" class="in-page__input" maxlength="40" title="Your callsign, edit at will" type="text" />
             </div>
  
 
-            <div style="display: grid;gap: .2rem;grid-template-columns: auto 1fr;">
+            <!-- <div style="display: grid;gap: .2rem;grid-template-columns: auto 1fr;">
                 <button id="makeLobby" title="Make a new lobby & generate a join code">Make War</button>
                 <input type="text" id="joinLobby" class="in-page__input" title="Copy & paste, or type your code" placeholder="Enter a war code" autocomplete="off">
-            </div>
+            </div> -->
             
             <!-- <p id="group-label"></p> -->
 
@@ -381,8 +381,8 @@
         </div>
         <div id="controls">
             <button onclick="addRandomPoint()">Add Point</button>
-            <button onclick="addRandomSegment()">Add Segment</button>
-            <button onclick="removeRndSegment()">Remove Segment</button>
+            <button onclick="beginPointCreation()">Net Point</button>
+            <button onclick="testRef()">Test</button>
             <button onclick="removeRndPoint()">Remove Point</button>
             <button onclick="removeAll()">Remove All</button>
         </div>
@@ -512,6 +512,7 @@
     
     <script src="./js/primitives/point2.js"></script>
     <script src="./js/primitives/segment2.js"></script>
+    <script src="./js/primitives/staging.js"></script>
 
     <script src="./app.js"></script>
     

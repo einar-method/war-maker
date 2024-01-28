@@ -27,6 +27,11 @@ let playerElements = {};
 let unitRef;
 let units = {};
 let unitElements = {};
+let lobbyId;
+let lobbyRef;
+let messages = {};
+let mapData = {};
+let allMapDataRef;
 
 const gameContainer = document.querySelector(".game-container");
 const playerNameInput = document.querySelector("#player-name");
@@ -44,6 +49,7 @@ function initGame() {
 
     const allPlayersRef = firebase.database().ref(`players`);
     const allUnitsRef = firebase.database().ref(`units`);
+    const mapDataRef = firebase.database().ref(`mapData`);
 
     allPlayersRef.on("value", (snapshot) => {
         //Fires whenever a change occurs
@@ -116,7 +122,7 @@ function initGame() {
         }
     }, 3000);
 
-    // UNITS
+    // Forces
     allUnitsRef.on("value", (snapshot) => {
         //Fires whenever a change occurs
         units = snapshot.val() || {};
@@ -134,66 +140,54 @@ function initGame() {
     allUnitsRef.on("child_added", (snapshot) => {
         //Fires whenever a new force is added to the tree
         console.log(playerId)
-        // const playerOwner = snapshot.val();
-        // if (playerOwner.owner === playerId) {
-        //     console.log("I own this!")
-        // } else { console.error("I DONT own this!") }
 
-
-    //     const currentUser = firebase.auth().currentUser;
-    //     console.log(currentUser)
-    //     console.log(currentUser.uid)
-    //     const userLobbyRef = firebase.database().ref(`players/${currentUser.uid}`);
-    //     console.log(userLobbyRef.id)
-
-    // if (currentUser) {
         const addedForce = snapshot.val();
         if (addedForce.owner === playerId) {
             console.log("I own this!")
         
+            const forceElm = createForceCard(addedForce);
+            cardContainer.insertBefore(forceElm, cardContainer.lastElementChild); 
+            unitElements[addedForce.unitID] = forceElm;
 
-        const forceElm = createForceCard(addedForce);
-        cardContainer.insertBefore(forceElm, cardContainer.lastElementChild); 
-        unitElements[addedForce.unitID] = forceElm;
-
-        const newType = addedForce.types.find(type => type.name === "REGULAR");
-        changeType(newType, addedForce);
-        
-        const typeRadios = unitElements[addedForce.unitID].querySelector(`.force__type-set`);
-        typeRadios.addEventListener('change', function(event) {
-            const selectedValue = event.target.value;
-  
-            const newType = addedForce.types.find(type => type.name === selectedValue.toUpperCase());
- 
-            changeType(newType, units[addedForce.unitID]);
-        });
-
-        const boolRadios = unitElements[addedForce.unitID].querySelectorAll(`.force__bool-set`);
-        boolRadios.forEach((item) => {
-            item.addEventListener('change', function(event) {     
-                checkRadios(event.target.id, units[addedForce.unitID]);
-                updateUnitOnServer(units[addedForce.unitID]);
+            const newType = addedForce.types.find(type => type.name === "REGULAR");
+            changeType(newType, addedForce);
+            
+            const typeRadios = unitElements[addedForce.unitID].querySelector(`.force__type-set`);
+            typeRadios.addEventListener('change', function(event) {
+                const selectedValue = event.target.value;
+    
+                const newType = addedForce.types.find(type => type.name === selectedValue.toUpperCase());
+    
+                changeType(newType, units[addedForce.unitID]);
             });
-        });
 
-        const textAreas = unitElements[addedForce.unitID].querySelectorAll(`.textarea__dynamic`);
-        textAreas.forEach((item) => {
-            item.addEventListener('blur', function (event) {
-                checkInputChange(event.target, units[addedForce.unitID]);
-                updateUnitOnServer(units[addedForce.unitID]);
+            const boolRadios = unitElements[addedForce.unitID].querySelectorAll(`.force__bool-set`);
+            boolRadios.forEach((item) => {
+                item.addEventListener('change', function(event) {     
+                    checkRadios(event.target.id, units[addedForce.unitID]);
+                    updateUnitOnServer(units[addedForce.unitID]);
+                });
             });
-        });
 
-        const numberInputs = unitElements[addedForce.unitID].querySelectorAll(`.force__number-set`);
-        numberInputs.forEach((item) => {
-            item.addEventListener('input', function (event) {
-                checkInputChange(event.target, units[addedForce.unitID]);
-                updateUnitOnServer(units[addedForce.unitID]);
+            const textAreas = unitElements[addedForce.unitID].querySelectorAll(`.textarea__dynamic`);
+            textAreas.forEach((item) => {
+                item.addEventListener('blur', function (event) {
+                    checkInputChange(event.target, units[addedForce.unitID]);
+                    updateUnitOnServer(units[addedForce.unitID]);
+                });
             });
-        });
-    //}
-    } else { console.log("I DONT own this!") }
+
+            const numberInputs = unitElements[addedForce.unitID].querySelectorAll(`.force__number-set`);
+            numberInputs.forEach((item) => {
+                item.addEventListener('input', function (event) {
+                    checkInputChange(event.target, units[addedForce.unitID]);
+                    updateUnitOnServer(units[addedForce.unitID]);
+                });
+            });
+        } else { console.log("I DONT own this!") }
     });
+
+   
 };
 
 // Create Lobby button
@@ -530,8 +524,131 @@ function addRandomPoint() {
     );
     ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
     graph.draw(ctx);
-    console.log(success);
+    console.log("Could find a point?", success);
 };
+
+// function addPointToDatabase (lob, point) {
+//     return database.ref(`lobbies/${lob}mapData/` + unit.unitID).set(point);
+// };
+
+function beginPointCreation( input = {} ) { 
+    
+    const prim = new Point2(
+        Math.random() * myCanvas.width,
+        Math.random() * myCanvas.height
+    )
+    console.log(prim)
+    //const currentUser = firebase.database().ref(`players/${playerId}`)
+    console.log(lobbyId ? lobbyId === players[playerId].currentLobby : false)
+    console.log(lobbyId)
+    if (lobbyId && lobbyId != "" && lobbyId === players[playerId].currentLobby) { 
+        //console.log("check for lobby match worked")
+        let xFactor;// = Math.random() * myCanvas.width;
+        let yFactor;// = Math.random() * myCanvas.height;
+
+        // If no cords are passed, assign random x & y
+        if (input) {
+            // console.log("Cords provided")
+            xFactor = input.x;
+            yFactor = input.y;
+        } else {
+            // console.log("No cords provided, picking random cords")
+            xFactor = Math.random() * myCanvas.width;
+            yFactor = Math.random() * myCanvas.height;
+        }
+
+        
+        // const xFactor = Math.random() * myCanvas.width;
+        // const yFactor = Math.random() * myCanvas.height;
+        const point = {
+            owner: playerId,
+            x: xFactor,
+            y: yFactor,
+            timestamp: firebase.database.ServerValue.TIMESTAMP,
+        };
+        // prim.owner = playerId;
+        // prim.timestamp = firebase.database.ServerValue.TIMESTAMP;
+
+        //point.owner = playerId; // Assign the user ID
+        // addPointToDatabase(point)
+        //     .then(() => {
+
+        //allMapDataRef = firebase.database().ref(`lobbies/${lobbyId}/mapData`);
+                // Set up onDisconnect for the new unit
+                //allMapDataRef = firebase.database().ref(`lobbies/${lobbyId}/mapData`);
+                allMapDataRef.onDisconnect().remove(); // Remove unit when the user disconnects
+
+                //allMapDataRef.off('child_added');
+
+                const pointRef = allMapDataRef.push(point);  
+
+                //console.log(allMapDataRef)
+                //console.log(pointRef.key)
+
+                // const success = graph.tryAddPoint(prim);
+                // ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+                // graph.draw(ctx);
+                // console.log("Could find a point?", success);
+            
+            // })
+            // .catch(error => {
+            //     console.error('Error adding force:', error);
+            // });
+    
+                // playerRef = firebase.database().ref(`players/${playerId}`);
+            
+            
+                // const {x, y} = getRandomSafeSpot();
+            
+            
+                // playerRef.set({
+                //     id: playerId,
+                //     name,
+                //     direction: "right",
+                //     color: randomFromArray(playerColors),
+                //     x,
+                //     y,
+                //     currentPoints: 40,
+                //     canEdit: true,
+                //     units: [],
+                //     currentLobby: null,
+                // })
+            
+                // //Remove user from Firebase when diconnected
+                // playerRef.onDisconnect().remove();
+          
+    
+    } else { 
+        console.log("Failed to add point to database!");
+        console.log(players[playerId])
+        console.log(players[playerId].currentLobby)
+    } 
+};
+
+function testRef() {
+    // console.log(playerRef)
+    // console.log(playerId)
+    // console.log(players)
+    // console.log(playerElements)
+    // console.log(unitRef)
+    // console.log(units)
+    // console.log(unitElements)
+    // console.log(lobbyId)
+    // console.log(lobbyRef)
+    // console.log(messages)
+    // console.log(mapData)
+    Object.keys(mapData).forEach((key) => {
+        console.log(mapData[key])
+        console.log(mapData[key].timestamp)
+    })
+
+    graph.updatePointOnServer()
+
+    // mapData.forEach((ob) => {
+    //     console.log("WHATS THIS?", ob)
+    // }) // no work
+}
+
 const GRID_SIZE = 45;
 const myCanvas = document.getElementById("myCanvas")
 myCanvas.width = 400;
@@ -539,27 +656,28 @@ myCanvas.height = 400;
 
 const ctx = myCanvas.getContext("2d");
 
-const p1 = new Point2(50, 50);
-const p2 = new Point2(100, 50);
-const p3 = new Point2(150, 50);
-const p4 = new Point2(200, 50);
+// const p1 = new Point2(50, 50);
+// const p2 = new Point2(100, 50);
+// const p3 = new Point2(150, 50);
+// const p4 = new Point2(200, 50);
 // const p5 = new Point(50, 100);
 // const p6 = new Point(100, 100);
 // const p7 = new Point(150, 100);
 // const p8 = new Point(200, 100);
 
-const s1 = new Segment2(p1, p2);
-const s2 = new Segment2(p1, p3);
-const s3 = new Segment2(p1, p4);
-const s4 = new Segment2(p2, p3);
+// const s1 = new Segment2(p1, p2);
+// const s2 = new Segment2(p1, p3);
+// const s3 = new Segment2(p1, p4);
+// const s4 = new Segment2(p2, p3);
 
-const graph = new Graph2([p1, p2, p3, p4], [s1, s2, s3, s4]);
+const graph = new Graph2([], [], [new StagingArea]);
 const graphEditor = new GraphEditor2(myCanvas, graph);
 
 animate();
 
 function animate() {
     ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    //graph.updatePointOnServer();
     graphEditor.display();
     requestAnimationFrame(animate);
 }

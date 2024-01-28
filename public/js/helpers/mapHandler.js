@@ -1,5 +1,5 @@
-function sendMessage(text) {
-    const chatFeed = document.getElementById('chat-feed');
+function updatePoints(point) {
+    const lobbyCanvas = document.getElementById("myCanvas");
     const currentUser = firebase.auth().currentUser;
 
     if (currentUser) {
@@ -12,40 +12,41 @@ function sendMessage(text) {
                 if (userLobbyData && userLobbyData.currentLobby) {
                     const currentGroupId = userLobbyData.currentLobby;
 
-                    const messageData = {
+                    const pointData = {
                         userId: currentUser.uid,
-                        text: text,
+                        x: point.x,
+                        y: point.y,
                         timestamp: firebase.database.ServerValue.TIMESTAMP,
-                    }; 
+                    };
 
                     // Push the message under the currentGroupId
-                    const messagesRef = firebase.database().ref(`lobbies/${currentGroupId}/messages`);
+                    const pointRef = firebase.database().ref(`lobbies/${currentGroupId}/mapData`);
                     
                     // Detach previous event listener to avoid receiving messages twice
-                    messagesRef.off('child_added');
+                    pointRef.off('child_added');
 
-                    messagesRef.push(messageData);  
+                    pointRef.push(pointData);  
 
                     // Add a new event listener to handle the child_added event
-                    messagesRef.limitToLast(1).on('child_added', (snapshot) => {
-                        const message = snapshot.val();
+                    pointRef.limitToLast(1).on('child_added', (snapshot) => {
+                        const point = snapshot.val();
 
-                        // Display the most recent message in the chat feed
-                        if (message) {
-                            const messageElement = document.createElement('p');
+                        // Display the most recent point in the chat feed
+                        if (point) {
+                            const pointElement = document.createElement('p');
 
-                            const senderId = message.userId;
+                            const senderId = point.userId;
                             const senderRef = firebase.database().ref(`players/${senderId}`);
                             
                             senderRef.once('value', (senderSnapshot) => {
                                 const senderData = senderSnapshot.val();
                         
                                 if (senderData && senderData.name) {
-                                    // Display the sender's name along with the most recent message text
-                                    messageElement.textContent = `${senderData.name}: ${message.text}`;
-                                    chatFeed.appendChild(messageElement);
-                                    console.log(`User ${senderData.name} sent the message:`, message.text);
-                                    chatFeed.scrollTo(0, chatFeed.scrollHeight);
+                                    // Display the sender's name along with the most recent point text
+                                    pointElement.textContent = `${senderData.name}: ${point.text}`;
+                                    lobbyCanvas.appendChild(pointElement);
+                                    console.log(`User ${senderData.name} updated the point:`, point);
+                                    //lobbyCanvas.scrollTo(0, lobbyCanvas.scrollHeight);
                                 }
                             });
                         }
